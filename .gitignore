@@ -1,0 +1,8 @@
+# build outputs
+build/
+client/build/
+
+# editor / OS cruft
+*.user
+*.suo
+Thumbs.db
