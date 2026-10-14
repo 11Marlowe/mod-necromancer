@@ -9,11 +9,61 @@
 
 #include "ScriptObjects.h"
 #include "Log.h"
+#include "Player.h"
 
 namespace
 {
-    // Phase 0 skeleton: proves module registration.  Real content (spell
-    // scripts, minion behavior, class data validation) lands with Phase 1/2.
+    // Spells taught automatically when a Necromancer reaches the level.
+    // Rank 1 spells are also granted at creation via playercreateinfo_spell;
+    // this list only covers rank-ups and later abilities (idempotent: known
+    // spells are skipped).  Trainers are intentionally not used yet.
+    struct ClassSpell
+    {
+        uint32 spellId;
+        uint8  level;
+    };
+
+    constexpr ClassSpell NecromancerSpells[] =
+    {
+        { 61011,  8 },   // Plague Bolt Rank 2
+        { 61014, 12 },   // Reap Rank 2
+        {  6789, 14 },   // Death Coil (shared with Warlock)
+        { 61012, 16 },   // Plague Bolt Rank 3
+    };
+
+    void TeachClassSpells(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+
+        uint8 level = player->GetLevel();
+        for (ClassSpell const& entry : NecromancerSpells)
+        {
+            if (level >= entry.level && !player->HasSpell(entry.spellId))
+                player->LearnSpell(entry.spellId, false);
+        }
+    }
+
+    class NecromancerPlayerScript : public PlayerScript
+    {
+    public:
+        NecromancerPlayerScript()
+            : PlayerScript("mod_necromancer_player",
+                           { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEVEL_CHANGED })
+        {
+        }
+
+        void OnLogin(Player* player) override
+        {
+            TeachClassSpells(player);
+        }
+
+        void OnLevelChanged(Player* player, uint8 /*oldLevel*/) override
+        {
+            TeachClassSpells(player);
+        }
+    };
+
     class NecromancerWorldScript : public WorldScript
     {
     public:
@@ -24,7 +74,7 @@ namespace
 
         void OnStartup() override
         {
-            sLog.outString("[mod-necromancer] module loaded (Phase 1: identity data + client patch available)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 1: Plague Bolt, Reap, Bone Armor, auto-learn)");
         }
     };
 }
@@ -32,4 +82,5 @@ namespace
 void AddNecromancerScripts()
 {
     new NecromancerWorldScript();
+    new NecromancerPlayerScript();
 }

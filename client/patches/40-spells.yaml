@@ -1,0 +1,133 @@
+# Spell.dbc - Necromancer batch 1 spells (IDs 61010-61015).
+#
+# NOTE: in this 1.12.1 client's Spell.dbc the field the schema calls
+# `NameSubtext_lang_N` is actually the spell RANK string (DBC columns
+# 129-136).  We set it to "Rank N" so tooltips/spellbook show ranks.
+#
+# Mechanics are copied from the model spells for this batch:
+#   Plague Bolt R1-3 <- Shadow Bolt 686/695/705
+#   Reap R1-2        <- Raptor Strike 2973/14260 (mana melee strike)
+#   Bone Armor       <- Frost Armor 168
+# Icons, tooltips, costs and effects intentionally stay the model's for now;
+# custom tuning/tooltips come in a later batch.
+Spell.dbc:
+  - type: copy
+    key: 686
+    values:
+      ID: 61010
+      Name_lang_0: "Plague Bolt"
+      Name_lang_1: "Plague Bolt"
+      Name_lang_2: "Plague Bolt"
+      Name_lang_3: "Plague Bolt"
+      Name_lang_4: "Plague Bolt"
+      Name_lang_5: "Plague Bolt"
+      Name_lang_6: "Plague Bolt"
+      Name_lang_7: "Plague Bolt"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+  - type: copy
+    key: 695
+    values:
+      ID: 61011
+      Name_lang_0: "Plague Bolt"
+      Name_lang_1: "Plague Bolt"
+      Name_lang_2: "Plague Bolt"
+      Name_lang_3: "Plague Bolt"
+      Name_lang_4: "Plague Bolt"
+      Name_lang_5: "Plague Bolt"
+      Name_lang_6: "Plague Bolt"
+      Name_lang_7: "Plague Bolt"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+  - type: copy
+    key: 705
+    values:
+      ID: 61012
+      Name_lang_0: "Plague Bolt"
+      Name_lang_1: "Plague Bolt"
+      Name_lang_2: "Plague Bolt"
+      Name_lang_3: "Plague Bolt"
+      Name_lang_4: "Plague Bolt"
+      Name_lang_5: "Plague Bolt"
+      Name_lang_6: "Plague Bolt"
+      Name_lang_7: "Plague Bolt"
+      NameSubtext_lang_0: "Rank 3"
+      NameSubtext_lang_1: "Rank 3"
+      NameSubtext_lang_2: "Rank 3"
+      NameSubtext_lang_3: "Rank 3"
+      NameSubtext_lang_4: "Rank 3"
+      NameSubtext_lang_5: "Rank 3"
+      NameSubtext_lang_6: "Rank 3"
+      NameSubtext_lang_7: "Rank 3"
+  - type: copy
+    key: 2973
+    values:
+      ID: 61013
+      Name_lang_0: "Reap"
+      Name_lang_1: "Reap"
+      Name_lang_2: "Reap"
+      Name_lang_3: "Reap"
+      Name_lang_4: "Reap"
+      Name_lang_5: "Reap"
+      Name_lang_6: "Reap"
+      Name_lang_7: "Reap"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+  - type: copy
+    key: 14260
+    values:
+      ID: 61014
+      Name_lang_0: "Reap"
+      Name_lang_1: "Reap"
+      Name_lang_2: "Reap"
+      Name_lang_3: "Reap"
+      Name_lang_4: "Reap"
+      Name_lang_5: "Reap"
+      Name_lang_6: "Reap"
+      Name_lang_7: "Reap"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+  - type: copy
+    key: 168
+    values:
+      ID: 61015
+      Name_lang_0: "Bone Armor"
+      Name_lang_1: "Bone Armor"
+      Name_lang_2: "Bone Armor"
+      Name_lang_3: "Bone Armor"
+      Name_lang_4: "Bone Armor"
+      Name_lang_5: "Bone Armor"
+      Name_lang_6: "Bone Armor"
+      Name_lang_7: "Bone Armor"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""

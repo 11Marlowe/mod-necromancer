@@ -1,0 +1,43 @@
+# Necromancer skill line ("Necromancy", id 700) and its spell mappings.
+# SkillLineAbility rows are cloned from the model spells' own rows
+# (686/695/705/2973/14260/168/6789) so the client groups our spells in a
+# spellbook tab; Death Coil (6789) is shared with Warlocks.
+SkillLine.dbc:
+  - type: insert
+    key: 700
+    values:
+      id: 700
+      categoryId: 7
+      skillCostID: 0
+      name_lang_0: "Necromancy"
+      name_lang_1: "Necromancy"
+      name_lang_2: "Necromancy"
+      name_lang_3: "Necromancy"
+      name_lang_4: "Necromancy"
+      name_lang_5: "Necromancy"
+      name_lang_6: "Necromancy"
+      name_lang_7: "Necromancy"
+      nameFlags: 4128894
+      spellIcon: 547
+
+SkillLineAbility.dbc:
+  - { type: copy, key: 1430, values: { id: 7211, skillId: 700, spellId: 61010, classmask: 512 } }
+  - { type: copy, key: 1431, values: { id: 7212, skillId: 700, spellId: 61011, classmask: 512 } }
+  - { type: copy, key: 1432, values: { id: 7213, skillId: 700, spellId: 61012, classmask: 512 } }
+  - { type: copy, key: 1921, values: { id: 7214, skillId: 700, spellId: 61013, classmask: 512 } }
+  - { type: copy, key: 2153, values: { id: 7215, skillId: 700, spellId: 61014, classmask: 512 } }
+  - { type: copy, key: 575,  values: { id: 7216, skillId: 700, spellId: 61015, classmask: 512 } }
+  - { type: copy, key: 3163, values: { id: 7217, skillId: 700, spellId: 6789,  classmask: 512 } }
+
+SkillRaceClassInfo.dbc:
+  - type: insert
+    key: 1010
+    values:
+      id: 1010
+      skillId: 700
+      raceMask: 2047
+      classMask: 512
+      flags: 1040
+      reqLevel: 0
+      skillTierId: 0
+      skillCostID: 0

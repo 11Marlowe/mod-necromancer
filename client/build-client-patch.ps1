@@ -29,7 +29,10 @@ if (-not $OutDir) {
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
-$dbcFiles = @("ChrClasses.dbc", "CharBaseInfo.dbc", "CharStartOutfit.dbc")
+$dbcFiles = @(
+    "ChrClasses.dbc", "CharBaseInfo.dbc", "CharStartOutfit.dbc",
+    "Spell.dbc", "SkillLine.dbc", "SkillLineAbility.dbc", "SkillRaceClassInfo.dbc"
+)
 $patchFiles = Get-ChildItem (Join-Path $PSScriptRoot "patches\*.yaml") | Sort-Object Name
 
 $arguments = @("build")
