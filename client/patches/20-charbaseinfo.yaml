@@ -1,0 +1,34 @@
+# CharBaseInfo.dbc - whitelist the (race, class) pairs for the character
+# creation screen (client-only table; the server uses playercreateinfo).
+# allow_duplicate is required: the key column (race) is not unique.
+CharBaseInfo.dbc:
+  - type: insert
+    allow_duplicate: true
+    values: { race: 1, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 2, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 3, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 4, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 5, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 6, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 7, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 8, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 9, class: 10 }
+  - type: insert
+    allow_duplicate: true
+    values: { race: 10, class: 10 }

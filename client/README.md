@@ -31,15 +31,31 @@ regenerate it from your own client DBCs:
 ## How to regenerate (from your own client)
 
 ```
-client\build-client-patch.ps1 -ClientDataDir "C:\path\to\TWoWClient\Game\Data" -DbcDir "C:\path\to\extracted\dbc" -OutDir client\build
+.\client\build-client-patch.ps1 -ClientDbcDir "C:\path\to\TWoWClient\Game\dbc" `
+                               -PatcherExe   "C:\path\to\wow_dbc_patcher.exe"
 ```
 
 The script uses the `wow_dbc_patcher` fork
 (<https://github.com/11Marlowe/twow-raid-visuals>) — needed because the upstream
 patcher cannot write `CharBaseInfo.dbc` / `CharStartOutfit.dbc` (packed 8-bit
-fields). Patch YAMLs and schemas live in `client/patches/` and
-`client/schema/`.
+fields). Patch YAMLs live in `client\patches\`; the two Glue files (extracted
+from Turtle's `patch-9.mpq` with the class additions applied) live in
+`client\includes\Interface\GlueXML\`.
 
-**This folder will be completed in Phase 1** of the module (see the main
-README). Both the prebuilt patch and the regeneration tooling are deliverables
-of that phase.
+## zhCN clients
+
+This client also has a loose, localized copy at `Data\GlueStrings.lua`. Add the
+same class string there (UTF-8, after a `CLASS_` entry):
+
+```
+CLASS_NECROMANCER = "        亡灵法师掌握着死亡的禁忌之力。他们驱使亡者、散播瘟疫，并以自身的生命换取毁灭性的力量。黑暗法术与战斗纪律的结合，使他们在必要时也能成为坚韧的战士。";
+```
+
+(The deployed development client already has this line.)
+
+## Known Phase-1 placeholders
+
+- The creation-screen class icon points at a free atlas cell in
+  `UI-CharacterCreate-Classes.blp`; the texture is not painted yet, so the icon
+  is blank until Phase 2 art. The class name/description and everything else
+  are functional.

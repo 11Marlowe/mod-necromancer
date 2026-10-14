@@ -1,0 +1,23 @@
+# ChrClasses.dbc - add the Necromancer (class 10, mana user).
+# Field values mirror the vanilla caster rows (see dlmp of class 8/9):
+# all rows share unk1=1 and nameFlags=8323199.
+ChrClasses.dbc:
+  - type: insert
+    key: 10
+    values:
+      unk1: 1
+      unk2: 0
+      powerType: 0
+      petNameToken: 1
+      name_lang_0: "Necromancer"
+      name_lang_1: "Necromancer"
+      name_lang_2: "Necromancer"
+      name_lang_3: "Necromancer"
+      name_lang_4: "Necromancer"
+      name_lang_5: "Necromancer"
+      name_lang_6: "Necromancer"
+      name_lang_7: "Necromancer"
+      nameFlags: 8323199
+      filename: "NECROMANCER"
+      spellfamily: 0
+      flags2: 0

@@ -24,7 +24,7 @@ namespace
 
         void OnStartup() override
         {
-            sLog.outString("[mod-necromancer] module loaded (class skeleton; Phase 1 data pending)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 1: identity data + client patch available)");
         }
     };
 }

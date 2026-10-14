@@ -4,11 +4,12 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-> **Status: in development.** Phase 0 (module skeleton) is in place. Phase 1
-> (class identity: database rows, client DBC patch, creation) and Phase 2
-> (spell list) are next. See the design/handoff document:
-> <https://github.com/11Marlowe/wow-tools> (private) or the project's
-> `Necromancer-Design.md`.
+> **Status: Phase 1 (class identity) implemented.** Server data
+> (`data/sql/world/20261014150000_world.sql`) and the client patch
+> (`client/`, built as `patch-Z.mpq`) are in place; a Necromancer can be
+> created for all 10 races. Phase 2 (spell list) is next. See the
+> design/handoff document: <https://github.com/11Marlowe/wow-tools> (private)
+> or the project's `Necromancer-Design.md`.
 
 ## How this is split
 
@@ -46,9 +47,10 @@ See `client/README.md`.
    for %f in (modules\Necromancer\data\sql\world\*.sql) do .\mariadb.exe --port=3307 -u root --force tw_world < %f
    for %f in (modules\Necromancer\data\sql\character\*.sql) do .\mariadb.exe --port=3307 -u root --force tw_char < %f
    ```
-4. Restart `mangosd` (startup should log
-   `[mod-necromancer] module loaded`). No SQL and no client patch is required
-   for the skeleton; both arrive with Phase 1.
+4. Copy the patched `ChrClasses.dbc` (from `client\build\` or the release) into
+   the server's `dbc\` folder — the server reads the class table from there.
+5. Restart `mangosd` (startup should log `[mod-necromancer] module loaded` and
+   neither `Wrong class 10` nor `exit(1)` stat errors).
 
 ## Install (client)
 

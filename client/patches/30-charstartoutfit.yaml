@@ -1,0 +1,25 @@
+# CharStartOutfit.dbc - starting outfit rows for class 10, cloned from the
+# per-race caster chassis (Warlock; Priest for Night Elf / Tauren / High Elf).
+# Source IDs: 13/14, 25/26, 39/40, 47/48, 61/62, 67/68, 81/82, 95/96,
+# 109/110, 123/124 -> new IDs 2000..2019 (gender 0/1).
+CharStartOutfit.dbc:
+  - { type: copy, key: 13,  values: { ID: 2000, class: 10 } }
+  - { type: copy, key: 14,  values: { ID: 2001, class: 10 } }
+  - { type: copy, key: 25,  values: { ID: 2002, class: 10 } }
+  - { type: copy, key: 26,  values: { ID: 2003, class: 10 } }
+  - { type: copy, key: 39,  values: { ID: 2004, class: 10 } }
+  - { type: copy, key: 40,  values: { ID: 2005, class: 10 } }
+  - { type: copy, key: 47,  values: { ID: 2006, class: 10 } }
+  - { type: copy, key: 48,  values: { ID: 2007, class: 10 } }
+  - { type: copy, key: 61,  values: { ID: 2008, class: 10 } }
+  - { type: copy, key: 62,  values: { ID: 2009, class: 10 } }
+  - { type: copy, key: 67,  values: { ID: 2010, class: 10 } }
+  - { type: copy, key: 68,  values: { ID: 2011, class: 10 } }
+  - { type: copy, key: 81,  values: { ID: 2012, class: 10 } }
+  - { type: copy, key: 82,  values: { ID: 2013, class: 10 } }
+  - { type: copy, key: 95,  values: { ID: 2014, class: 10 } }
+  - { type: copy, key: 96,  values: { ID: 2015, class: 10 } }
+  - { type: copy, key: 109, values: { ID: 2016, class: 10 } }
+  - { type: copy, key: 110, values: { ID: 2017, class: 10 } }
+  - { type: copy, key: 123, values: { ID: 2018, class: 10 } }
+  - { type: copy, key: 124, values: { ID: 2019, class: 10 } }
