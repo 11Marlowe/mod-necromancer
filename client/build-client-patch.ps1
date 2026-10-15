@@ -22,7 +22,16 @@ param(
 $ErrorActionPreference = "Stop"
 
 if (-not $SchemaDir) {
-    $SchemaDir = Join-Path (Split-Path -Parent $PatcherExe) "schema"
+    # the patcher's cargo layout keeps the schemas at the repo root
+    # (<repo>\schema), i.e. two levels above target\release\*.exe
+    $candidates = @(
+        (Join-Path (Split-Path -Parent $PatcherExe) "schema"),
+        (Join-Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PatcherExe))) "schema")
+    )
+    $SchemaDir = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if (-not $SchemaDir) {
+        throw "Schema directory not found next to the patcher; pass -SchemaDir explicitly."
+    }
 }
 if (-not $OutDir) {
     $OutDir = Join-Path $PSScriptRoot "build"
@@ -51,6 +60,9 @@ $arguments += @(
 )
 
 & $PatcherExe @arguments
+if ($LASTEXITCODE -ne 0) {
+    throw "wow_dbc_patcher failed with exit code $LASTEXITCODE - patch-Z.mpq was NOT (re)built, do not deploy."
+}
 
 Write-Host ""
 Write-Host "Built: $OutDir\patch-Z.mpq"

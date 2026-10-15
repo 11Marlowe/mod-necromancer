@@ -1,15 +1,26 @@
-# Spell.dbc - Necromancer batch 1 spells (IDs 61010-61015).
+# Spell.dbc - Necromancer class spells (batches 1-2).
 #
 # NOTE: in this 1.12.1 client's Spell.dbc the field the schema calls
 # `NameSubtext_lang_N` is actually the spell RANK string (DBC columns
 # 129-136).  We set it to "Rank N" so tooltips/spellbook show ranks.
 #
-# Mechanics are copied from the model spells for this batch:
+# Mechanics are copied from the model spells:
+# batch 1 (IDs 61010-61015):
 #   Plague Bolt R1-3 <- Shadow Bolt 686/695/705
 #   Reap R1-2        <- Raptor Strike 2973/14260 (mana melee strike)
 #   Bone Armor       <- Frost Armor 168
-# Icons, tooltips, costs and effects intentionally stay the model's for now;
-# custom tuning/tooltips come in a later batch.
+# batch 2 (IDs 61016-61023, disease mechanics):
+#   Call of the Grave R1-3 <- Corruption 6222/6223/7648 (dispel -> disease)
+#   Desecration R1-3       <- Rain of Fire 5740/6219/11677 (dispel -> disease)
+#   Disease Cloud          <- Flamestrike 2120 (dispel -> disease)
+#   Cripple                <- Cripple 89 (effects rewritten: 10% slow and
+#                             -20 attack power for 10 sec, third effect
+#                             dropped, custom tooltip)
+# Icons/costs stay the models' for now; custom tuning/tooltips come in a
+# later batch (Cripple's tooltip is already custom because its effects are).
+#
+# DBC fields are u32: negative values must be written two's-complement
+# (e.g. -11 -> 4294967285), because the patcher reads DBC values as u32.
 Spell.dbc:
   - type: copy
     key: 686
@@ -131,3 +142,207 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
+  # ---- batch 2: disease mechanics (61016-61023) ----
+  # Call of the Grave R1-3 <- Corruption 6222/6223/7648; dispel magic -> disease.
+  # The module's AuraScript triples the final tick (spell_template.script_name).
+  - type: copy
+    key: 6222
+    values:
+      ID: 61016
+      Name_lang_0: "Call of the Grave"
+      Name_lang_1: "Call of the Grave"
+      Name_lang_2: "Call of the Grave"
+      Name_lang_3: "Call of the Grave"
+      Name_lang_4: "Call of the Grave"
+      Name_lang_5: "Call of the Grave"
+      Name_lang_6: "Call of the Grave"
+      Name_lang_7: "Call of the Grave"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+      DispelType: 3
+  - type: copy
+    key: 6223
+    values:
+      ID: 61017
+      Name_lang_0: "Call of the Grave"
+      Name_lang_1: "Call of the Grave"
+      Name_lang_2: "Call of the Grave"
+      Name_lang_3: "Call of the Grave"
+      Name_lang_4: "Call of the Grave"
+      Name_lang_5: "Call of the Grave"
+      Name_lang_6: "Call of the Grave"
+      Name_lang_7: "Call of the Grave"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+      DispelType: 3
+  - type: copy
+    key: 7648
+    values:
+      ID: 61018
+      Name_lang_0: "Call of the Grave"
+      Name_lang_1: "Call of the Grave"
+      Name_lang_2: "Call of the Grave"
+      Name_lang_3: "Call of the Grave"
+      Name_lang_4: "Call of the Grave"
+      Name_lang_5: "Call of the Grave"
+      Name_lang_6: "Call of the Grave"
+      Name_lang_7: "Call of the Grave"
+      NameSubtext_lang_0: "Rank 3"
+      NameSubtext_lang_1: "Rank 3"
+      NameSubtext_lang_2: "Rank 3"
+      NameSubtext_lang_3: "Rank 3"
+      NameSubtext_lang_4: "Rank 3"
+      NameSubtext_lang_5: "Rank 3"
+      NameSubtext_lang_6: "Rank 3"
+      NameSubtext_lang_7: "Rank 3"
+      DispelType: 3
+  # Desecration R1-3 <- Rain of Fire 5740/6219/11677; dispel -> disease.
+  - type: copy
+    key: 5740
+    values:
+      ID: 61019
+      Name_lang_0: "Desecration"
+      Name_lang_1: "Desecration"
+      Name_lang_2: "Desecration"
+      Name_lang_3: "Desecration"
+      Name_lang_4: "Desecration"
+      Name_lang_5: "Desecration"
+      Name_lang_6: "Desecration"
+      Name_lang_7: "Desecration"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+      DispelType: 3
+  - type: copy
+    key: 6219
+    values:
+      ID: 61020
+      Name_lang_0: "Desecration"
+      Name_lang_1: "Desecration"
+      Name_lang_2: "Desecration"
+      Name_lang_3: "Desecration"
+      Name_lang_4: "Desecration"
+      Name_lang_5: "Desecration"
+      Name_lang_6: "Desecration"
+      Name_lang_7: "Desecration"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+      DispelType: 3
+  - type: copy
+    key: 11677
+    values:
+      ID: 61021
+      Name_lang_0: "Desecration"
+      Name_lang_1: "Desecration"
+      Name_lang_2: "Desecration"
+      Name_lang_3: "Desecration"
+      Name_lang_4: "Desecration"
+      Name_lang_5: "Desecration"
+      Name_lang_6: "Desecration"
+      Name_lang_7: "Desecration"
+      NameSubtext_lang_0: "Rank 3"
+      NameSubtext_lang_1: "Rank 3"
+      NameSubtext_lang_2: "Rank 3"
+      NameSubtext_lang_3: "Rank 3"
+      NameSubtext_lang_4: "Rank 3"
+      NameSubtext_lang_5: "Rank 3"
+      NameSubtext_lang_6: "Rank 3"
+      NameSubtext_lang_7: "Rank 3"
+      DispelType: 3
+  # Disease Cloud <- Flamestrike 2120; dispel -> disease.  The module's
+  # SpellScript requires one of the caster's diseases on the victim.
+  - type: copy
+    key: 2120
+    values:
+      ID: 61022
+      Name_lang_0: "Disease Cloud"
+      Name_lang_1: "Disease Cloud"
+      Name_lang_2: "Disease Cloud"
+      Name_lang_3: "Disease Cloud"
+      Name_lang_4: "Disease Cloud"
+      Name_lang_5: "Disease Cloud"
+      Name_lang_6: "Disease Cloud"
+      Name_lang_7: "Disease Cloud"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      DispelType: 3
+  # Cripple <- Cripple 89, with the effects rewritten to the design values:
+  # -10% movement speed (-11 = basePoints, simple value = basePoints+baseDice)
+  # and -20 attack power (-21), 10 sec (DurationIndex 1 = 10000 ms), third
+  # effect (ranged haste) removed, custom tooltip.
+  - type: copy
+    key: 89
+    values:
+      ID: 61023
+      Name_lang_0: "Cripple"
+      Name_lang_1: "Cripple"
+      Name_lang_2: "Cripple"
+      Name_lang_3: "Cripple"
+      Name_lang_4: "Cripple"
+      Name_lang_5: "Cripple"
+      Name_lang_6: "Cripple"
+      Name_lang_7: "Cripple"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      DurationIndex: 1
+      EffectAura_1: 33
+      EffectBasePoints_1: 4294967285
+      EffectAura_2: 99
+      EffectBasePoints_2: 4294967275
+      Effect_3: 0
+      EffectDieSides_3: 0
+      EffectBaseDice_3: 0
+      EffectBasePoints_3: 0
+      EffectAura_3: 0
+      ImplicitTargetA_3: 0
+      Description_lang_0: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_1: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_2: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_3: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_4: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_5: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_6: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_7: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      AuraDescription_lang_0: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_1: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_2: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_3: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_4: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_5: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_6: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+      AuraDescription_lang_7: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
