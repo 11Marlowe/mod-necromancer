@@ -10,7 +10,9 @@ Slice 1 ships three spells:
 `Raise` spells clone `Summon Atal'ai Skeleton` (12151: 1 sec cast, 150 mana,
 60 sec duration) with the summoned creature entry and the implicit target
 mode edited (32 = at the minion position near the caster; the model's mode 46
-requires a `spell_script_target` row we do not want).  `Tether` clones `Renew`
+requires a `spell_script_target` row we do not want).  The model's second
+(dummy) effect is dropped: its script target (mode 38) has no row for the
+clones, which made every cast fail with "Invalid target".  `Tether` clones `Renew`
 (139) because it is an instant, friendly-unit-target spell; its effect is
 replaced by a DUMMY and the module's SpellScript does the work
 (`spell_template.script_name`).
@@ -47,18 +49,34 @@ SPELL_SCRIPT_TETHER = "spell_necromancer_tether"
 CREATURE_GHOUL = 846
 CREATURE_SKELETON = 6412
 
+# The model's second effect (a DUMMY on Atal'ai mobs) targets
+# TARGET_UNIT_SCRIPT_NEAR_CASTER (38), which resolves through the
+# spell_script_target table.  Only the model (12151) has such a row, so the
+# clones failed at cast time with SPELL_FAILED_BAD_TARGETS ("Invalid target").
+# The Raise spells do not need that effect, so it is dropped.
+RAISE_DROP_SECOND_EFFECT = {
+    "effect2": 0,
+    "effectDieSides2": 0,
+    "effectBaseDice2": 0,
+    "effectBasePoints2": 0,
+    "effectApplyAuraName2": 0,
+    "effectImplicitTargetA2": 0,
+}
+
 COLUMN_OVERRIDES = {
     61024: {
         "description": "Raises a ghoul to fight for you for $d.",
         "effectMiscValue1": CREATURE_GHOUL,
         "effectImplicitTargetA1": 32,   # TARGET_LOCATION_UNIT_MINION_POSITION
         "script_name": SPELL_SCRIPT_RAISE_MINION,
+        **RAISE_DROP_SECOND_EFFECT,
     },
     61025: {
         "description": "Raises a skeleton to fight for you for $d.",
         "effectMiscValue1": CREATURE_SKELETON,
         "effectImplicitTargetA1": 32,
         "script_name": SPELL_SCRIPT_RAISE_MINION,
+        **RAISE_DROP_SECOND_EFFECT,
     },
     61026: {
         "description": "Tethers your undead minion to act as a permanent, "

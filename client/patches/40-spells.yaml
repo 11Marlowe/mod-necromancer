@@ -19,7 +19,9 @@
 # batch 3 slice 1 (IDs 61024-61026, minions):
 #   Raise Ghoul / Raise Skeleton <- Summon Atal'ai Skeleton 12151 (guardian
 #                             summon; creature entry 846/6412 and target mode
-#                             32 overridden, module re-scales to caster level)
+#                             32 overridden, the model's dummy 2nd effect
+#                             dropped (script target 38), module re-scales to
+#                             caster level)
 #   Tether                 <- Renew 139 (instant friendly-target dummy; the
 #                             module converts the target guardian into a
 #                             permanent pet)
@@ -388,6 +390,13 @@ Spell.dbc:
       Description_lang_7: "Raises a ghoul to fight for you for $d."
       EffectMiscValue_1: 846
       ImplicitTargetA_1: 32
+      # drop the model's dummy 2nd effect (script target 38, see generator)
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
   # Raise Skeleton <- Summon Atal'ai Skeleton 12151, creature 6412 (Skeleton).
   - type: copy
     key: 12151
@@ -419,6 +428,13 @@ Spell.dbc:
       Description_lang_7: "Raises a skeleton to fight for you for $d."
       EffectMiscValue_1: 6412
       ImplicitTargetA_1: 32
+      # drop the model's dummy 2nd effect (script target 38, see generator)
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
   # Tether <- Renew 139 (instant, friendly-unit target; heal effect replaced
   # by a DUMMY).  The module (script_name) replaces the target guardian with
   # a permanent, controllable pet; icon = Enslave Demon's chains (1500).
