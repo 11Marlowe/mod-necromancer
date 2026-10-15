@@ -1,8 +1,9 @@
 # Necromancer skill line ("Necromancy", id 700) and its spell mappings.
 # SkillLineAbility rows are cloned from the model spells' own rows
-# (686/695/705/2973/14260/168/6789 plus the batch-2 models 6222/6223/7648/
-# 5740/6219/11677/2120/89) so the client groups our spells in a spellbook
-# tab; Death Coil (6789) is shared with Warlocks.
+# (686/695/705/2973/14260/168/6789, batch-2 models 6222/6223/7648/5740/
+# 6219/11677/2120/89 and 139 for Tether; the minion rows reuse the 1430/1431
+# donors) so the client groups our spells in a spellbook tab; Death Coil
+# (6789) is shared with Warlocks.
 SkillLine.dbc:
   - type: insert
     key: 700
@@ -38,6 +39,10 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1448, values: { id: 7223, skillId: 700, spellId: 61021, classmask: 512 } }
   - { type: copy, key: 40,   values: { id: 7224, skillId: 700, spellId: 61022, classmask: 512 } }
   - { type: copy, key: 6177, values: { id: 7225, skillId: 700, spellId: 61023, classmask: 512, learnOnGetSkill: 0 } }
+  # batch 3 slice 1 (minions)
+  - { type: copy, key: 1430, values: { id: 7226, skillId: 700, spellId: 61024, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1431, values: { id: 7227, skillId: 700, spellId: 61025, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 448,  values: { id: 7228, skillId: 700, spellId: 61026, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert

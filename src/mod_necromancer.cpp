@@ -13,6 +13,7 @@
 #include "SpellAuras.h"
 #include "Spell.h"
 #include "Unit.h"
+#include "Pet.h"
 
 namespace
 {
@@ -29,7 +30,17 @@ namespace
         NECRO_SPELL_DESECRATION_R3       = 61021,
         NECRO_SPELL_DISEASE_CLOUD        = 61022,
         NECRO_SPELL_CRIPPLE              = 61023,
+        NECRO_SPELL_RAISE_GHOUL          = 61024,
+        NECRO_SPELL_RAISE_SKELETON       = 61025,
+        NECRO_SPELL_TETHER               = 61026,
         NECRO_SPELL_DEATH_COIL           = 6789,
+    };
+
+    // creature_template entries summoned by the Raise spells (vanilla undead)
+    enum NecromancerMinionEntries
+    {
+        NECRO_CREATURE_GHOUL    = 846,
+        NECRO_CREATURE_SKELETON = 6412,
     };
 
     // Spells taught automatically when a Necromancer reaches the level.
@@ -48,10 +59,13 @@ namespace
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R1, 12 },
         { NECRO_SPELL_REAP_R2,              12 },
         { NECRO_SPELL_DEATH_COIL,           14 },
+        { NECRO_SPELL_RAISE_GHOUL,          14 },
+        { NECRO_SPELL_RAISE_SKELETON,       14 },
         { NECRO_SPELL_PLAGUE_BOLT_R3,       16 },
         { NECRO_SPELL_DESECRATION_R1,       20 },
         { NECRO_SPELL_DISEASE_CLOUD,        20 },
         { NECRO_SPELL_CRIPPLE,              20 },
+        { NECRO_SPELL_TETHER,               20 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R2, 24 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R3, 34 },
         { NECRO_SPELL_DESECRATION_R2,       34 },
@@ -160,6 +174,97 @@ namespace
         }
     };
 
+    // ------------------------------------------------------------------
+    // Minions (batch 3, slice 1: Raise Ghoul / Raise Skeleton / Tether)
+    // ------------------------------------------------------------------
+
+    bool IsRaiseMinionSpell(uint32 spellId)
+    {
+        return spellId == NECRO_SPELL_RAISE_GHOUL ||
+               spellId == NECRO_SPELL_RAISE_SKELETON;
+    }
+
+    // Guardian minions use the creature template's flat values; re-initialize
+    // at the caster's level and scale like summoned pets (placeholder tuning,
+    // see the design doc assumptions).  Fires right after the guardian is
+    // created, before it is added to the map.
+    struct spell_necromancer_raise_minion : public SpellScript
+    {
+        void OnSummonBeforeAdd(Spell* spell, Pet* summon, uint32 /*summonIndex*/) const override
+        {
+            if (!spell || !summon || !spell->m_casterUnit || !IsRaiseMinionSpell(spell->m_spellInfo->Id))
+                return;
+
+            Unit* caster = spell->m_casterUnit;
+            uint32 level = caster->GetLevel();
+            if (!level)
+                return;
+
+            summon->InitStatsForLevel(level, caster);
+
+            CreatureInfo const* info = summon->GetCreatureInfo();
+            if (info && info->level_max)
+            {
+                // same as the protected Unit::SetCreateHealth (UNIT_FIELD_BASE_HEALTH)
+                uint32 health = uint32(float(info->health_max) * float(level) / float(info->level_max));
+                summon->SetUInt32Value(UNIT_FIELD_BASE_HEALTH, health);
+            }
+
+            float attackTime = float(summon->GetAttackTime(BASE_ATTACK));
+            summon->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, float(level) * 1.15f * 1.05f * attackTime / 2000.0f);
+            summon->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, float(level) * 1.45f * 1.05f * attackTime / 2000.0f);
+
+            summon->UpdateAllStats();
+            summon->SetHealth(summon->GetMaxHealth());
+        }
+    };
+
+    // Tether: replaces the target raised guardian with a permanent,
+    // controllable pet of the same creature entry (warlock-pet mechanics).
+    struct spell_necromancer_tether : public SpellScript
+    {
+        static Pet* GetTetherableGuardian(Spell* spell)
+        {
+            if (!spell || !spell->m_casterUnit)
+                return nullptr;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            Pet* guardian = target ? target->ToPet() : nullptr;
+            if (!guardian || guardian->getPetType() != GUARDIAN_PET ||
+                    guardian->GetOwnerGuid() != spell->m_casterUnit->GetObjectGuid())
+                return nullptr;
+
+            return guardian;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            return GetTetherableGuardian(spell) ? SPELL_CAST_OK : SPELL_FAILED_BAD_TARGETS;
+        }
+
+        bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0)
+                return false;
+
+            Pet* guardian = GetTetherableGuardian(spell);
+            if (!guardian)
+                return false;
+
+            Unit* caster = spell->m_casterUnit;
+            uint32 entry = guardian->GetEntry();
+
+            ObjectGuid petGuid = caster->EffectSummonPet(spell->m_spellInfo->Id, entry, caster->GetLevel());
+            if (petGuid)
+                guardian->Unsummon(PET_SAVE_AS_DELETED, caster);
+
+            return false;   // effect fully handled by the script
+        }
+    };
+
     AuraScript* GetCallOfTheGraveAuraScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_call_of_the_grave();
@@ -170,9 +275,19 @@ namespace
         return new spell_necromancer_disease_cloud();
     }
 
+    SpellScript* GetRaiseMinionSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_raise_minion();
+    }
+
+    SpellScript* GetTetherSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_tether();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
-    // the names below must match spell_template.script_name (set by
-    // tools/generate_phase2_batch2_spells.py).
+    // the names below must match spell_template.script_name (set by the
+    // generators in tools/).
     void RegisterAuraScript(char const* name, AuraScript* (*getter)(SpellEntry const*))
     {
         Script* script = new Script;
@@ -199,8 +314,8 @@ namespace
 
         void OnStartup() override
         {
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 2: disease mechanics -- "
-                           "Call of the Grave, Desecration, Disease Cloud, Cripple)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 1: minions -- "
+                           "Raise Ghoul, Raise Skeleton, Tether)");
         }
     };
 }
@@ -210,7 +325,9 @@ void AddNecromancerScripts()
     new NecromancerWorldScript();
     new NecromancerPlayerScript();
 
-    // spell_template.script_name bindings (batch 2)
+    // spell_template.script_name bindings
     RegisterAuraScript("spell_necromancer_call_of_the_grave", GetCallOfTheGraveAuraScript);
     RegisterSpellScript("spell_necromancer_disease_cloud", GetDiseaseCloudSpellScript);
+    RegisterSpellScript("spell_necromancer_raise_minion", GetRaiseMinionSpellScript);
+    RegisterSpellScript("spell_necromancer_tether", GetTetherSpellScript);
 }

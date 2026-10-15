@@ -1,4 +1,4 @@
-# Spell.dbc - Necromancer class spells (batches 1-2).
+# Spell.dbc - Necromancer class spells (batches 1-3).
 #
 # NOTE: in this 1.12.1 client's Spell.dbc the field the schema calls
 # `NameSubtext_lang_N` is actually the spell RANK string (DBC columns
@@ -16,6 +16,13 @@
 #   Cripple                <- Cripple 89 (effects rewritten: 10% slow and
 #                             -20 attack power for 10 sec, third effect
 #                             dropped, custom tooltip)
+# batch 3 slice 1 (IDs 61024-61026, minions):
+#   Raise Ghoul / Raise Skeleton <- Summon Atal'ai Skeleton 12151 (guardian
+#                             summon; creature entry 846/6412 and target mode
+#                             32 overridden, module re-scales to caster level)
+#   Tether                 <- Renew 139 (instant friendly-target dummy; the
+#                             module converts the target guardian into a
+#                             permanent pet)
 # Icons/costs stay the models' for now; custom tuning/tooltips come in a
 # later batch (Cripple's tooltip is already custom because its effects are).
 #
@@ -346,3 +353,109 @@ Spell.dbc:
       AuraDescription_lang_5: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
       AuraDescription_lang_6: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
       AuraDescription_lang_7: "Movement speed reduced by $s1%.  Attack power reduced by $s2."
+  # ---- batch 3 slice 1: minions (61024-61026) ----
+  # Raise Ghoul <- Summon Atal'ai Skeleton 12151 (guardian summon: 1 sec cast,
+  # 150 mana, 60 sec).  Server side the summoned creature is 846 (Ghoul) and
+  # the target mode is 32 (at the minion position near the caster); the module
+  # re-scales the minion to the caster's level (script_name).
+  - type: copy
+    key: 12151
+    values:
+      ID: 61024
+      Name_lang_0: "Raise Ghoul"
+      Name_lang_1: "Raise Ghoul"
+      Name_lang_2: "Raise Ghoul"
+      Name_lang_3: "Raise Ghoul"
+      Name_lang_4: "Raise Ghoul"
+      Name_lang_5: "Raise Ghoul"
+      Name_lang_6: "Raise Ghoul"
+      Name_lang_7: "Raise Ghoul"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a ghoul to fight for you for $d."
+      Description_lang_1: "Raises a ghoul to fight for you for $d."
+      Description_lang_2: "Raises a ghoul to fight for you for $d."
+      Description_lang_3: "Raises a ghoul to fight for you for $d."
+      Description_lang_4: "Raises a ghoul to fight for you for $d."
+      Description_lang_5: "Raises a ghoul to fight for you for $d."
+      Description_lang_6: "Raises a ghoul to fight for you for $d."
+      Description_lang_7: "Raises a ghoul to fight for you for $d."
+      EffectMiscValue_1: 846
+      ImplicitTargetA_1: 32
+  # Raise Skeleton <- Summon Atal'ai Skeleton 12151, creature 6412 (Skeleton).
+  - type: copy
+    key: 12151
+    values:
+      ID: 61025
+      Name_lang_0: "Raise Skeleton"
+      Name_lang_1: "Raise Skeleton"
+      Name_lang_2: "Raise Skeleton"
+      Name_lang_3: "Raise Skeleton"
+      Name_lang_4: "Raise Skeleton"
+      Name_lang_5: "Raise Skeleton"
+      Name_lang_6: "Raise Skeleton"
+      Name_lang_7: "Raise Skeleton"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a skeleton to fight for you for $d."
+      Description_lang_1: "Raises a skeleton to fight for you for $d."
+      Description_lang_2: "Raises a skeleton to fight for you for $d."
+      Description_lang_3: "Raises a skeleton to fight for you for $d."
+      Description_lang_4: "Raises a skeleton to fight for you for $d."
+      Description_lang_5: "Raises a skeleton to fight for you for $d."
+      Description_lang_6: "Raises a skeleton to fight for you for $d."
+      Description_lang_7: "Raises a skeleton to fight for you for $d."
+      EffectMiscValue_1: 6412
+      ImplicitTargetA_1: 32
+  # Tether <- Renew 139 (instant, friendly-unit target; heal effect replaced
+  # by a DUMMY).  The module (script_name) replaces the target guardian with
+  # a permanent, controllable pet; icon = Enslave Demon's chains (1500).
+  - type: copy
+    key: 139
+    values:
+      ID: 61026
+      Name_lang_0: "Tether"
+      Name_lang_1: "Tether"
+      Name_lang_2: "Tether"
+      Name_lang_3: "Tether"
+      Name_lang_4: "Tether"
+      Name_lang_5: "Tether"
+      Name_lang_6: "Tether"
+      Name_lang_7: "Tether"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_1: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_2: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_3: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_4: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_5: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_6: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      Description_lang_7: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
+      DurationIndex: 0
+      Effect_1: 3
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectAura_1: 0
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      SpellIconID: 1500
