@@ -68,7 +68,10 @@ See `client/README.md`.
   <https://github.com/11Marlowe/tortoise-wow>, which provides:
   - `ClassRegistry` + the `playable_class` and `class_descriptor` world tables,
   - `PlayerScript::CanCreateCharacter` / `PLAYERHOOK_CAN_CREATE_CHARACTER`,
-  - the runtime playable-class mask used by the player-info loaders.
+  - the runtime playable-class mask used by the player-info loaders,
+  - the `MAX_SPELL_ID` cast fix (60000 → 65535 in `src/game/Spells/Spell.h`):
+    without it the class spells (ids 61010+) play their cast bar but never
+    fire and leave the caster stuck.
 - The module folder must be named **`Necromancer`** inside `modules/` — the core
   derives the loader symbol `AddNecromancerScripts` and the config/SQL paths
   from the folder name.
