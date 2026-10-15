@@ -43,6 +43,11 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1430, values: { id: 7226, skillId: 700, spellId: 61024, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1431, values: { id: 7227, skillId: 700, spellId: 61025, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 448,  values: { id: 7228, skillId: 700, spellId: 61026, classmask: 512, learnOnGetSkill: 0 } }
+  # batch 3 slice 2 (minion control; Ravage 61027 is a pet ability and the
+  # Death Pact/Harvest auras are script-applied - no spellbook rows)
+  - { type: copy, key: 448,  values: { id: 7229, skillId: 700, spellId: 61028, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 40,   values: { id: 7230, skillId: 700, spellId: 61029, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7231, skillId: 700, spellId: 61033, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert

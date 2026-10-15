@@ -25,6 +25,17 @@
 #   Tether                 <- Renew 139 (instant friendly-target dummy; the
 #                             module converts the target guardian into a
 #                             permanent pet)
+# batch 3 slice 2 (IDs 61027-61033, minion control + minion actives):
+#   Ravage                 <- Lash of Pain 7814 (pet-bar active taught by
+#                             `petcreateinfo_spell` to creature 846/6412)
+#   Sacrifice Minion       <- Renew 139 (dummy; module heals + Death Pact)
+#   Harvest                <- Cannibalize 20577 (dummy; module finds corpse,
+#                             applies the mana-regeneration aura 61030)
+#   Harvest aura           <- Cannibalize aura 20578 (health -> mana regen)
+#   Death Pact (Ghoul/Skeleton) <- 20578 scaffold; +2% physical damage done /
+#                             -2% physical damage taken for 30 min
+#   Ghoul Frenzy           <- Renew 139 (module breaks CC; spell carries the
+#                             haste auras and the script-computed heal-over-time)
 # Icons/costs stay the models' for now; custom tuning/tooltips come in a
 # later batch (Cripple's tooltip is already custom because its effects are).
 #
@@ -475,3 +486,303 @@ Spell.dbc:
       EffectAmplitude_1: 0
       EffectMiscValue_1: 0
       SpellIconID: 1500
+  # ---- batch 3 slice 2: minion control + minion actives (61027-61033) ----
+  # Ravage <- Lash of Pain 7814: the raised minions' pet-bar active, learned
+  # through `petcreateinfo_spell` (creatures 846 Ghoul / 6412 Skeleton).
+  - type: copy
+    key: 7814
+    values:
+      ID: 61027
+      Name_lang_0: "Ravage"
+      Name_lang_1: "Ravage"
+      Name_lang_2: "Ravage"
+      Name_lang_3: "Ravage"
+      Name_lang_4: "Ravage"
+      Name_lang_5: "Ravage"
+      Name_lang_6: "Ravage"
+      Name_lang_7: "Ravage"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_1: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_2: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_3: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_4: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_5: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_6: "Ravages an enemy, dealing $s1 Shadow damage."
+      Description_lang_7: "Ravages an enemy, dealing $s1 Shadow damage."
+  # Sacrifice Minion <- Renew 139 (instant, friendly-unit target; effect
+  # replaced by a DUMMY).  The module (script_name) heals the caster, applies
+  # the per-minion-type Death Pact buff and despawns the minion.
+  - type: copy
+    key: 139
+    values:
+      ID: 61028
+      Name_lang_0: "Sacrifice Minion"
+      Name_lang_1: "Sacrifice Minion"
+      Name_lang_2: "Sacrifice Minion"
+      Name_lang_3: "Sacrifice Minion"
+      Name_lang_4: "Sacrifice Minion"
+      Name_lang_5: "Sacrifice Minion"
+      Name_lang_6: "Sacrifice Minion"
+      Name_lang_7: "Sacrifice Minion"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_1: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_2: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_3: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_4: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_5: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_6: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_7: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 0
+      Effect_1: 3
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectAura_1: 0
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      SpellIconID: 1488
+  # Harvest <- Cannibalize 20577: the module (script_name) finds the corpse
+  # (core Cannibalize check) and applies the mana-regeneration aura 61030.
+  - type: copy
+    key: 20577
+    values:
+      ID: 61029
+      Name_lang_0: "Harvest"
+      Name_lang_1: "Harvest"
+      Name_lang_2: "Harvest"
+      Name_lang_3: "Harvest"
+      Name_lang_4: "Harvest"
+      Name_lang_5: "Harvest"
+      Name_lang_6: "Harvest"
+      Name_lang_7: "Harvest"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_1: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_2: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_3: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_4: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_5: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_6: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+      Description_lang_7: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
+  # Harvest aura <- Cannibalize 20578: health per tick -> mana per tick.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61030
+      Name_lang_0: "Harvest"
+      Name_lang_1: "Harvest"
+      Name_lang_2: "Harvest"
+      Name_lang_3: "Harvest"
+      Name_lang_4: "Harvest"
+      Name_lang_5: "Harvest"
+      Name_lang_6: "Harvest"
+      Name_lang_7: "Harvest"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_1: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_2: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_3: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_4: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_5: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_6: "Restores $s1% of total mana every $t1 seconds."
+      AuraDescription_lang_7: "Restores $s1% of total mana every $t1 seconds."
+      EffectAura_1: 21
+  # Death Pact (Ghoul) <- Cannibalize 20578 scaffold: +2% physical damage
+  # done for 30 min; applied by Sacrifice Minion, canceled by Raise/Tether.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61031
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_1: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_2: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_3: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_4: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_5: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_6: "Increases your physical damage done by $s1%."
+      AuraDescription_lang_7: "Increases your physical damage done by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 79
+      EffectMiscValue_1: 1
+      EffectBasePoints_1: 1
+      EffectAmplitude_1: 0
+      SpellIconID: 88
+  # Death Pact (Skeleton) <- same scaffold: -2% physical damage taken for
+  # 30 min (negative base points are two's-complement in DBC fields).
+  - type: copy
+    key: 20578
+    values:
+      ID: 61032
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_1: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_2: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_3: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_4: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_5: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_6: "Reduces physical damage taken by $s1%."
+      AuraDescription_lang_7: "Reduces physical damage taken by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 87
+      EffectMiscValue_1: 1
+      EffectBasePoints_1: 4294967293
+      EffectAmplitude_1: 0
+      SpellIconID: 88
+  # Ghoul Frenzy <- Renew 139: the module (script_name) breaks crowd control
+  # on the tethered minion; the spell itself carries the two haste auras and
+  # the heal-over-time (per-tick amount computed by the module: 5% of max
+  # health every 3 sec for 30 sec).
+  - type: copy
+    key: 139
+    values:
+      ID: 61033
+      Name_lang_0: "Ghoul Frenzy"
+      Name_lang_1: "Ghoul Frenzy"
+      Name_lang_2: "Ghoul Frenzy"
+      Name_lang_3: "Ghoul Frenzy"
+      Name_lang_4: "Ghoul Frenzy"
+      Name_lang_5: "Ghoul Frenzy"
+      Name_lang_6: "Ghoul Frenzy"
+      Name_lang_7: "Ghoul Frenzy"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_1: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_2: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_3: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_4: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_5: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_6: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_7: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      AuraDescription_lang_0: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_1: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_2: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_3: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_4: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_5: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_6: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      AuraDescription_lang_7: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
+      DurationIndex: 2
+      EffectAura_1: 138
+      EffectBasePoints_1: 24
+      EffectAmplitude_1: 0
+      Effect_2: 6
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      EffectBasePoints_2: 24
+      ImplicitTargetA_2: 21
+      EffectAura_2: 65
+      EffectAmplitude_2: 0
+      Effect_3: 6
+      EffectDieSides_3: 1
+      EffectBaseDice_3: 1
+      EffectBasePoints_3: 4
+      ImplicitTargetA_3: 21
+      EffectAura_3: 8
+      EffectAmplitude_3: 3000
+      SpellIconID: 957
