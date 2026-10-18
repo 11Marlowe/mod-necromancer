@@ -18,6 +18,13 @@
 #include "GridNotifiers.h"
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
+#include "Creature.h"
+#include "ObjectMgr.h"
+#include "DBCStores.h"
+#include "Database/DatabaseEnv.h"
+
+#include <algorithm>
+#include <unordered_map>
 
 namespace
 {
@@ -44,14 +51,45 @@ namespace
         NECRO_SPELL_DEATH_PACT_GHOUL     = 61031,
         NECRO_SPELL_DEATH_PACT_SKELETON  = 61032,
         NECRO_SPELL_GHOUL_FRENZY         = 61033,
+        NECRO_SPELL_RAISE_ZOMBIE         = 61034,
+        NECRO_SPELL_RAISE_SHADE          = 61035,
+        NECRO_SPELL_RAISE_BANSHEE        = 61036,
+        NECRO_SPELL_RAISE_WRAITH         = 61037,
+        NECRO_SPELL_RAISE_BLOODMAGE      = 61038,
+        NECRO_SPELL_RAISE_ABOMINATION    = 61039,
+        NECRO_SPELL_RAISE_WIGHT          = 61040,
+        NECRO_SPELL_ENTROPIC_BOLT        = 61041,
+        NECRO_SPELL_DEATH_PACT_BANSHEE   = 61042,
+        NECRO_SPELL_DEATH_PACT_SHADE     = 61043,
+        NECRO_SPELL_DEATH_PACT_WRAITH    = 61044,
+        NECRO_SPELL_DEATH_PACT_HULK      = 61045,   // Abomination and Wight
+        NECRO_SPELL_DEATH_PACT_BLOODMAGE = 61046,
+        NECRO_SPELL_WIGHT_SUMMON         = 61047,   // internal: guardian summon used by the Wight transform
         NECRO_SPELL_DEATH_COIL           = 6789,
     };
 
-    // creature_template entries summoned by the Raise spells (vanilla undead)
+    // Corpse Bag items (server-side item_template; see the slice-3c SQL)
+    enum NecromancerItemIds
+    {
+        NECRO_ITEM_LUMP_OF_FLESH    = 63100,
+        NECRO_ITEM_PILE_OF_BONES    = 63101,
+        NECRO_ITEM_ECTOPLASM        = 63102,
+        NECRO_ITEM_BANSHEE_ESSENCE  = 63103,
+    };
+
+    // creature_template entries summoned by the Raise spells (vanilla undead
+    // models; visuals/tuning are placeholders, see the design doc)
     enum NecromancerMinionEntries
     {
-        NECRO_CREATURE_GHOUL    = 846,
-        NECRO_CREATURE_SKELETON = 6412,
+        NECRO_CREATURE_GHOUL       = 846,     // Ghoul
+        NECRO_CREATURE_SKELETON    = 6412,    // Skeleton
+        NECRO_CREATURE_ZOMBIE      = 1501,    // Mindless Zombie
+        NECRO_CREATURE_SHADE       = 7370,    // Restless Shade
+        NECRO_CREATURE_BANSHEE     = 10463,   // Shrieking Banshee
+        NECRO_CREATURE_WRAITH      = 1800,    // Cold Wraith
+        NECRO_CREATURE_BLOODMAGE   = 8526,    // Dark Caster
+        NECRO_CREATURE_ABOMINATION = 8545,    // Abomination
+        NECRO_CREATURE_WIGHT       = 11621,   // Spectral Corpse
     };
 
     // Spells taught automatically when a Necromancer reaches the level.
@@ -68,6 +106,8 @@ namespace
     {
         { NECRO_SPELL_PLAGUE_BOLT_R2,        8 },
         { NECRO_SPELL_HARVEST,              10 },
+        { NECRO_SPELL_RAISE_ZOMBIE,         10 },
+        { NECRO_SPELL_RAISE_SHADE,          10 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R1, 12 },
         { NECRO_SPELL_REAP_R2,              12 },
         { NECRO_SPELL_DEATH_COIL,           14 },
@@ -80,10 +120,15 @@ namespace
         { NECRO_SPELL_TETHER,               20 },
         { NECRO_SPELL_SACRIFICE_MINION,     20 },
         { NECRO_SPELL_GHOUL_FRENZY,         20 },
+        { NECRO_SPELL_RAISE_BANSHEE,        20 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R2, 24 },
+        { NECRO_SPELL_RAISE_WRAITH,         30 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R3, 34 },
         { NECRO_SPELL_DESECRATION_R2,       34 },
+        { NECRO_SPELL_RAISE_BLOODMAGE,      38 },
+        { NECRO_SPELL_RAISE_ABOMINATION,    40 },
         { NECRO_SPELL_DESECRATION_R3,       46 },
+        { NECRO_SPELL_RAISE_WIGHT,          58 },
     };
 
     void TeachClassSpells(Player* player)
@@ -189,13 +234,26 @@ namespace
     };
 
     // ------------------------------------------------------------------
-    // Minions (batch 3, slice 1: Raise Ghoul / Raise Skeleton / Tether)
+    // Minions (batch 3, slices 1-3: Raise tiers, Tether, minion control)
     // ------------------------------------------------------------------
 
     bool IsRaiseMinionSpell(uint32 spellId)
     {
-        return spellId == NECRO_SPELL_RAISE_GHOUL ||
-               spellId == NECRO_SPELL_RAISE_SKELETON;
+        switch (spellId)
+        {
+            case NECRO_SPELL_RAISE_GHOUL:
+            case NECRO_SPELL_RAISE_SKELETON:
+            case NECRO_SPELL_RAISE_ZOMBIE:
+            case NECRO_SPELL_RAISE_SHADE:
+            case NECRO_SPELL_RAISE_BANSHEE:
+            case NECRO_SPELL_RAISE_WRAITH:
+            case NECRO_SPELL_RAISE_BLOODMAGE:
+            case NECRO_SPELL_RAISE_ABOMINATION:
+            case NECRO_SPELL_WIGHT_SUMMON:
+                return true;
+            default:
+                return false;
+        }
     }
 
     // The Death Pact effect of Sacrifice Minion is canceled when a new
@@ -208,6 +266,278 @@ namespace
 
         caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_GHOUL);
         caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_SKELETON);
+        caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_BANSHEE);
+        caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_SHADE);
+        caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_WRAITH);
+        caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_HULK);
+        caster->RemoveAurasDueToSpell(NECRO_SPELL_DEATH_PACT_BLOODMAGE);
+    }
+
+    // ------------------------------------------------------------------
+    // Corpse taxonomy (batch 3, slice 3c)
+    //
+    // The base categories come from creature_template.type (Humanoid, Undead,
+    // Demon, Beast, Giant, Dragonkin are raiseable).  The sub-classes
+    // (skeletal / spectral / zombie / ghoul / banshee / female humanoid)
+    // have no data source and are classified best-effort: an optional
+    // override table (`necromancer_corpse_class`, row = exact flags) wins,
+    // otherwise the creature's model path (CreatureModelData.modelName
+    // keywords) plus the character-model gender (CreatureDisplayInfoExtra)
+    // are used.  See the design doc A.48-A.60 for the assumptions.
+    // ------------------------------------------------------------------
+
+    enum NecroCorpseFlags : uint8
+    {
+        NECRO_CORPSE_FLAG_SKELETAL = 0x01,
+        NECRO_CORPSE_FLAG_SPECTRAL = 0x02,
+        NECRO_CORPSE_FLAG_ZOMBIE   = 0x04,
+        NECRO_CORPSE_FLAG_GHOUL    = 0x08,
+        NECRO_CORPSE_FLAG_BANSHEE  = 0x10,
+        NECRO_CORPSE_FLAG_FEMALE   = 0x20,
+    };
+
+    constexpr uint32 NECRO_RAISEABLE_TYPEMASK =
+        (uint32(1) << (CREATURE_TYPE_HUMANOID - 1)) |
+        (uint32(1) << (CREATURE_TYPE_UNDEAD - 1)) |
+        (uint32(1) << (CREATURE_TYPE_DEMON - 1)) |
+        (uint32(1) << (CREATURE_TYPE_BEAST - 1)) |
+        (uint32(1) << (CREATURE_TYPE_GIANT - 1)) |
+        (uint32(1) << (CREATURE_TYPE_DRAGONKIN - 1));
+
+    constexpr float NECRO_RAISE_CORPSE_RANGE = 20.0f;   // design: 20 yd for the raises
+    constexpr float NECRO_HARVEST_CORPSE_RANGE = 5.0f;  // cannibalize-style adjacency (design silent)
+
+    std::unordered_map<uint32, uint8> sNecroCorpseOverrides;    // entry -> flags
+    std::unordered_map<uint32, uint8> sNecroCorpseClassCache;   // entry -> flags
+
+    bool HasKeyword(std::string const& path, char const* keyword)
+    {
+        return path.find(keyword) != std::string::npos;
+    }
+
+    uint8 GetCorpseClassFlags(uint32 entry)
+    {
+        auto cached = sNecroCorpseClassCache.find(entry);
+        if (cached != sNecroCorpseClassCache.end())
+            return cached->second;
+
+        uint8 flags = 0;
+
+        auto override = sNecroCorpseOverrides.find(entry);
+        if (override != sNecroCorpseOverrides.end())
+            flags = override->second;
+        else if (CreatureInfo const* info = sObjectMgr.GetCreatureTemplate(entry))
+        {
+            if (CreatureDisplayInfoEntry const* display = info->display_id[0] ?
+                    sCreatureDisplayInfoStore.LookupEntry(info->display_id[0]) : nullptr)
+            {
+                if (CreatureModelDataEntry const* model = sCreatureModelDataStore.LookupEntry(display->ModelId))
+                {
+                    std::string path = model->modelName ? model->modelName : "";
+                    std::transform(path.begin(), path.end(), path.begin(), ::tolower);
+
+                    if (HasKeyword(path, "skeleton") || HasKeyword(path, "skull") || HasKeyword(path, "bone"))
+                        flags |= NECRO_CORPSE_FLAG_SKELETAL;
+                    if (HasKeyword(path, "ghost") || HasKeyword(path, "spectre") || HasKeyword(path, "spectral") ||
+                        HasKeyword(path, "spirit") || HasKeyword(path, "wraith") || HasKeyword(path, "shade") ||
+                        HasKeyword(path, "phantom") || HasKeyword(path, "apparition") || HasKeyword(path, "banshee"))
+                        flags |= NECRO_CORPSE_FLAG_SPECTRAL;
+                    if (HasKeyword(path, "zombie"))
+                        flags |= NECRO_CORPSE_FLAG_ZOMBIE;
+                    if (HasKeyword(path, "ghoul"))
+                        flags |= NECRO_CORPSE_FLAG_GHOUL;
+                    if (HasKeyword(path, "banshee"))
+                        flags |= NECRO_CORPSE_FLAG_BANSHEE | NECRO_CORPSE_FLAG_SPECTRAL;
+                }
+
+                // Character-model NPCs carry race/gender in CreatureDisplayInfoExtra
+                if (info->type == CREATURE_TYPE_HUMANOID && display->ExtendedDisplayInfoID)
+                {
+                    if (CreatureDisplayInfoExtraEntry const* extra =
+                            sCreatureDisplayInfoExtraStore.LookupEntry(display->ExtendedDisplayInfoID))
+                        if (extra->Gender == 1)     // 0 male, 1 female
+                            flags |= NECRO_CORPSE_FLAG_FEMALE;
+                }
+            }
+        }
+
+        sNecroCorpseClassCache[entry] = flags;
+        return flags;
+    }
+
+    // Dead-corpse finder for the raiseable creature types (player corpses and
+    // other creature types are never eligible; the design's raises target
+    // "enemy corpses").
+    class NecroCorpseCheck
+    {
+    public:
+        NecroCorpseCheck(Unit const* fobj, float range) : i_fobj(fobj), i_range(range) {}
+
+        WorldObject const& GetFocusObject() const { return *i_fobj; }
+
+        bool operator()(Creature* u)
+        {
+            if (i_fobj->IsFriendlyTo(u) || u->IsAlive() || u->IsTaxiFlying() || !i_fobj->CanSeeInWorld(u))
+                return false;
+            if ((u->GetCreatureTypeMask() & NECRO_RAISEABLE_TYPEMASK) == 0)
+                return false;
+            return i_fobj->IsWithinDistInMap(u, i_range);
+        }
+
+        bool operator()(Player*) { return false; }
+        template<class NOT_INTERESTED> bool operator()(NOT_INTERESTED*) { return false; }
+
+    private:
+        Unit const* i_fobj;
+        float i_range;
+    };
+
+    Creature* FindRaiseCorpse(Unit* caster, float range)
+    {
+        if (!caster || !caster->IsInWorld())
+            return nullptr;
+
+        WorldObject* result = nullptr;
+        NecroCorpseCheck check(caster, range);
+        MaNGOS::WorldObjectSearcher<NecroCorpseCheck> searcher(result, check);
+
+        Cell::VisitGridObjects(caster, searcher, range);
+
+        return result ? result->ToCreature() : nullptr;
+    }
+
+    // Design corpse requirements per raise (see design doc A.6):
+    //   Zombie: Humanoid or Zombie;  Ghoul: Humanoid or Ghoul;
+    //   Skeleton: Humanoid or non-spectral Undead;
+    //   Banshee: female Humanoid or Banshee;
+    //   Shade/Wraith: Humanoid, Undead, Demon, Beast, Giant, Dragonkin;
+    //   Bloodmage: Humanoid or non-spectral Undead;
+    //   Abomination: Humanoid, Undead or Giant, three corpses.
+    bool CorpseMatchesRaise(uint32 spellId, Creature* corpse)
+    {
+        if (!corpse || !corpse->GetCreatureInfo())
+            return false;
+
+        uint32 type = corpse->GetCreatureInfo()->type;
+        uint8 flags = GetCorpseClassFlags(corpse->GetEntry());
+
+        switch (spellId)
+        {
+            case NECRO_SPELL_RAISE_ZOMBIE:
+                return type == CREATURE_TYPE_HUMANOID || (flags & NECRO_CORPSE_FLAG_ZOMBIE) != 0;
+            case NECRO_SPELL_RAISE_GHOUL:
+                return type == CREATURE_TYPE_HUMANOID || (flags & NECRO_CORPSE_FLAG_GHOUL) != 0;
+            case NECRO_SPELL_RAISE_SKELETON:
+            case NECRO_SPELL_RAISE_BLOODMAGE:
+                return type == CREATURE_TYPE_HUMANOID ||
+                       (type == CREATURE_TYPE_UNDEAD && (flags & NECRO_CORPSE_FLAG_SPECTRAL) == 0);
+            case NECRO_SPELL_RAISE_BANSHEE:
+                return (type == CREATURE_TYPE_HUMANOID && (flags & NECRO_CORPSE_FLAG_FEMALE) != 0) ||
+                       (flags & NECRO_CORPSE_FLAG_BANSHEE) != 0;
+            case NECRO_SPELL_RAISE_SHADE:
+            case NECRO_SPELL_RAISE_WRAITH:
+                return (NECRO_RAISEABLE_TYPEMASK & (uint32(1) << (type - 1))) != 0;
+            case NECRO_SPELL_RAISE_ABOMINATION:
+                return type == CREATURE_TYPE_HUMANOID || type == CREATURE_TYPE_UNDEAD ||
+                       type == CREATURE_TYPE_GIANT;
+            default:
+                return false;
+        }
+    }
+
+    uint32 CountRaiseCorpses(Unit* caster, uint32 spellId, float range)
+    {
+        if (!caster || !caster->IsInWorld())
+            return 0;
+
+        // collect the raiseable corpses first, then apply the per-spell rule
+        // (the designer rules reuse the same base category set)
+        uint32 count = 0;
+        std::list<WorldObject*> corpses;
+        NecroCorpseCheck check(caster, range);
+        MaNGOS::WorldObjectListSearcher<NecroCorpseCheck> searcher(corpses, check);
+        Cell::VisitGridObjects(caster, searcher, range);
+
+        for (WorldObject* obj : corpses)
+            if (Creature* corpse = obj->ToCreature())
+                if (CorpseMatchesRaise(spellId, corpse))
+                    ++count;
+
+        return count;
+    }
+
+    uint32 GetRaiseCorpseCount(uint32 spellId)
+    {
+        return spellId == NECRO_SPELL_RAISE_ABOMINATION ? 3 : 1;
+    }
+
+    // Corpse Bag cost used when no matching corpse is nearby (design A.6):
+    //   Zombie/Ghoul 1x Flesh; Skeleton 1x Bones; Shade/Wraith 1x Ectoplasm;
+    //   Banshee 1x Essence; Bloodmage 1x Bones (placeholder - the design has
+    //   no note for it); Abomination 3x Flesh.
+    bool GetRaiseBagCost(uint32 spellId, uint32& itemId, uint32& count)
+    {
+        switch (spellId)
+        {
+            case NECRO_SPELL_RAISE_ZOMBIE:
+            case NECRO_SPELL_RAISE_GHOUL:
+                itemId = NECRO_ITEM_LUMP_OF_FLESH; count = 1; return true;
+            case NECRO_SPELL_RAISE_SKELETON:
+            case NECRO_SPELL_RAISE_BLOODMAGE:
+                itemId = NECRO_ITEM_PILE_OF_BONES; count = 1; return true;
+            case NECRO_SPELL_RAISE_SHADE:
+            case NECRO_SPELL_RAISE_WRAITH:
+                itemId = NECRO_ITEM_ECTOPLASM; count = 1; return true;
+            case NECRO_SPELL_RAISE_BANSHEE:
+                itemId = NECRO_ITEM_BANSHEE_ESSENCE; count = 1; return true;
+            case NECRO_SPELL_RAISE_ABOMINATION:
+                itemId = NECRO_ITEM_LUMP_OF_FLESH; count = 3; return true;
+            default:
+                return false;
+        }
+    }
+
+    bool PlayerCanPayRaise(Player* player, uint32 spellId)
+    {
+        uint32 itemId, count;
+        if (!player || !GetRaiseBagCost(spellId, itemId, count))
+            return false;
+
+        return player->HasItemCount(itemId, count);
+    }
+
+    // Harvest item yield (design A.6): Banshee Essence from female humanoids
+    // and banshees (exclusively), Ectoplasm from spectral, Bones from
+    // skeletal, Flesh from anything else corporeal.
+    uint32 GetHarvestItemForCorpse(Creature* corpse)
+    {
+        uint32 type = corpse->GetCreatureInfo()->type;
+        uint8 flags = GetCorpseClassFlags(corpse->GetEntry());
+
+        if ((flags & NECRO_CORPSE_FLAG_BANSHEE) != 0 ||
+                (type == CREATURE_TYPE_HUMANOID && (flags & NECRO_CORPSE_FLAG_FEMALE) != 0))
+            return NECRO_ITEM_BANSHEE_ESSENCE;
+        if (flags & NECRO_CORPSE_FLAG_SPECTRAL)
+            return NECRO_ITEM_ECTOPLASM;
+        if (flags & NECRO_CORPSE_FLAG_SKELETAL)
+            return NECRO_ITEM_PILE_OF_BONES;
+
+        return NECRO_ITEM_LUMP_OF_FLESH;
+    }
+
+    // Design: "Only 1 Wight or Abomination can be active at a time" - the new
+    // one replaces the old (placeholder interpretation).
+    void RemoveMinionOfEntry(Unit* caster, uint32 entry)
+    {
+        if (!caster)
+            return;
+
+        if (Pet* pet = caster->GetPet())
+            if (pet->GetEntry() == entry)
+                pet->Unsummon(PET_SAVE_AS_DELETED, caster);
+
+        while (Pet* guardian = caster->FindGuardianWithEntry(entry))
+            guardian->Unsummon(PET_SAVE_AS_DELETED, caster);
     }
 
     // Guardian minions use the creature template's flat values; re-initialize
@@ -216,6 +546,59 @@ namespace
     // created, before it is added to the map.
     struct spell_necromancer_raise_minion : public SpellScript
     {
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            uint32 spellId = spell->m_spellInfo->Id;
+            if (spellId == NECRO_SPELL_WIGHT_SUMMON)
+                return SPELL_CAST_OK;   // internal triggered summon (no gate)
+
+            Unit* caster = spell->m_casterUnit;
+
+            // a matching corpse (or enough of them) satisfies the design gate
+            if (CountRaiseCorpses(caster, spellId, NECRO_RAISE_CORPSE_RANGE) >= GetRaiseCorpseCount(spellId))
+                return SPELL_CAST_OK;
+
+            // otherwise the Corpse Bag items are consumed (see OnEffectExecute)
+            if (Player* player = caster->ToPlayer())
+                if (PlayerCanPayRaise(player, spellId))
+                    return SPELL_CAST_OK;
+
+            return SPELL_FAILED_NO_EDIBLE_CORPSES;
+        }
+
+        bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell->m_casterUnit)
+                return true;
+
+            Unit* caster = spell->m_casterUnit;
+            uint32 spellId = spell->m_spellInfo->Id;
+
+            if (spellId == NECRO_SPELL_WIGHT_SUMMON)
+                return true;
+
+            // "Only 1 Wight or Abomination can be active at a time": the new
+            // one replaces the old
+            if (spellId == NECRO_SPELL_RAISE_ABOMINATION)
+                RemoveMinionOfEntry(caster, NECRO_CREATURE_WIGHT);
+
+            // Pay for the raise: a matching corpse nearby, or Corpse Bag
+            // items (design A.6).  Placeholder: corpses are not consumed.
+            if (CountRaiseCorpses(caster, spellId, NECRO_RAISE_CORPSE_RANGE) >= GetRaiseCorpseCount(spellId))
+                return true;
+
+            uint32 itemId, count;
+            Player* player = caster->ToPlayer();
+            if (!player || !GetRaiseBagCost(spellId, itemId, count) || !player->HasItemCount(itemId, count))
+                return false;   // nothing left to pay with - abort the summon
+
+            player->DestroyItemCount(itemId, count, true);
+            return true;
+        }
+
         void OnSummonBeforeAdd(Spell* spell, Pet* summon, uint32 /*summonIndex*/) const override
         {
             if (!spell || !summon || !spell->m_casterUnit || !IsRaiseMinionSpell(spell->m_spellInfo->Id))
@@ -301,6 +684,28 @@ namespace
     // Frenzy, minion actives)
     // ------------------------------------------------------------------
 
+    // Per-minion-kind Death Pact effect (design values: 2% physical damage
+    // done for Ghoul/Zombie, -2% physical damage taken for Skeleton, 2% mana
+    // per 4 sec for Banshee, -5% threat for Shade, +2% melee/casting speed
+    // for Wraith, +5% total health for Abomination/Wight, +2% spell damage
+    // done for Bloodmage).  Unknown kinds fall back to the Ghoul effect.
+    uint32 GetDeathPactAuraId(uint32 entry)
+    {
+        switch (entry)
+        {
+            case NECRO_CREATURE_SKELETON:    return NECRO_SPELL_DEATH_PACT_SKELETON;
+            case NECRO_CREATURE_SHADE:       return NECRO_SPELL_DEATH_PACT_SHADE;
+            case NECRO_CREATURE_BANSHEE:     return NECRO_SPELL_DEATH_PACT_BANSHEE;
+            case NECRO_CREATURE_WRAITH:      return NECRO_SPELL_DEATH_PACT_WRAITH;
+            case NECRO_CREATURE_BLOODMAGE:   return NECRO_SPELL_DEATH_PACT_BLOODMAGE;
+            case NECRO_CREATURE_ABOMINATION:
+            case NECRO_CREATURE_WIGHT:       return NECRO_SPELL_DEATH_PACT_HULK;
+            case NECRO_CREATURE_GHOUL:
+            case NECRO_CREATURE_ZOMBIE:
+            default:                         return NECRO_SPELL_DEATH_PACT_GHOUL;
+        }
+    }
+
     // Sacrifice Minion: sacrifices the target minion (guardian or tethered
     // pet), healing the caster for (placeholder) the minion's maximum health
     // - doubled on a tethered minion - and granting a Death Pact effect that
@@ -354,11 +759,8 @@ namespace
                 heal *= 2;
             caster->DealHeal(caster, heal, spell->m_spellInfo);
 
-            // Death Pact effect (placeholder per-minion-type modifiers; see
-            // the design doc assumptions).
-            uint32 auraId = minion->GetEntry() == NECRO_CREATURE_SKELETON ?
-                NECRO_SPELL_DEATH_PACT_SKELETON : NECRO_SPELL_DEATH_PACT_GHOUL;
-            caster->CastSpell(caster, auraId, true);
+            // Death Pact effect (per-minion-kind, placeholder tuning)
+            caster->CastSpell(caster, GetDeathPactAuraId(minion->GetEntry()), true);
 
             minion->Unsummon(PET_SAVE_AS_DELETED, caster);
 
@@ -366,27 +768,20 @@ namespace
         }
     };
 
-    // Harvest: cannibalize-style corpse consumption.  Requires a nearby
-    // humanoid/undead corpse (the core's own Cannibalize check); while the
-    // aura lasts the caster regenerates mana.  The corpse finder is the core
-    // helper Cannibalize uses itself, replicated here because the hardcoded
-    // 20577 case does not apply to cloned ids.
+    // Harvest: channels for 3 sec over a raiseable corpse, storing it in the
+    // Corpse Bag as one of the four items (design A.6).  Like the original
+    // Cannibalize, the corpse is the dummy effect's target (needed so the
+    // effect executes); the aura (61030) ticks once after 3 sec and the aura
+    // script adds the item.  Placeholder: the corpse itself is not consumed.
     struct spell_necromancer_harvest : public SpellScript
     {
-        static WorldObject* FindCorpse(Spell* spell)
-        {
-            if (!spell || !spell->m_casterUnit || !spell->m_casterUnit->IsInWorld())
-                return nullptr;
-
-            return spell->FindCorpseUsing<MaNGOS::CannibalizeObjectCheck>();
-        }
-
         SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
         {
             if (!spell || !spell->m_casterUnit)
                 return SPELL_CAST_OK;
 
-            return FindCorpse(spell) ? SPELL_CAST_OK : SPELL_FAILED_NO_EDIBLE_CORPSES;
+            return FindRaiseCorpse(spell->m_casterUnit, NECRO_HARVEST_CORPSE_RANGE) ?
+                SPELL_CAST_OK : SPELL_FAILED_NO_EDIBLE_CORPSES;
         }
 
         void OnTargetMapFilled(Spell* spell, SpellEffectIndex effIdx, uint32 /*targetMode*/,
@@ -394,12 +789,11 @@ namespace
         {
             // Like the original Cannibalize: the corpse is the dummy effect's
             // target, so the effect executes and the script can run.
-            if (effIdx != EFFECT_INDEX_0 || !targets.empty())
+            if (effIdx != EFFECT_INDEX_0 || !targets.empty() || !spell->m_casterUnit)
                 return;
 
-            if (WorldObject* result = FindCorpse(spell))
-                if (Unit* unit = result->ToUnit())
-                    targets.push_back(unit);
+            if (Creature* corpse = FindRaiseCorpse(spell->m_casterUnit, NECRO_HARVEST_CORPSE_RANGE))
+                targets.push_back(corpse);
         }
 
         bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
@@ -408,6 +802,102 @@ namespace
                 return false;
 
             spell->m_casterUnit->CastSpell(spell->m_casterUnit, NECRO_SPELL_HARVEST_AURA, true);
+            return false;   // effect fully handled by the script
+        }
+    };
+
+    // Harvest aura (61030): the 3-sec channel; its single periodic tick fires
+    // at expiry (see Aura::Update's lost-last-tick guard) and stores the
+    // corpse as the appropriate Corpse Bag item.
+    struct spell_necromancer_harvest_aura : public AuraScript
+    {
+        void OnPeriodicTick(Aura* aura) override
+        {
+            if (!aura || aura->GetId() != NECRO_SPELL_HARVEST_AURA)
+                return;
+
+            Unit* caster = aura->GetCaster();
+            Player* player = caster ? caster->ToPlayer() : nullptr;
+            if (!player)
+                return;
+
+            Creature* corpse = FindRaiseCorpse(player, NECRO_HARVEST_CORPSE_RANGE);
+            if (!corpse)
+                return;     // corpse gone mid-channel - nothing is stored
+
+            uint32 itemId = GetHarvestItemForCorpse(corpse);
+
+            ItemPosCountVec dest;
+            uint8 msg = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, itemId, 1);
+            if (msg != EQUIP_ERR_OK)
+            {
+                player->SendEquipError(InventoryResult(msg), nullptr, nullptr);
+                return;
+            }
+
+            if (Item* item = player->StoreNewItem(dest, itemId, true))
+                player->SendNewItem(item, 1, true, false);
+        }
+    };
+
+    // Raise Wight: transforms the target Zombie (1501) or Ghoul (846) minion
+    // into a Wight (creature 11621), keeping a tethered minion tethered
+    // (design A.6).  "Only 1 Wight or Abomination can be active at a time":
+    // the transform replaces an active Abomination and vice versa (see the
+    // raise script).
+    struct spell_necromancer_raise_wight : public SpellScript
+    {
+        static Pet* GetTransformableMinion(Spell* spell)
+        {
+            if (!spell || !spell->m_casterUnit)
+                return nullptr;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            Pet* minion = target ? target->ToPet() : nullptr;
+            if (!minion || !minion->IsAlive())
+                return nullptr;
+            if (minion->GetOwnerGuid() != spell->m_casterUnit->GetObjectGuid())
+                return nullptr;
+            if (minion->getPetType() != GUARDIAN_PET && minion->getPetType() != SUMMON_PET)
+                return nullptr;
+
+            if (minion->GetEntry() != NECRO_CREATURE_ZOMBIE &&
+                    minion->GetEntry() != NECRO_CREATURE_GHOUL)
+                return nullptr;
+
+            return minion;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            return GetTransformableMinion(spell) ? SPELL_CAST_OK : SPELL_FAILED_BAD_TARGETS;
+        }
+
+        bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0)
+                return false;
+
+            Pet* minion = GetTransformableMinion(spell);
+            if (!minion)
+                return false;
+
+            Unit* caster = spell->m_casterUnit;
+            bool tethered = minion->getPetType() == SUMMON_PET;
+
+            // "Only 1 Wight or Abomination can be active at a time"
+            RemoveMinionOfEntry(caster, NECRO_CREATURE_ABOMINATION);
+
+            minion->Unsummon(PET_SAVE_AS_DELETED, caster);
+
+            if (tethered)
+                caster->EffectSummonPet(spell->m_spellInfo->Id, NECRO_CREATURE_WIGHT, caster->GetLevel());
+            else
+                caster->CastSpell(caster, NECRO_SPELL_WIGHT_SUMMON, true);
+
             return false;   // effect fully handled by the script
         }
     };
@@ -510,6 +1000,16 @@ namespace
         return new spell_necromancer_harvest();
     }
 
+    AuraScript* GetHarvestAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_harvest_aura();
+    }
+
+    SpellScript* GetRaiseWightSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_raise_wight();
+    }
+
     SpellScript* GetGhoulFrenzySpellScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_ghoul_frenzy();
@@ -563,8 +1063,27 @@ namespace
 
         void OnStartup() override
         {
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 2: minion control -- "
-                           "Sacrifice Minion, Harvest, Ghoul Frenzy, minion abilities)");
+            // corpse-class overrides (optional module table; absent = heuristics only)
+            sNecroCorpseOverrides.clear();
+            sNecroCorpseClassCache.clear();
+
+            std::unique_ptr<QueryResult> result(WorldDatabase.Query(
+                    "SELECT `entry`, `flags` FROM `necromancer_corpse_class`"));
+            if (result)
+            {
+                do
+                {
+                    Field* fields = result->Fetch();
+                    sNecroCorpseOverrides[fields[0].GetUInt32()] = uint8(fields[1].GetUInt32());
+                }
+                while (result->NextRow());
+
+                sLog.outString("[mod-necromancer] loaded %u corpse class override(s)",
+                               uint32(sNecroCorpseOverrides.size()));
+            }
+
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 3c: minion rules -- "
+                           "corpse taxonomy + Corpse Bag items, raise requirements, Wight transform)");
         }
     };
 }
@@ -587,6 +1106,8 @@ void AddNecromancerScripts()
     RegisterSpellScript("spell_necromancer_tether", GetTetherSpellScript);
     RegisterSpellScript("spell_necromancer_sacrifice_minion", GetSacrificeMinionSpellScript);
     RegisterSpellScript("spell_necromancer_harvest", GetHarvestSpellScript);
+    RegisterAuraScript("spell_necromancer_harvest_aura", GetHarvestAuraScript);
     RegisterSpellAndAuraScript("spell_necromancer_ghoul_frenzy",
                                GetGhoulFrenzySpellScript, GetGhoulFrenzyAuraScript);
+    RegisterSpellScript("spell_necromancer_raise_wight", GetRaiseWightSpellScript);
 }

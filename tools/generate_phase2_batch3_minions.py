@@ -65,14 +65,14 @@ RAISE_DROP_SECOND_EFFECT = {
 
 COLUMN_OVERRIDES = {
     61024: {
-        "description": "Raises a ghoul to fight for you for $d.",
+        "description": "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh.",
         "effectMiscValue1": CREATURE_GHOUL,
         "effectImplicitTargetA1": 32,   # TARGET_LOCATION_UNIT_MINION_POSITION
         "script_name": SPELL_SCRIPT_RAISE_MINION,
         **RAISE_DROP_SECOND_EFFECT,
     },
     61025: {
-        "description": "Raises a skeleton to fight for you for $d.",
+        "description": "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones.",
         "effectMiscValue1": CREATURE_SKELETON,
         "effectImplicitTargetA1": 32,
         "script_name": SPELL_SCRIPT_RAISE_MINION,

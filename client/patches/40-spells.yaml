@@ -36,6 +36,25 @@
 #                             -2% physical damage taken for 30 min
 #   Ghoul Frenzy           <- Renew 139 (module breaks CC; spell carries the
 #                             haste auras and the script-computed heal-over-time)
+# batch 3 slice 3 (IDs 61034-61046, higher minion tiers):
+#   Raise Zombie/Shade/Banshee/Wraith/Bloodmage/Abomination/Wight
+#                          <- Summon Atal'ai Skeleton 12151 (guardian summons,
+#                             creature entry overridden: 1501/7370/10463/
+#                             1800/8526/8545/11621; Abomination is gated by
+#                             the module on three nearby corpses)
+#   Entropic Bolt          <- Firebolt 3110 (ranged pet active taught to
+#                             Banshee/Bloodmage via `petcreateinfo_spell`;
+#                             melee tiers reuse Ravage 61027)
+#   Death Pact (Banshee/Shade/Wraith/Hulk/Bloodmage) <- 20578 scaffold with
+#                             per-kind effects (mana per 4 sec / threat /
+#                             melee+cast speed / total health / spell damage)
+# batch 3 slice 3c (rules realignment; items 63100-63103 have no client half):
+#   Harvest        <- 20577 (same carrier; new text) + aura 61030 reworked to
+#                     the 3-sec channel (duration index 27, amount 0,
+#                     amplitude 3000)
+#   Raise Wight    <- Renew 139 (transform carrier; 8 sec cast, dummy)
+#   Raise Wight (summon) <- 12151 clone (internal guardian summon 61047)
+#   existing raises gain the design CastingTimeIndex values
 # Icons/costs stay the models' for now; custom tuning/tooltips come in a
 # later batch (Cripple's tooltip is already custom because its effects are).
 #
@@ -391,16 +410,17 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Raises a ghoul to fight for you for $d."
-      Description_lang_1: "Raises a ghoul to fight for you for $d."
-      Description_lang_2: "Raises a ghoul to fight for you for $d."
-      Description_lang_3: "Raises a ghoul to fight for you for $d."
-      Description_lang_4: "Raises a ghoul to fight for you for $d."
-      Description_lang_5: "Raises a ghoul to fight for you for $d."
-      Description_lang_6: "Raises a ghoul to fight for you for $d."
-      Description_lang_7: "Raises a ghoul to fight for you for $d."
+      Description_lang_0: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_1: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_2: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_3: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_4: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_5: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_6: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
+      Description_lang_7: "Raises a ghoul to fight for you for $d. Requires a humanoid or ghoul corpse nearby, or 1 Lump of Flesh."
       EffectMiscValue_1: 846
       ImplicitTargetA_1: 32
+      CastingTimeIndex: 6
       # drop the model's dummy 2nd effect (script target 38, see generator)
       Effect_2: 0
       EffectDieSides_2: 0
@@ -429,16 +449,17 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Raises a skeleton to fight for you for $d."
-      Description_lang_1: "Raises a skeleton to fight for you for $d."
-      Description_lang_2: "Raises a skeleton to fight for you for $d."
-      Description_lang_3: "Raises a skeleton to fight for you for $d."
-      Description_lang_4: "Raises a skeleton to fight for you for $d."
-      Description_lang_5: "Raises a skeleton to fight for you for $d."
-      Description_lang_6: "Raises a skeleton to fight for you for $d."
-      Description_lang_7: "Raises a skeleton to fight for you for $d."
+      Description_lang_0: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_1: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_2: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_3: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_4: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_5: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_6: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
+      Description_lang_7: "Raises a skeleton to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones."
       EffectMiscValue_1: 6412
       ImplicitTargetA_1: 32
+      CastingTimeIndex: 6
       # drop the model's dummy 2nd effect (script target 38, see generator)
       Effect_2: 0
       EffectDieSides_2: 0
@@ -587,15 +608,16 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_1: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_2: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_3: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_4: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_5: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_6: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-      Description_lang_7: "Harvests a nearby humanoid or undead corpse, restoring mana over 10 seconds."
-  # Harvest aura <- Cannibalize 20578: health per tick -> mana per tick.
+      Description_lang_0: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_1: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_2: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_3: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_4: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_5: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_6: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_7: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+  # Harvest aura <- Cannibalize 20578: the 3-sec channel; its single tick at
+  # expiry stores the corpse as a Corpse Bag item (module AuraScript).
   - type: copy
     key: 20578
     values:
@@ -624,15 +646,18 @@ Spell.dbc:
       Description_lang_5: ""
       Description_lang_6: ""
       Description_lang_7: ""
-      AuraDescription_lang_0: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_1: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_2: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_3: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_4: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_5: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_6: "Restores $s1% of total mana every $t1 seconds."
-      AuraDescription_lang_7: "Restores $s1% of total mana every $t1 seconds."
-      EffectAura_1: 21
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 27
+      EffectAura_1: 20
+      EffectBasePoints_1: 4294967295
+      EffectAmplitude_1: 3000
   # Death Pact (Ghoul) <- Cannibalize 20578 scaffold: +2% physical damage
   # done for 30 min; applied by Sacrifice Minion, canceled by Raise/Tether.
   - type: copy
@@ -786,3 +811,588 @@ Spell.dbc:
       EffectAura_3: 8
       EffectAmplitude_3: 3000
       SpellIconID: 957
+  # ---- batch 3 slice 3: higher minion tiers (61034-61046) ----
+  # Raise tiers <- Summon Atal'ai Skeleton 12151 (guardian summons; creature
+  # entry and target mode 32 overridden; the model's dummy 2nd effect
+  # dropped).  The module re-scales the minion to the caster; the Abomination
+  # is gated on three corpses nearby (script, not DBC).
+  - type: copy
+    key: 12151
+    values:
+      ID: 61034
+      Name_lang_0: "Raise Zombie"
+      Name_lang_1: "Raise Zombie"
+      Name_lang_2: "Raise Zombie"
+      Name_lang_3: "Raise Zombie"
+      Name_lang_4: "Raise Zombie"
+      Name_lang_5: "Raise Zombie"
+      Name_lang_6: "Raise Zombie"
+      Name_lang_7: "Raise Zombie"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_1: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_2: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_3: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_4: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_5: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_6: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      Description_lang_7: "Raises a zombie to fight for you for $d. Requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh."
+      EffectMiscValue_1: 1501
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 6
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  - type: copy
+    key: 12151
+    values:
+      ID: 61035
+      Name_lang_0: "Raise Shade"
+      Name_lang_1: "Raise Shade"
+      Name_lang_2: "Raise Shade"
+      Name_lang_3: "Raise Shade"
+      Name_lang_4: "Raise Shade"
+      Name_lang_5: "Raise Shade"
+      Name_lang_6: "Raise Shade"
+      Name_lang_7: "Raise Shade"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_1: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_2: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_3: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_4: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_5: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_6: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      Description_lang_7: "Raises a shade to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm."
+      EffectMiscValue_1: 7370
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 14
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  - type: copy
+    key: 12151
+    values:
+      ID: 61036
+      Name_lang_0: "Raise Banshee"
+      Name_lang_1: "Raise Banshee"
+      Name_lang_2: "Raise Banshee"
+      Name_lang_3: "Raise Banshee"
+      Name_lang_4: "Raise Banshee"
+      Name_lang_5: "Raise Banshee"
+      Name_lang_6: "Raise Banshee"
+      Name_lang_7: "Raise Banshee"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_1: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_2: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_3: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_4: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_5: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_6: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      Description_lang_7: "Raises a banshee to fight for you for $d. Requires a female humanoid or banshee corpse nearby, or 1 Banshee Essence."
+      EffectMiscValue_1: 10463
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 6
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  - type: copy
+    key: 12151
+    values:
+      ID: 61037
+      Name_lang_0: "Raise Wraith"
+      Name_lang_1: "Raise Wraith"
+      Name_lang_2: "Raise Wraith"
+      Name_lang_3: "Raise Wraith"
+      Name_lang_4: "Raise Wraith"
+      Name_lang_5: "Raise Wraith"
+      Name_lang_6: "Raise Wraith"
+      Name_lang_7: "Raise Wraith"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_1: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_2: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_3: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_4: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_5: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_6: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      Description_lang_7: "Raises a wraith to fight for you for $d. Requires a humanoid, undead, demon, beast, giant or dragonkin corpse nearby, or 1 Ectoplasm. Only one wraith at a time."
+      EffectMiscValue_1: 1800
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 170
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  - type: copy
+    key: 12151
+    values:
+      ID: 61038
+      Name_lang_0: "Raise Bloodmage"
+      Name_lang_1: "Raise Bloodmage"
+      Name_lang_2: "Raise Bloodmage"
+      Name_lang_3: "Raise Bloodmage"
+      Name_lang_4: "Raise Bloodmage"
+      Name_lang_5: "Raise Bloodmage"
+      Name_lang_6: "Raise Bloodmage"
+      Name_lang_7: "Raise Bloodmage"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_1: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_2: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_3: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_4: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_5: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_6: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      Description_lang_7: "Raises a bloodmage to fight for you for $d. Requires a humanoid or non-spectral undead corpse nearby, or 1 Pile of Bones. Only one bloodmage at a time."
+      EffectMiscValue_1: 8526
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 170
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  - type: copy
+    key: 12151
+    values:
+      ID: 61039
+      Name_lang_0: "Raise Abomination"
+      Name_lang_1: "Raise Abomination"
+      Name_lang_2: "Raise Abomination"
+      Name_lang_3: "Raise Abomination"
+      Name_lang_4: "Raise Abomination"
+      Name_lang_5: "Raise Abomination"
+      Name_lang_6: "Raise Abomination"
+      Name_lang_7: "Raise Abomination"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_1: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_2: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_3: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_4: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_5: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_6: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      Description_lang_7: "Raises an abomination to fight for you for $d. Requires three humanoid, undead or giant corpses nearby, or 3 Lumps of Flesh. Only one abomination at a time."
+      EffectMiscValue_1: 8545
+      ImplicitTargetA_1: 32
+      CastingTimeIndex: 7
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+  # Raise Wight <- Renew 139: TRANSFORM (slice 3c): the module replaces the
+  # target Zombie/Ghoul minion with a Wight (tethered stays tethered) via the
+  # internal summon spell 61047.
+  - type: copy
+    key: 139
+    values:
+      ID: 61040
+      Name_lang_0: "Raise Wight"
+      Name_lang_1: "Raise Wight"
+      Name_lang_2: "Raise Wight"
+      Name_lang_3: "Raise Wight"
+      Name_lang_4: "Raise Wight"
+      Name_lang_5: "Raise Wight"
+      Name_lang_6: "Raise Wight"
+      Name_lang_7: "Raise Wight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_1: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_2: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_3: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_4: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_5: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_6: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      Description_lang_7: "Transforms your Zombie or Ghoul minion into a Wight that will fight for you for 1 min. If used on a Tethered minion, the minion will remain Tethered. Only one Wight or Abomination can be active at a time."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 0
+      CastingTimeIndex: 170
+      Effect_1: 3
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectAura_1: 0
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      SpellIconID: 88
+  # Entropic Bolt <- Firebolt 3110: ranged pet active for the caster tiers
+  # (Banshee, Bloodmage) via `petcreateinfo_spell`.
+  - type: copy
+    key: 3110
+    values:
+      ID: 61041
+      Name_lang_0: "Entropic Bolt"
+      Name_lang_1: "Entropic Bolt"
+      Name_lang_2: "Entropic Bolt"
+      Name_lang_3: "Entropic Bolt"
+      Name_lang_4: "Entropic Bolt"
+      Name_lang_5: "Entropic Bolt"
+      Name_lang_6: "Entropic Bolt"
+      Name_lang_7: "Entropic Bolt"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_1: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_2: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_3: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_4: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_5: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_6: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+      Description_lang_7: "Hurls a bolt of fire at an enemy, dealing $s1 Fire damage."
+  # Death Pact (Banshee) <- 20578 scaffold: 2% mana per 4 sec for 30 min.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61042
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_1: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_2: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_3: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_4: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_5: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_6: "Restores $s1% of total mana every $t1 sec."
+      AuraDescription_lang_7: "Restores $s1% of total mana every $t1 sec."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 21
+      EffectBasePoints_1: 1
+      EffectAmplitude_1: 4000
+      SpellIconID: 88
+  # Death Pact (Shade) <- 20578 scaffold: -5% threat for 30 min.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61043
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Reduces threat generated by $s1%."
+      AuraDescription_lang_1: "Reduces threat generated by $s1%."
+      AuraDescription_lang_2: "Reduces threat generated by $s1%."
+      AuraDescription_lang_3: "Reduces threat generated by $s1%."
+      AuraDescription_lang_4: "Reduces threat generated by $s1%."
+      AuraDescription_lang_5: "Reduces threat generated by $s1%."
+      AuraDescription_lang_6: "Reduces threat generated by $s1%."
+      AuraDescription_lang_7: "Reduces threat generated by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 10
+      EffectMiscValue_1: 127
+      EffectBasePoints_1: 4294967290
+      EffectAmplitude_1: 0
+      SpellIconID: 88
+  # Death Pact (Wraith) <- 20578 scaffold: +2% melee and casting speed for
+  # 30 min.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61044
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_1: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_2: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_3: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_4: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_5: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_6: "Increases melee and casting speed by $s1%."
+      AuraDescription_lang_7: "Increases melee and casting speed by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 138
+      EffectBasePoints_1: 1
+      EffectAmplitude_1: 0
+      Effect_2: 6
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      EffectBasePoints_2: 1
+      ImplicitTargetA_2: 1
+      EffectAura_2: 65
+      EffectAmplitude_2: 0
+      SpellIconID: 88
+  # Death Pact (Hulk) <- 20578 scaffold: +5% total health for 30 min
+  # (Abomination and Wight).
+  - type: copy
+    key: 20578
+    values:
+      ID: 61045
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Increases your total health by $s1%."
+      AuraDescription_lang_1: "Increases your total health by $s1%."
+      AuraDescription_lang_2: "Increases your total health by $s1%."
+      AuraDescription_lang_3: "Increases your total health by $s1%."
+      AuraDescription_lang_4: "Increases your total health by $s1%."
+      AuraDescription_lang_5: "Increases your total health by $s1%."
+      AuraDescription_lang_6: "Increases your total health by $s1%."
+      AuraDescription_lang_7: "Increases your total health by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 133
+      EffectBasePoints_1: 4
+      EffectAmplitude_1: 0
+      SpellIconID: 88
+  # Death Pact (Bloodmage) <- 20578 scaffold: +2% spell damage done for
+  # 30 min.
+  - type: copy
+    key: 20578
+    values:
+      ID: 61046
+      Name_lang_0: "Death Pact"
+      Name_lang_1: "Death Pact"
+      Name_lang_2: "Death Pact"
+      Name_lang_3: "Death Pact"
+      Name_lang_4: "Death Pact"
+      Name_lang_5: "Death Pact"
+      Name_lang_6: "Death Pact"
+      Name_lang_7: "Death Pact"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_1: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_2: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_3: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_4: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_5: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_6: "Increases your spell damage done by $s1%."
+      AuraDescription_lang_7: "Increases your spell damage done by $s1%."
+      DurationIndex: 30
+      DispelType: 0
+      AttributesEx: 0
+      AuraInterruptFlags: 0
+      EffectAura_1: 79
+      EffectMiscValue_1: 126
+      EffectBasePoints_1: 1
+      EffectAmplitude_1: 0
+      SpellIconID: 88
+  # Raise Wight (summon) <- Summon Atal'ai Skeleton 12151: internal guardian
+  # summon (61047) used by the Raise Wight transform for non-tethered
+  # minions; not shown anywhere in the UI.
+  - type: copy
+    key: 12151
+    values:
+      ID: 61047
+      Name_lang_0: "Raise Wight"
+      Name_lang_1: "Raise Wight"
+      Name_lang_2: "Raise Wight"
+      Name_lang_3: "Raise Wight"
+      Name_lang_4: "Raise Wight"
+      Name_lang_5: "Raise Wight"
+      Name_lang_6: "Raise Wight"
+      Name_lang_7: "Raise Wight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      CastingTimeIndex: 1
+      EffectMiscValue_1: 11621
+      ImplicitTargetA_1: 32
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      ImplicitTargetA_2: 0
+
+

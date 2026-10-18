@@ -48,6 +48,15 @@ SkillLineAbility.dbc:
   - { type: copy, key: 448,  values: { id: 7229, skillId: 700, spellId: 61028, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 40,   values: { id: 7230, skillId: 700, spellId: 61029, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7231, skillId: 700, spellId: 61033, classmask: 512, learnOnGetSkill: 0 } }
+  # batch 3 slice 3 (higher minion tiers; Entropic Bolt 61041 is a pet
+  # ability and the Death Pact variants are script-applied - no rows)
+  - { type: copy, key: 1431, values: { id: 7232, skillId: 700, spellId: 61034, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 448,  values: { id: 7233, skillId: 700, spellId: 61035, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 40,   values: { id: 7234, skillId: 700, spellId: 61036, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7235, skillId: 700, spellId: 61037, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1431, values: { id: 7236, skillId: 700, spellId: 61038, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 448,  values: { id: 7237, skillId: 700, spellId: 61039, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 40,   values: { id: 7238, skillId: 700, spellId: 61040, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert
