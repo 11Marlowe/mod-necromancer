@@ -66,13 +66,17 @@ built as a standalone module on the core's **class-support** layer.
 | Raise Abomination | 1 | 40 | Summon Atal'ai Skeleton | guardian (creature 8545); needs three corpses nearby (not consumed) |
 | Raise Wight | 1 | 58 | Renew (friendly-target carrier) | transforms a Zombie/Ghoul minion into a Wight (tethered stays tethered) |
 
-For these batches the icons, costs and (except Cripple's) tooltips are the
-model spells' (renamed via the client patch). The disease spells' rank-up
-mechanics are placeholders until the talent/effect polish batches; "Disease
-Cloud", "Cripple" and "Tether" are talents in the source design and are
-auto-learned at level 20 until talents exist. Custom tuning/tooltips and the
-rest of the design (Sacrifice Minion, Harvest, higher minion tiers, Grim
-Reaper, Lichborne, ...) arrive in later batches. Spells are granted by the
+For these batches the icons and costs are the model spells' (renamed via the
+client patch).  Tooltips are the models' except where the mechanics differ:
+Cripple, Harvest and all Raise spells (since 2026-10-18 the raise tooltips
+state the corpse/bag requirement, e.g. "requires a humanoid or zombie corpse
+nearby, or 1 Lump of Flesh") and the Wight transform.  The disease spells'
+rank-up mechanics are placeholders until the talent/effect polish batches;
+"Disease Cloud", "Cripple" and "Tether" are talents in the source design and
+are auto-learned at level 20 until talents exist. Custom tuning/tooltips and
+the rest of the design (the Corpse Bag container, Army of the Dead, Meat
+Catapult, per-minion abilities, Grim Reaper, Lichborne, ...) arrive in later
+batches. Spells are granted by the
 module's auto-learn (`src/mod_necromancer.cpp`); trainers are planned but not
 required yet.
 
