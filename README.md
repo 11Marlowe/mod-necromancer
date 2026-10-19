@@ -4,7 +4,7 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-> **Status: Phase 2, trainers + placeholder class quests (auto-learn retired; post-correction pass).**
+> **Status: Phase 2, trainers + placeholder class quests + Plague Strike (auto-learn retired; post-correction pass).**
 > Class identity (Phase 1)
 > works end-to-end for all 10 races. Batch 1: **Plague Bolt** (ranks 1-3),
 > **Reap** (ranks 1-2), **Bone Armor** and a shared **Death Coil** at level
@@ -50,14 +50,18 @@ built as a standalone module on the core's **class-support** layer.
 > Warlock spell is no longer learned). **Trainers (2026-10-19):** the
 > module's auto-learn is retired. One class trainer in Orgrimmar (Cleft of
 > Shadow) and one in Stormwind (Slaughtered Lamb cellar) teach every shipped
-> spell/rank through learn spells 61100-61130 (see *Trainers* below). The
+> spell/rank through learn spells 61100-61130 (see *Trainers* below; 61131 is
+> the Plague Strike quest wrapper). The
 > **placeholder class quests (A85, 2026-10-19)** then gate the seven
 > quest-gated spells: both trainers offer one level-gated item turn-in per
 > spell (Raise Zombie/Shade/Harvest at 10, Raise Ghoul/Skeleton at 14, Raise
 > Banshee at 20, Raise Wraith at 30); the items are Corpse Bag items except
 > Harvest, which uses Linen Cloth. The real spell is the reward. Those spells
-> were removed from `npc_trainer`. The design's real
-> quest/item gates remain deferred. Later batches add the Corpse Bag
+> were removed from `npc_trainer`. **Plague Strike (A.8, 2026-10-19)** is the
+> first remaining spellbook entry: an instant melee strike (61075, 5 yd, 6 s
+> CD, 25 mana) that applies Toxic Plague and uses the +3%-per-disease direct
+> damage hook; it is quest-gated by 950107 (1x Lump of Flesh). The design's
+> real quest/item gates remain deferred. Later batches add the Corpse Bag
 > container, the remaining spellbook entries and talents. See the
 > design/handoff document: <https://github.com/11Marlowe/wow-tools> (private)
 > or the project's `Necromancer-Design.md`.
@@ -66,8 +70,9 @@ built as a standalone module on the core's **class-support** layer.
 > `turtle-agent` (see *Testing tips*) before the user's in-client pass, which
 > covers client-rendered items only.  Batch 4 passed both (in-client:
 > pet-bar icons and ability tooltips, 2026-10-18); the correction pass passed
-> the server-side pass (2026-10-19) and the in-client check; the trainers
-> and the placeholder class quests passed the server-side pass (2026-10-19).
+> the server-side pass (2026-10-19) and the in-client check; the trainers,
+> the placeholder class quests and Plague Strike passed the server-side pass
+> (2026-10-19).
 
 ## Spells
 
@@ -76,6 +81,7 @@ built as a standalone module on the core's **class-support** layer.
 | Plague Bolt | 1-3 | 1 / 8 / 16 | Shadow Bolt | Nature damage + **Toxic Plague** rider, 3 s cast (correction pass) |
 | Toxic Plague | 1-3 | applied by Plague Bolt | Corruption | Nature disease, 15 s (3 s ticks 4/7/12), ids 61071-61073; no spellbook row |
 | Reap | 1-2 | 1 / 12 | Death Coil 6789 (health leech) | instant **shadow life-steal**, 10 yd, 8 s CD, high threat (correction pass) |
+| Plague Strike | 1 | 10 (quest) | Sinister Strike | instant **physical** weapon strike, 5 yd, 6 s CD, 25 mana; applies **Toxic Plague** and +3% direct damage per disease (61075) |
 | Bone Armor | 1 | 1 | Frost Armor | batch 1 |
 | Death Coil | — | 14 | Death Coil 6789 | the class's own **61074**: 2.5 s cast, no CD, damages enemies **or heals your undead minion** (correction pass) |
 | Call of the Grave | 1-3 | 12 / 24 / 34 | Corruption | disease, instant, 24 s, final tick x3 (AuraScript) |
@@ -140,8 +146,13 @@ Thorns-style aura); Wight Taunt, Cleave, Crowd Pummel (Pummel), Cannibalize.
   model's 2-min cooldown (design: no cooldown); Desecration is still a
   channeled Rain of Fire (design: instant Shadow + healing reduction);
   Disease Cloud's damage/tooltip are still Flamestrike's; Bone Armor is
-  still Frost Armor; "Grave Rot" displays as "Call of the Grave"; damage
-  values are placeholders.
+  still Frost Armor; "Grave Rot" displays as "Call of the
+  Grave"; damage values are placeholders.
+- **Plague Strike placeholders (design doc A86):** 25 mana, 6 s cooldown,
+  5 yd, one rank; the flat weapon bonus is Sinister Strike's (3), the icon is
+  Sinister Strike's (130), and the disease is Toxic Plague rank 1.  The
+  +3%-per-disease direct damage uses the shared Plague Bolt hook; a higher
+  Toxic Plague rank is not downgraded.
 
 Server data: `data/sql/world/20261014160000_world.sql` (batch 1),
 `20261014170000_world.sql` (batch 2), `20261014180000_world.sql` (batch 3
@@ -155,18 +166,21 @@ petcreateinfo sets), `20261019120000_world.sql` (spell-correction pass:
 A.6-A.9 + A72, Death Coil 61074 + Toxic Plague) and
 `20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61130,
 `npc_trainer`), `20261019220000_world.sql` (placeholder class quests, quest
-relations, questgiver flag, removal of the seven gated trainer rows) and
-`data/sql/character/20261019210000_char.sql` (one-time refresh of
-pre-batch-4 saved pets), all generated by the scripts in `tools/` (the
-character migration is hand-written).  Client patches:
+relations, questgiver flag, removal of the seven gated trainer rows),
+`20261019230000_world.sql` (Plague Strike 61075, learn spell 61131, skill-line
+row and quest 950107) and `data/sql/character/20261019210000_char.sql`
+(one-time refresh of pre-batch-4 saved pets), all generated by the scripts in
+`tools/` (the character migration is hand-written).  Client patches:
 `client/patches/40-spells.yaml` (corrections as `update` blocks after the
-`copy` blocks), `41-learn-spells.yaml` (the trainer learn spells) and
+`copy` blocks), `41-learn-spells.yaml` (the trainer learn spells, now through
+61131), `42-plague-strike.yaml` (Plague Strike 61075) and
 `50-skilllines.yaml` (new "Necromancy" skill line 700; Death Coil row 7217
-points at 61074).
+points at 61074; Plague Strike row 7242).
 
-Fourteen spells are bound to module scripts through
+Fifteen spells are bound to module scripts through
 `spell_template.script_name` (SQL): `spell_necromancer_plague_bolt`
-(Toxic Plague rider + 3% damage per disease), `spell_necromancer_reap`
+(Toxic Plague rider + 3% damage per disease), `spell_necromancer_plague_strike`
+(the same rider/hook from the melee strike), `spell_necromancer_reap`
 (extra threat), `spell_necromancer_death_coil` (friendly-minion heal gate),
 `spell_necromancer_call_of_the_grave` (AuraScript, final-tick triple
 damage), `spell_necromancer_disease_cloud` (SpellScript, cast gate),
@@ -198,13 +212,14 @@ were removed on 2026-10-19):
 | Stormwind | **Mordecai Gravewhisper** | Slaughtered Lamb cellar, by the warlock trainers | 950011 |
 
 Both have `trainer_class = 10` and teach the **24 non-quest spells and ranks**
-(learn spells 61100-61130, `npc_trainer` rows); the other seven are the rewards
-of the placeholder class quests below.  Prices use the vanilla class-trainer
+(learn spells 61100-61130, `npc_trainer` rows); the other eight are the rewards
+of the placeholder class quests below (seven A85 minion/harvest quests plus
+Plague Strike).  Prices use the vanilla class-trainer
 level table (10 copper at level 1 up to 240 silver at 58); rank 2/3 spells still
 require the previous rank (`spell_chain`).  The design's real quest/item gates
 (L10 quest chain, L38 Amnennar, L58 Gandling, L40 Abomination) remain deferred.
 
-### Placeholder class quests (A85)
+### Placeholder class quests (A85 + Plague Strike)
 
 Both trainers have `npc_flags` **19** (gossip + trainer + questgiver) and
 `creature_questrelation` / `creature_involvedrelation` rows for every quest.
@@ -212,7 +227,7 @@ The quests are class-10 only (`RequiredClasses` 0x200), level-gated, and each
 turns in one item (a Corpse Bag item, except Harvest, which uses Linen Cloth).
 `RewSpell` is the real spell (client icon/name)
 and `RewSpellCast` is the matching learn-spell wrapper, so the reward teaches
-the spell.  The seven spells were removed from `npc_trainer`; existing
+the spell.  The seven A85 spells were removed from `npc_trainer`; existing
 characters keep any spell they already know.
 
 | Level | Quest | Spell | Turn-in |
@@ -224,16 +239,18 @@ characters keep any spell they already know.
 | 14 | 950104 | Raise Skeleton | 1x Pile of Bones (63101) |
 | 20 | 950105 | Raise Banshee | 1x Banshee Essence (63103) |
 | 30 | 950106 | Raise Wraith | 1x Ectoplasm (63102) |
+| 10 | 950107 | Plague Strike | 1x Lump of Flesh (63100) |
 
-Quest IDs 950100-950106 are reserved for these placeholders; the titles and
-descriptions are marked PLACEHOLDER.  Harvest deliberately uses **Linen Cloth**
+Quest IDs 950100-950107 are reserved for these placeholders; the titles and
+descriptions are marked PLACEHOLDER.  Plague Strike (950107) ships with its
+spell batch and was never a trainer row.  Harvest deliberately uses **Linen Cloth**
 (2589) rather than a Corpse Bag item, so a fresh character can start the
 Harvest -> corpse item -> raise chain without a GM or trade; the other six
 quests use the design's Corpse Bag items.  Recorded in the design doc A85.
 
 - **Learn-spell wrappers:** vanilla trainers list *learn spells* (effect 36)
   whose `EffectTriggerSpell[0]` is the real spell.  The server rows are
-  `spell_template` 61100-61130 (cloned from Immolate's learn spell 1374); the
+  `spell_template` 61100-61131 (cloned from Immolate's learn spell 1374); the
   client gets their names/ranks/icons/descriptions from
   `client/patches/41-learn-spells.yaml` (rebuilt into `patch-Z.mpq`).
 - **Auto-learn retired:** new characters use the trainers; existing characters
@@ -272,12 +289,19 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   on GM island with a GM starter kit — create test characters on a normal
   account.
 - **Placeholder class quest checks (2026-10-19, server-side verified with
-  `turtle-agent`):** both trainers list 7 PLACEHOLDER quests in the gossip
+  `turtle-agent`):** both trainers list the PLACEHOLDER quests in the gossip
   menu, and `trainer_list` has 24 entries (the seven quest spells are gone).
   Accept a quest, fetch its item with `.additem <id> 1` (GM), hand it in and
   take the reward: the NPC casts the learn spell and the real spell appears in
   `spells`.  Harvest's item is Linen Cloth (2589); the rest are Corpse Bag
-  items.  Quests 950100-950106; see the table above.
+  items.  Quests 950100-950107; see the table above.
+- **Plague Strike checks (2026-10-19, server-side verified with
+  `turtle-agent`):** quest 950107 teaches 61075.  Equip a melee weapon and
+  attack a mob: instant physical hit, **Toxic Plague** aura (61071) with
+  Nature ticks every 3 s, 6 s cooldown, 25 mana.  The +3%-per-disease direct
+  damage uses the shared Plague Bolt hook.  A weapon skill of 1 makes the
+  strike miss almost every time; for tests use `.gm on`, select yourself,
+  `.setskill 173 300 335`, `.gm off` (then save/relog).
 - **Batch-2 test flow:** level a Necromancer to 12 and **train Call of the
   Grave** (Orgrimmar/Stormwind trainer), cast it on a mob and watch the ticks —
   the **final tick deals triple damage**; the debuff is a *disease*

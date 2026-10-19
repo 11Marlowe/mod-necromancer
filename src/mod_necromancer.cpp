@@ -75,6 +75,7 @@ namespace
         NECRO_SPELL_TOXIC_PLAGUE_R2      = 61072,
         NECRO_SPELL_TOXIC_PLAGUE_R3      = 61073,
         NECRO_SPELL_DEATH_COIL           = 61074,   // the class's own clone (corrections pass)
+        NECRO_SPELL_PLAGUE_STRIKE        = 61075,   // melee strike + Toxic Plague (next batch)
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
     };
@@ -1126,6 +1127,7 @@ namespace
                 case NECRO_SPELL_PLAGUE_BOLT_R1: return NECRO_SPELL_TOXIC_PLAGUE_R1;
                 case NECRO_SPELL_PLAGUE_BOLT_R2: return NECRO_SPELL_TOXIC_PLAGUE_R2;
                 case NECRO_SPELL_PLAGUE_BOLT_R3: return NECRO_SPELL_TOXIC_PLAGUE_R3;
+                case NECRO_SPELL_PLAGUE_STRIKE:  return NECRO_SPELL_TOXIC_PLAGUE_R1;
                 default: return 0;
             }
         }
@@ -1162,6 +1164,11 @@ namespace
             if (!plagueId || !target || !target->IsAlive())
                 return;
 
+            if (spell->m_spellInfo->Id == NECRO_SPELL_PLAGUE_STRIKE &&
+                    (target->HasAura(NECRO_SPELL_TOXIC_PLAGUE_R2) ||
+                     target->HasAura(NECRO_SPELL_TOXIC_PLAGUE_R3)))
+                return;
+
             // only one rank of the disease at a time
             static const uint32 toxicPlagueRanks[] =
             {
@@ -1175,6 +1182,10 @@ namespace
 
             spell->m_casterUnit->CastSpell(target, plagueId, true);
         }
+    };
+
+    struct spell_necromancer_plague_strike : public spell_necromancer_plague_bolt
+    {
     };
 
     // Reap (A.8): "Generates a high amount of threat" - the health-leech
@@ -1388,6 +1399,11 @@ namespace
         return new spell_necromancer_plague_bolt();
     }
 
+    SpellScript* GetPlagueStrikeSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_plague_strike();
+    }
+
     SpellScript* GetReapSpellScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_reap();
@@ -1493,6 +1509,7 @@ void AddNecromancerScripts()
 
     // spell-correction pass (2026-10-19, design A.6-A.9 + A72)
     RegisterSpellScript("spell_necromancer_plague_bolt", GetPlagueBoltSpellScript);
+    RegisterSpellScript("spell_necromancer_plague_strike", GetPlagueStrikeSpellScript);
     RegisterSpellScript("spell_necromancer_reap", GetReapSpellScript);
     RegisterSpellScript("spell_necromancer_death_coil", GetDeathCoilSpellScript);
 }

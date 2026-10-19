@@ -1182,3 +1182,41 @@ Spell.dbc:
       AuraDescription_lang_7: "Healing $s1 damage every $t1 seconds."
       SpellIconID: 88
       EffectTriggerSpell_1: 61040
+  - type: copy
+    key: 1374
+    values:
+      ID: 61131
+      Name_lang_0: "Plague Strike"
+      Name_lang_1: "Plague Strike"
+      Name_lang_2: "Plague Strike"
+      Name_lang_3: "Plague Strike"
+      Name_lang_4: "Plague Strike"
+      Name_lang_5: "Plague Strike"
+      Name_lang_6: "Plague Strike"
+      Name_lang_7: "Plague Strike"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_1: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_2: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_3: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_4: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_5: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_6: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      Description_lang_7: "An instant strike that causes weapon damage plus $s1 and infects the target with Toxic Plague, causing Nature damage over 15 sec.  Direct damage is increased by 3% per disease on the target."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 130
+      EffectTriggerSpell_1: 61075

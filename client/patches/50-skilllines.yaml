@@ -63,6 +63,8 @@ SkillLineAbility.dbc:
   - { type: copy, key: 40,   values: { id: 7239, skillId: 700, spellId: 61048, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7240, skillId: 700, spellId: 61049, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7241, skillId: 700, spellId: 61050, classmask: 512, learnOnGetSkill: 0 } }
+  # Plague Strike (61075, Blood tree L10 quest - A.8)
+  - { type: copy, key: 1430, values: { id: 7242, skillId: 700, spellId: 61075, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert

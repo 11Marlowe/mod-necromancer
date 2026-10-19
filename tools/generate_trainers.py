@@ -78,6 +78,7 @@ TRAINABLE = [
     (61048, 44, ""),         # Meat Catapult
     (61021, 46, "Rank 3"),   # Desecration
     (61040, 58, ""),         # Raise Wight
+    (61075, 10, ""),         # Plague Strike (quest-gated, learn wrapper only)
 ]
 
 # These spells are quest-gated by the A85 placeholder quests
@@ -91,6 +92,7 @@ QUEST_GATED = {
     61025,  # Raise Skeleton
     61036,  # Raise Banshee
     61037,  # Raise Wraith
+    61075,  # Plague Strike
 }
 
 LEARN_SPELL_BASE = 61100
