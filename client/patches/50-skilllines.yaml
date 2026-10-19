@@ -57,6 +57,11 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1431, values: { id: 7236, skillId: 700, spellId: 61038, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 448,  values: { id: 7237, skillId: 700, spellId: 61039, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 40,   values: { id: 7238, skillId: 700, spellId: 61040, classmask: 512, learnOnGetSkill: 0 } }
+  # batch 3 slice 3b (minion limit + corpse launcher; the Army of the Dead
+  # passives show as passive entries in the Necromancy tab)
+  - { type: copy, key: 40,   values: { id: 7239, skillId: 700, spellId: 61048, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7240, skillId: 700, spellId: 61049, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7241, skillId: 700, spellId: 61050, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert

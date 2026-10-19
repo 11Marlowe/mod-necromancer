@@ -55,6 +55,13 @@
 #   Raise Wight    <- Renew 139 (transform carrier; 8 sec cast, dummy)
 #   Raise Wight (summon) <- 12151 clone (internal guardian summon 61047)
 #   existing raises gain the design CastingTimeIndex values
+# batch 3 slice 3b (minion limit + corpse launcher; 61048-61050):
+#   Meat Catapult  <- Thorium Grenade 19769 (thrown at a destination, target
+#                     mode 16 area: X-Y Shadow damage + a 2 sec stun in 3 yd;
+#                     design cast 1.5 sec, 20 yd, 1 min cooldown; the module
+#                     requires and consumes one Corpse Bag item)
+#   Army of the Dead R1/R2 <- Dodge 81 (passives; the module reads the learned
+#                     ranks to raise the active-minion limit by +1/+2)
 # Icons/costs stay the models' for now; custom tuning/tooltips come in a
 # later batch (Cripple's tooltip is already custom because its effects are).
 #
@@ -1394,5 +1401,139 @@ Spell.dbc:
       EffectBasePoints_2: 0
       EffectAura_2: 0
       ImplicitTargetA_2: 0
+  # ---- batch 3 slice 3b: minion limit + corpse launcher (61048-61050) ----
+  # Meat Catapult <- Thorium Grenade 19769: thrown at a destination (target
+  # mode 16 = enemies in area at the destination).  Design values: 1.5 sec
+  # cast (SpellCastTimes index 16), 20 yd (SpellRange index 3), 2 sec stun
+  # (SpellDuration index 39), 1 min cooldown, 3 yd radius (SpellRadius
+  # index 15), Shadow damage (school index 5 - the model is Fire = 2).  The
+  # module (script_name) requires and consumes one Corpse Bag item.
+  - type: copy
+    key: 19769
+    values:
+      ID: 61048
+      Name_lang_0: "Meat Catapult"
+      Name_lang_1: "Meat Catapult"
+      Name_lang_2: "Meat Catapult"
+      Name_lang_3: "Meat Catapult"
+      Name_lang_4: "Meat Catapult"
+      Name_lang_5: "Meat Catapult"
+      Name_lang_6: "Meat Catapult"
+      Name_lang_7: "Meat Catapult"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_1: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_2: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_3: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_4: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_5: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_6: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      Description_lang_7: "Launches a corpse from your Corpse Bag at the target location, inflicting $s1 Shadow damage and stunning enemies within 3 yards for $d. Requires a corpse in your Corpse Bag."
+      AuraDescription_lang_0: "Stunned."
+      AuraDescription_lang_1: "Stunned."
+      AuraDescription_lang_2: "Stunned."
+      AuraDescription_lang_3: "Stunned."
+      AuraDescription_lang_4: "Stunned."
+      AuraDescription_lang_5: "Stunned."
+      AuraDescription_lang_6: "Stunned."
+      AuraDescription_lang_7: "Stunned."
+      School: 5
+      CastingTimeIndex: 16
+      RangeIndex: 3
+      DurationIndex: 39
+      RecoveryTime: 60000
+      StartRecoveryTime: 1500
+      StartRecoveryCategory: 133
+      EffectBasePoints_2: 1
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      EffectMechanic_2: 12
+  # Army of the Dead R1/R2 <- Dodge 81: passive (attributes 0x50 = ability |
+  # passive), Dodge's skill-step effect dropped; the module reads the learned
+  # ranks for the active-minion limit (+1 at rank 1, +2 at rank 2; rank 1 is
+  # removed when rank 2 is learned).
+  - type: copy
+    key: 81
+    values:
+      ID: 61049
+      Name_lang_0: "Army of the Dead"
+      Name_lang_1: "Army of the Dead"
+      Name_lang_2: "Army of the Dead"
+      Name_lang_3: "Army of the Dead"
+      Name_lang_4: "Army of the Dead"
+      Name_lang_5: "Army of the Dead"
+      Name_lang_6: "Army of the Dead"
+      Name_lang_7: "Army of the Dead"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+      Description_lang_0: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_1: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_2: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_3: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_4: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_5: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_6: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Description_lang_7: "Allows you to have an additional minion active at a time. Only one minion can be Tethered."
+      Effect_1: 0
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 0
+      SpellIconID: 88
+      CastingTimeIndex: 1
+      DurationIndex: 21
+      RangeIndex: 1
+  - type: copy
+    key: 81
+    values:
+      ID: 61050
+      Name_lang_0: "Army of the Dead"
+      Name_lang_1: "Army of the Dead"
+      Name_lang_2: "Army of the Dead"
+      Name_lang_3: "Army of the Dead"
+      Name_lang_4: "Army of the Dead"
+      Name_lang_5: "Army of the Dead"
+      Name_lang_6: "Army of the Dead"
+      Name_lang_7: "Army of the Dead"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+      Description_lang_0: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_1: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_2: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_3: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_4: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_5: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_6: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Description_lang_7: "Allows you to have 2 additional minions active at a time. Only one minion can be Tethered."
+      Effect_1: 0
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 0
+      SpellIconID: 88
+      CastingTimeIndex: 1
+      DurationIndex: 21
+      RangeIndex: 1
 
 

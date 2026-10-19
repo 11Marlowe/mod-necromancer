@@ -65,6 +65,9 @@ namespace
         NECRO_SPELL_DEATH_PACT_HULK      = 61045,   // Abomination and Wight
         NECRO_SPELL_DEATH_PACT_BLOODMAGE = 61046,
         NECRO_SPELL_WIGHT_SUMMON         = 61047,   // internal: guardian summon used by the Wight transform
+        NECRO_SPELL_MEAT_CATAPULT        = 61048,
+        NECRO_SPELL_ARMY_OF_THE_DEAD_R1  = 61049,   // passive: +1 active minion
+        NECRO_SPELL_ARMY_OF_THE_DEAD_R2  = 61050,   // passive: +2 active minions
         NECRO_SPELL_DEATH_COIL           = 6789,
     };
 
@@ -121,12 +124,15 @@ namespace
         { NECRO_SPELL_SACRIFICE_MINION,     20 },
         { NECRO_SPELL_GHOUL_FRENZY,         20 },
         { NECRO_SPELL_RAISE_BANSHEE,        20 },
+        { NECRO_SPELL_ARMY_OF_THE_DEAD_R1,  20 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R2, 24 },
         { NECRO_SPELL_RAISE_WRAITH,         30 },
         { NECRO_SPELL_CALL_OF_THE_GRAVE_R3, 34 },
         { NECRO_SPELL_DESECRATION_R2,       34 },
         { NECRO_SPELL_RAISE_BLOODMAGE,      38 },
         { NECRO_SPELL_RAISE_ABOMINATION,    40 },
+        { NECRO_SPELL_ARMY_OF_THE_DEAD_R2,  40 },
+        { NECRO_SPELL_MEAT_CATAPULT,        44 },
         { NECRO_SPELL_DESECRATION_R3,       46 },
         { NECRO_SPELL_RAISE_WIGHT,          58 },
     };
@@ -140,7 +146,14 @@ namespace
         for (ClassSpell const& entry : NecromancerSpells)
         {
             if (level >= entry.level && !player->HasSpell(entry.spellId))
+            {
+                // Army of the Dead rank 2 replaces rank 1 (talent rank rule)
+                if (entry.spellId == NECRO_SPELL_ARMY_OF_THE_DEAD_R2 &&
+                        player->HasSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R1))
+                    player->RemoveSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R1, false, false);
+
                 player->LearnSpell(entry.spellId, false);
+            }
         }
     }
 
@@ -540,6 +553,66 @@ namespace
             guardian->Unsummon(PET_SAVE_AS_DELETED, caster);
     }
 
+    // Army of the Dead (design A.3 slot 21): each rank allows an additional
+    // active minion.  Base cap 1 is a placeholder (the design gives no base
+    // value); the ranks are auto-learned at L20/L40 until talents exist.
+    // "Only one minion can be Tethered" is inherent - a player has one pet.
+    uint32 GetMinionCap(Player const* player)
+    {
+        if (player->HasSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R2))
+            return 3;
+        if (player->HasSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R1))
+            return 2;
+        return 1;
+    }
+
+    bool IsMinionEntry(uint32 entry)
+    {
+        switch (entry)
+        {
+            case NECRO_CREATURE_GHOUL:
+            case NECRO_CREATURE_SKELETON:
+            case NECRO_CREATURE_ZOMBIE:
+            case NECRO_CREATURE_SHADE:
+            case NECRO_CREATURE_BANSHEE:
+            case NECRO_CREATURE_WRAITH:
+            case NECRO_CREATURE_BLOODMAGE:
+            case NECRO_CREATURE_ABOMINATION:
+            case NECRO_CREATURE_WIGHT:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    // Active minions = the living summoned guardians of the class's minion
+    // creatures + the tethered minion (a permanent pet).
+    uint32 GetActiveMinionCount(Unit* caster)
+    {
+        static const uint32 minionEntries[] =
+        {
+            NECRO_CREATURE_GHOUL,
+            NECRO_CREATURE_SKELETON,
+            NECRO_CREATURE_ZOMBIE,
+            NECRO_CREATURE_SHADE,
+            NECRO_CREATURE_BANSHEE,
+            NECRO_CREATURE_WRAITH,
+            NECRO_CREATURE_BLOODMAGE,
+            NECRO_CREATURE_ABOMINATION,
+            NECRO_CREATURE_WIGHT,
+        };
+
+        uint32 count = 0;
+        for (uint32 entry : minionEntries)
+            count += caster->GetGuardianCountWithEntry(entry);
+
+        if (Pet* pet = caster->GetPet())
+            if (pet->IsAlive() && IsMinionEntry(pet->GetEntry()))
+                ++count;
+
+        return count;
+    }
+
     // Guardian minions use the creature template's flat values; re-initialize
     // at the caster's level and scale like summoned pets (placeholder tuning,
     // see the design doc assumptions).  Fires right after the guardian is
@@ -556,6 +629,32 @@ namespace
                 return SPELL_CAST_OK;   // internal triggered summon (no gate)
 
             Unit* caster = spell->m_casterUnit;
+
+            // Army of the Dead: active-minion cap (slice 3b).  Recasting a
+            // raise whose own minion is up just dismisses/replaces it (the
+            // core toggles on the creature entry), so it never adds a minion
+            // and stays allowed.
+            if (Player* player = caster->ToPlayer())
+            {
+                uint32 entry = spell->m_spellInfo->EffectMiscValue[EFFECT_INDEX_0];
+                if (!caster->GetGuardianCountWithEntry(entry))
+                {
+                    uint32 active = GetActiveMinionCount(caster);
+
+                    // "Only 1 Wight or Abomination can be active at a time":
+                    // the Abomination replaces an active Wight
+                    if (spellId == NECRO_SPELL_RAISE_ABOMINATION)
+                    {
+                        active -= caster->GetGuardianCountWithEntry(NECRO_CREATURE_WIGHT);
+                        if (Pet* pet = caster->GetPet())
+                            if (pet->IsAlive() && pet->GetEntry() == NECRO_CREATURE_WIGHT && active)
+                                --active;
+                    }
+
+                    if (active >= GetMinionCap(player))
+                        return SPELL_FAILED_ALREADY_HAVE_SUMMON;
+                }
+            }
 
             // a matching corpse (or enough of them) satisfies the design gate
             if (CountRaiseCorpses(caster, spellId, NECRO_RAISE_CORPSE_RANGE) >= GetRaiseCorpseCount(spellId))
@@ -902,6 +1001,60 @@ namespace
         }
     };
 
+    // ------------------------------------------------------------------
+    // Corpse launcher (batch 3, slice 3b)
+    // ------------------------------------------------------------------
+
+    // Meat Catapult (L44, design A.6): launches a corpse from the Corpse Bag
+    // at the target location (X-Y Shadow damage + a 2 sec stun in 3 yards,
+    // 1.5 sec cast, 20 yd, 1 min cooldown - the client spell is a Thorium
+    // Grenade clone).  Requires a Corpse Bag item of any kind and consumes
+    // one on a completed cast.
+    struct spell_necromancer_meat_catapult : public SpellScript
+    {
+        static uint32 FindCorpseBagItem(Player* player)
+        {
+            static const uint32 items[] =
+            {
+                NECRO_ITEM_LUMP_OF_FLESH,
+                NECRO_ITEM_PILE_OF_BONES,
+                NECRO_ITEM_ECTOPLASM,
+                NECRO_ITEM_BANSHEE_ESSENCE,
+            };
+
+            for (uint32 itemId : items)
+                if (player->HasItemCount(itemId, 1))
+                    return itemId;
+
+            return 0;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            Player* player = spell->m_casterUnit->ToPlayer();
+            if (!player)
+                return SPELL_CAST_OK;
+
+            return FindCorpseBagItem(player) ? SPELL_CAST_OK : SPELL_FAILED_NO_EDIBLE_CORPSES;
+        }
+
+        void OnSuccessfulFinish(Spell* spell) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return;
+
+            Player* player = spell->m_casterUnit->ToPlayer();
+            if (!player)
+                return;
+
+            if (uint32 itemId = FindCorpseBagItem(player))
+                player->DestroyItemCount(itemId, 1, true);
+        }
+    };
+
     // Ghoul Frenzy: sends the tethered minion into a frenzy - breaks all
     // crowd control on it, +25% melee and casting speed and a heal of 50% of
     // its maximum health over the duration (the periodic amount is computed
@@ -1020,6 +1173,11 @@ namespace
         return new spell_necromancer_ghoul_frenzy();
     }
 
+    SpellScript* GetMeatCatapultSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_meat_catapult();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -1082,8 +1240,8 @@ namespace
                                uint32(sNecroCorpseOverrides.size()));
             }
 
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 3c: minion rules -- "
-                           "corpse taxonomy + Corpse Bag items, raise requirements, Wight transform)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 3b: Army of the Dead "
+                           "multi-minion limit + Meat Catapult)");
         }
     };
 }
@@ -1110,4 +1268,5 @@ void AddNecromancerScripts()
     RegisterSpellAndAuraScript("spell_necromancer_ghoul_frenzy",
                                GetGhoulFrenzySpellScript, GetGhoulFrenzyAuraScript);
     RegisterSpellScript("spell_necromancer_raise_wight", GetRaiseWightSpellScript);
+    RegisterSpellScript("spell_necromancer_meat_catapult", GetMeatCatapultSpellScript);
 }
