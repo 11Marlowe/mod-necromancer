@@ -68,6 +68,8 @@ namespace
         NECRO_SPELL_MEAT_CATAPULT        = 61048,
         NECRO_SPELL_ARMY_OF_THE_DEAD_R1  = 61049,   // passive: +1 active minion
         NECRO_SPELL_ARMY_OF_THE_DEAD_R2  = 61050,   // passive: +2 active minions
+        NECRO_SPELL_MINION_CANNIBALIZE   = 61052,   // pet ability (batch 4)
+        NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL           = 6789,
     };
 
@@ -1055,6 +1057,87 @@ namespace
         }
     };
 
+    // ------------------------------------------------------------------
+    // Per-minion special abilities (batch 4, design A.7)
+    // ------------------------------------------------------------------
+
+    // Minion Cannibalize (pet ability of Zombie/Ghoul/Abomination/Wight):
+    // like Harvest, the clone's dummy effect only runs once the corpse is
+    // pushed as its target; the effect handler then applies the vanilla
+    // Cannibalize aura (20578: 7% max health per 2 sec for 10 sec) to the
+    // minion.  Design A.7: humanoid/undead corpses within 5 yd, 2 min CD.
+    struct spell_necromancer_minion_cannibalize : public SpellScript
+    {
+        class CorpseChecker
+        {
+        public:
+            CorpseChecker(Unit const* fobj, float range) : i_fobj(fobj), i_range(range) {}
+
+            WorldObject const& GetFocusObject() const { return *i_fobj; }
+
+            bool operator()(Creature* u)
+            {
+                if (i_fobj->IsFriendlyTo(u) || u->IsAlive() || u->IsTaxiFlying() || !i_fobj->CanSeeInWorld(u))
+                    return false;
+                CreatureInfo const* info = u->GetCreatureInfo();
+                if (!info || (info->type != CREATURE_TYPE_HUMANOID && info->type != CREATURE_TYPE_UNDEAD))
+                    return false;
+                return i_fobj->IsWithinDistInMap(u, i_range);
+            }
+
+            bool operator()(Player*) { return false; }
+            template<class NOT_INTERESTED> bool operator()(NOT_INTERESTED*) { return false; }
+
+        private:
+            Unit const* i_fobj;
+            float i_range;
+        };
+
+        static Creature* FindCannibalizeCorpse(Unit* caster)
+        {
+            if (!caster || !caster->IsInWorld())
+                return nullptr;
+
+            WorldObject* result = nullptr;
+            CorpseChecker check(caster, NECRO_HARVEST_CORPSE_RANGE);
+            MaNGOS::WorldObjectSearcher<CorpseChecker> searcher(result, check);
+
+            Cell::VisitGridObjects(caster, searcher, NECRO_HARVEST_CORPSE_RANGE);
+
+            return result ? result->ToCreature() : nullptr;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            return FindCannibalizeCorpse(spell->m_casterUnit) ?
+                SPELL_CAST_OK : SPELL_FAILED_NO_EDIBLE_CORPSES;
+        }
+
+        void OnTargetMapFilled(Spell* spell, SpellEffectIndex effIdx, uint32 /*targetMode*/,
+                               std::list<Unit*>& targets) const override
+        {
+            // like the original Cannibalize: the corpse is the dummy effect's
+            // target, so the effect executes and the script can run
+            if (effIdx != EFFECT_INDEX_0 || !targets.empty() || !spell->m_casterUnit)
+                return;
+
+            if (Creature* corpse = FindCannibalizeCorpse(spell->m_casterUnit))
+                targets.push_back(corpse);
+        }
+
+        bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell->m_casterUnit)
+                return false;
+
+            spell->m_casterUnit->CastSpell(spell->m_casterUnit, NECRO_SPELL_CANNIBALIZE_AURA, true);
+            return false;   // the dummy effect is fully handled by the script
+        }
+    };
+
     // Ghoul Frenzy: sends the tethered minion into a frenzy - breaks all
     // crowd control on it, +25% melee and casting speed and a heal of 50% of
     // its maximum health over the duration (the periodic amount is computed
@@ -1178,6 +1261,11 @@ namespace
         return new spell_necromancer_meat_catapult();
     }
 
+    SpellScript* GetMinionCannibalizeSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_minion_cannibalize();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -1240,8 +1328,8 @@ namespace
                                uint32(sNecroCorpseOverrides.size()));
             }
 
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 3 slice 3b: Army of the Dead "
-                           "multi-minion limit + Meat Catapult)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 4: per-minion special "
+                           "abilities, design A.7)");
         }
     };
 }
@@ -1269,4 +1357,5 @@ void AddNecromancerScripts()
                                GetGhoulFrenzySpellScript, GetGhoulFrenzyAuraScript);
     RegisterSpellScript("spell_necromancer_raise_wight", GetRaiseWightSpellScript);
     RegisterSpellScript("spell_necromancer_meat_catapult", GetMeatCatapultSpellScript);
+    RegisterSpellScript("spell_necromancer_minion_cannibalize", GetMinionCannibalizeSpellScript);
 }

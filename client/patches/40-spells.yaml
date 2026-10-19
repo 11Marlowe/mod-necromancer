@@ -1536,4 +1536,768 @@ Spell.dbc:
       DurationIndex: 21
       RangeIndex: 1
 
-
+  # ---- batch 4: per-minion special abilities (61051-61070) ----
+  # Design A.7 per-tier ability sets; donors in the per-spell
+  # comments.  All cost 0 (design gives no costs; resolves A71).
+  # Ravage/Entropic Bolt leave petcreateinfo_spell (retired).
+  # 61051 <- 7367: Infected Bite
+  - type: copy
+    key: 7367
+    values:
+      ID: 61051
+      Name_lang_0: "Infected Bite"
+      Name_lang_1: "Infected Bite"
+      Name_lang_2: "Infected Bite"
+      Name_lang_3: "Infected Bite"
+      Name_lang_4: "Infected Bite"
+      Name_lang_5: "Infected Bite"
+      Name_lang_6: "Infected Bite"
+      Name_lang_7: "Infected Bite"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_1: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_2: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_3: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_4: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_5: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_6: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      Description_lang_7: "Bites the target, inflicting $s1 Nature damage every $t1 sec and increasing the Physical damage it takes by $s2 for $d."
+      AuraDescription_lang_0: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_1: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_2: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_3: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_4: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_5: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_6: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      AuraDescription_lang_7: "Suffering Nature damage every $t1 sec and taking increased Physical damage."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 2
+      EffectAmplitude_1: 3000
+      RecoveryTime: 4000
+  # 61052 <- 20577: Cannibalize
+  - type: copy
+    key: 20577
+    values:
+      ID: 61052
+      Name_lang_0: "Cannibalize"
+      Name_lang_1: "Cannibalize"
+      Name_lang_2: "Cannibalize"
+      Name_lang_3: "Cannibalize"
+      Name_lang_4: "Cannibalize"
+      Name_lang_5: "Cannibalize"
+      Name_lang_6: "Cannibalize"
+      Name_lang_7: "Cannibalize"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_1: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_2: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_3: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_4: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_5: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_6: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      Description_lang_7: "Cannibalizes a nearby humanoid or undead corpse, restoring 7% of the minion's health every 2 sec for 10 sec."
+      ManaCost: 0
+      ManaCostPct: 0
+  # 61053 <- 7870: Invisibility
+  - type: copy
+    key: 7870
+    values:
+      ID: 61053
+      Name_lang_0: "Invisibility"
+      Name_lang_1: "Invisibility"
+      Name_lang_2: "Invisibility"
+      Name_lang_3: "Invisibility"
+      Name_lang_4: "Invisibility"
+      Name_lang_5: "Invisibility"
+      Name_lang_6: "Invisibility"
+      Name_lang_7: "Invisibility"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Turns the minion invisible until it attacks."
+      Description_lang_1: "Turns the minion invisible until it attacks."
+      Description_lang_2: "Turns the minion invisible until it attacks."
+      Description_lang_3: "Turns the minion invisible until it attacks."
+      Description_lang_4: "Turns the minion invisible until it attacks."
+      Description_lang_5: "Turns the minion invisible until it attacks."
+      Description_lang_6: "Turns the minion invisible until it attacks."
+      Description_lang_7: "Turns the minion invisible until it attacks."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 21
+  # 61054 <- 11649: True Sight
+  - type: copy
+    key: 11649
+    values:
+      ID: 61054
+      Name_lang_0: "True Sight"
+      Name_lang_1: "True Sight"
+      Name_lang_2: "True Sight"
+      Name_lang_3: "True Sight"
+      Name_lang_4: "True Sight"
+      Name_lang_5: "True Sight"
+      Name_lang_6: "True Sight"
+      Name_lang_7: "True Sight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_1: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_2: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_3: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_4: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_5: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_6: "Reveals nearby invisible enemies to the minion for $d."
+      Description_lang_7: "Reveals nearby invisible enemies to the minion for $d."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 1
+      RecoveryTime: 10000
+  # 61055 <- 6548: Rend
+  - type: copy
+    key: 6548
+    values:
+      ID: 61055
+      Name_lang_0: "Rend"
+      Name_lang_1: "Rend"
+      Name_lang_2: "Rend"
+      Name_lang_3: "Rend"
+      Name_lang_4: "Rend"
+      Name_lang_5: "Rend"
+      Name_lang_6: "Rend"
+      Name_lang_7: "Rend"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_1: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_2: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_3: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_4: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_5: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_6: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      Description_lang_7: "Wounds the target, causing it to bleed for $o1 damage over $d."
+      ManaCost: 0
+      ManaCostPct: 0
+      ShapeshiftMask: 0
+      ShapeshiftExclude: 0
+      DurationIndex: 2
+      RecoveryTime: 4000
+  # 61056 <- 7371: Charge
+  - type: copy
+    key: 7371
+    values:
+      ID: 61056
+      Name_lang_0: "Charge"
+      Name_lang_1: "Charge"
+      Name_lang_2: "Charge"
+      Name_lang_3: "Charge"
+      Name_lang_4: "Charge"
+      Name_lang_5: "Charge"
+      Name_lang_6: "Charge"
+      Name_lang_7: "Charge"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_1: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_2: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_3: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_4: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_5: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_6: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      Description_lang_7: "Charges an enemy up to 25 yd away, immobilizes it for 1 sec and increases the minion's attack power for its next attack."
+      ManaCost: 0
+      ManaCostPct: 0
+      RecoveryTime: 30000
+  # 61057 <- 12057: Strike
+  - type: copy
+    key: 12057
+    values:
+      ID: 61057
+      Name_lang_0: "Strike"
+      Name_lang_1: "Strike"
+      Name_lang_2: "Strike"
+      Name_lang_3: "Strike"
+      Name_lang_4: "Strike"
+      Name_lang_5: "Strike"
+      Name_lang_6: "Strike"
+      Name_lang_7: "Strike"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_1: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_2: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_3: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_4: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_5: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_6: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      Description_lang_7: "Strikes at an enemy, inflicting weapon damage plus $s1."
+      ManaCost: 0
+      ManaCostPct: 0
+      RecoveryTime: 4000
+  # 61058 <- 7386: Sunder Armor
+  - type: copy
+    key: 7386
+    values:
+      ID: 61058
+      Name_lang_0: "Sunder Armor"
+      Name_lang_1: "Sunder Armor"
+      Name_lang_2: "Sunder Armor"
+      Name_lang_3: "Sunder Armor"
+      Name_lang_4: "Sunder Armor"
+      Name_lang_5: "Sunder Armor"
+      Name_lang_6: "Sunder Armor"
+      Name_lang_7: "Sunder Armor"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_1: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_2: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_3: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_4: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_5: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_6: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      Description_lang_7: "Hacks at an enemy's armor, reducing it by $s1 per Sunder Armor. Can be applied up to 5 times. Lasts $d."
+      ManaCost: 0
+      ManaCostPct: 0
+  # 61059 <- 1108: Curse
+  - type: copy
+    key: 1108
+    values:
+      ID: 61059
+      Name_lang_0: "Curse"
+      Name_lang_1: "Curse"
+      Name_lang_2: "Curse"
+      Name_lang_3: "Curse"
+      Name_lang_4: "Curse"
+      Name_lang_5: "Curse"
+      Name_lang_6: "Curse"
+      Name_lang_7: "Curse"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_1: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_2: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_3: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_4: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_5: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_6: "Curses the target, reducing its chance to hit by 3% for $d."
+      Description_lang_7: "Curses the target, reducing its chance to hit by 3% for $d."
+      AuraDescription_lang_0: "Chance to hit reduced by 3%."
+      AuraDescription_lang_1: "Chance to hit reduced by 3%."
+      AuraDescription_lang_2: "Chance to hit reduced by 3%."
+      AuraDescription_lang_3: "Chance to hit reduced by 3%."
+      AuraDescription_lang_4: "Chance to hit reduced by 3%."
+      AuraDescription_lang_5: "Chance to hit reduced by 3%."
+      AuraDescription_lang_6: "Chance to hit reduced by 3%."
+      AuraDescription_lang_7: "Chance to hit reduced by 3%."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 8
+      EffectAura_1: 54
+      EffectBasePoints_1: 4294967292
+      EffectMiscValue_1: 0
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      EffectMiscValue_2: 0
+      ImplicitTargetA_2: 0
+      EffectAmplitude_2: 0
+      Effect_3: 0
+      EffectDieSides_3: 0
+      EffectBaseDice_3: 0
+      EffectBasePoints_3: 0
+      EffectAura_3: 0
+      EffectMiscValue_3: 0
+      ImplicitTargetA_3: 0
+      EffectAmplitude_3: 0
+  # 61060 <- 6065: Anti-Magic Shell
+  - type: copy
+    key: 6065
+    values:
+      ID: 61060
+      Name_lang_0: "Anti-Magic Shell"
+      Name_lang_1: "Anti-Magic Shell"
+      Name_lang_2: "Anti-Magic Shell"
+      Name_lang_3: "Anti-Magic Shell"
+      Name_lang_4: "Anti-Magic Shell"
+      Name_lang_5: "Anti-Magic Shell"
+      Name_lang_6: "Anti-Magic Shell"
+      Name_lang_7: "Anti-Magic Shell"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_1: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_2: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_3: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_4: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_5: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_6: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      Description_lang_7: "Shields an ally with an anti-magic shell, absorbing $s1 magic damage for $d."
+      ManaCost: 0
+      ManaCostPct: 0
+      EffectMiscValue_1: 126
+      DurationIndex: 31
+      RecoveryTime: 30000
+      RangeIndex: 4
+  # 61061 <- 7641: Shadow Bolt
+  - type: copy
+    key: 7641
+    values:
+      ID: 61061
+      Name_lang_0: "Shadow Bolt"
+      Name_lang_1: "Shadow Bolt"
+      Name_lang_2: "Shadow Bolt"
+      Name_lang_3: "Shadow Bolt"
+      Name_lang_4: "Shadow Bolt"
+      Name_lang_5: "Shadow Bolt"
+      Name_lang_6: "Shadow Bolt"
+      Name_lang_7: "Shadow Bolt"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_1: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_2: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_3: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_4: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_5: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_6: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      Description_lang_7: "Hurls a bolt of dark magic at an enemy, inflicting $s1 Shadow damage."
+      ManaCost: 0
+      ManaCostPct: 0
+  # 61062 <- 7651: Soul Tap
+  - type: copy
+    key: 7651
+    values:
+      ID: 61062
+      Name_lang_0: "Soul Tap"
+      Name_lang_1: "Soul Tap"
+      Name_lang_2: "Soul Tap"
+      Name_lang_3: "Soul Tap"
+      Name_lang_4: "Soul Tap"
+      Name_lang_5: "Soul Tap"
+      Name_lang_6: "Soul Tap"
+      Name_lang_7: "Soul Tap"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_1: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_2: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_3: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_4: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_5: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_6: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      Description_lang_7: "Taps into an enemy's soul, stealing $s1 health and $s2 mana every $t1 sec for $d, transferring it to the Bloodmage."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 29
+      EffectAmplitude_1: 2000
+      RangeIndex: 4
+      RecoveryTime: 30000
+      Effect_2: 6
+      EffectAura_2: 64
+      EffectBasePoints_2: 40
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      EffectMiscValue_2: 0
+      ImplicitTargetA_2: 6
+      EffectAmplitude_2: 2000
+  # 61063 <- 527: Dispel Magic
+  - type: copy
+    key: 527
+    values:
+      ID: 61063
+      Name_lang_0: "Dispel Magic"
+      Name_lang_1: "Dispel Magic"
+      Name_lang_2: "Dispel Magic"
+      Name_lang_3: "Dispel Magic"
+      Name_lang_4: "Dispel Magic"
+      Name_lang_5: "Dispel Magic"
+      Name_lang_6: "Dispel Magic"
+      Name_lang_7: "Dispel Magic"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_1: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_2: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_3: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_4: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_5: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_6: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      Description_lang_7: "Dispels magic on the target, removing 1 harmful or beneficial magic effect."
+      ManaCost: 0
+      ManaCostPct: 0
+      ShapeshiftMask: 0
+      ShapeshiftExclude: 0
+      RecoveryTime: 8000
+  # 61064 <- 16333: Debilitating Touch
+  - type: copy
+    key: 16333
+    values:
+      ID: 61064
+      Name_lang_0: "Debilitating Touch"
+      Name_lang_1: "Debilitating Touch"
+      Name_lang_2: "Debilitating Touch"
+      Name_lang_3: "Debilitating Touch"
+      Name_lang_4: "Debilitating Touch"
+      Name_lang_5: "Debilitating Touch"
+      Name_lang_6: "Debilitating Touch"
+      Name_lang_7: "Debilitating Touch"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_1: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_2: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_3: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_4: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_5: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_6: "Reduces an enemy's Stamina by $s1 for $d."
+      Description_lang_7: "Reduces an enemy's Stamina by $s1 for $d."
+      AuraDescription_lang_0: "Stamina reduced by $s1."
+      AuraDescription_lang_1: "Stamina reduced by $s1."
+      AuraDescription_lang_2: "Stamina reduced by $s1."
+      AuraDescription_lang_3: "Stamina reduced by $s1."
+      AuraDescription_lang_4: "Stamina reduced by $s1."
+      AuraDescription_lang_5: "Stamina reduced by $s1."
+      AuraDescription_lang_6: "Stamina reduced by $s1."
+      AuraDescription_lang_7: "Stamina reduced by $s1."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 8
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectBasePoints_2: 0
+      EffectAura_2: 0
+      EffectMiscValue_2: 0
+      ImplicitTargetA_2: 0
+      EffectAmplitude_2: 0
+  # 61065 <- 7814: Shadow Lash
+  - type: copy
+    key: 7814
+    values:
+      ID: 61065
+      Name_lang_0: "Shadow Lash"
+      Name_lang_1: "Shadow Lash"
+      Name_lang_2: "Shadow Lash"
+      Name_lang_3: "Shadow Lash"
+      Name_lang_4: "Shadow Lash"
+      Name_lang_5: "Shadow Lash"
+      Name_lang_6: "Shadow Lash"
+      Name_lang_7: "Shadow Lash"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_1: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_2: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_3: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_4: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_5: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_6: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      Description_lang_7: "Lashes the target with shadow, dealing $s1 Shadow damage and increasing the Shadow damage it takes by 5% for $d."
+      AuraDescription_lang_0: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_1: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_2: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_3: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_4: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_5: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_6: "Shadow damage taken increased by 5%."
+      AuraDescription_lang_7: "Shadow damage taken increased by 5%."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 8
+      RecoveryTime: 4000
+      Effect_2: 6
+      EffectAura_2: 87
+      EffectBasePoints_2: 4
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      EffectMiscValue_2: 32
+      ImplicitTargetA_2: 6
+  # 61066 <- 15061: Enrage
+  - type: copy
+    key: 15061
+    values:
+      ID: 61066
+      Name_lang_0: "Enrage"
+      Name_lang_1: "Enrage"
+      Name_lang_2: "Enrage"
+      Name_lang_3: "Enrage"
+      Name_lang_4: "Enrage"
+      Name_lang_5: "Enrage"
+      Name_lang_6: "Enrage"
+      Name_lang_7: "Enrage"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_1: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_2: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_3: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_4: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_5: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_6: "Increases the minion's attack speed by 15% for $d."
+      Description_lang_7: "Increases the minion's attack speed by 15% for $d."
+      AuraDescription_lang_0: "Attack speed increased by 15%."
+      AuraDescription_lang_1: "Attack speed increased by 15%."
+      AuraDescription_lang_2: "Attack speed increased by 15%."
+      AuraDescription_lang_3: "Attack speed increased by 15%."
+      AuraDescription_lang_4: "Attack speed increased by 15%."
+      AuraDescription_lang_5: "Attack speed increased by 15%."
+      AuraDescription_lang_6: "Attack speed increased by 15%."
+      AuraDescription_lang_7: "Attack speed increased by 15%."
+      ManaCost: 0
+      ManaCostPct: 0
+      DurationIndex: 8
+      RecoveryTime: 30000
+      EffectBasePoints_2: 14
+      Effect_1: 0
+      EffectDieSides_1: 0
+      EffectBaseDice_1: 0
+      EffectBasePoints_1: 0
+      EffectAura_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 0
+      EffectAmplitude_1: 0
+  # 61067 <- 355: Taunt
+  - type: copy
+    key: 355
+    values:
+      ID: 61067
+      Name_lang_0: "Taunt"
+      Name_lang_1: "Taunt"
+      Name_lang_2: "Taunt"
+      Name_lang_3: "Taunt"
+      Name_lang_4: "Taunt"
+      Name_lang_5: "Taunt"
+      Name_lang_6: "Taunt"
+      Name_lang_7: "Taunt"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Taunts the target to attack the minion."
+      Description_lang_1: "Taunts the target to attack the minion."
+      Description_lang_2: "Taunts the target to attack the minion."
+      Description_lang_3: "Taunts the target to attack the minion."
+      Description_lang_4: "Taunts the target to attack the minion."
+      Description_lang_5: "Taunts the target to attack the minion."
+      Description_lang_6: "Taunts the target to attack the minion."
+      Description_lang_7: "Taunts the target to attack the minion."
+      ManaCost: 0
+      ManaCostPct: 0
+      ShapeshiftMask: 0
+      ShapeshiftExclude: 0
+      RecoveryTime: 10000
+  # 61068 <- 11608: Cleave
+  - type: copy
+    key: 11608
+    values:
+      ID: 61068
+      Name_lang_0: "Cleave"
+      Name_lang_1: "Cleave"
+      Name_lang_2: "Cleave"
+      Name_lang_3: "Cleave"
+      Name_lang_4: "Cleave"
+      Name_lang_5: "Cleave"
+      Name_lang_6: "Cleave"
+      Name_lang_7: "Cleave"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_1: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_2: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_3: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_4: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_5: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_6: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      Description_lang_7: "A sweeping attack that does the minion's melee damage plus $s1 to the target and up to 2 nearby enemies."
+      ManaCost: 0
+      ManaCostPct: 0
+      RecoveryTime: 6000
+  # 61069 <- 782: Pestilence
+  - type: copy
+    key: 782
+    values:
+      ID: 61069
+      Name_lang_0: "Pestilence"
+      Name_lang_1: "Pestilence"
+      Name_lang_2: "Pestilence"
+      Name_lang_3: "Pestilence"
+      Name_lang_4: "Pestilence"
+      Name_lang_5: "Pestilence"
+      Name_lang_6: "Pestilence"
+      Name_lang_7: "Pestilence"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_1: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_2: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_3: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_4: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_5: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_6: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      Description_lang_7: "Passive: the minion lashes out at melee attackers, dealing Nature damage for every hit."
+      AuraDescription_lang_0: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_1: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_2: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_3: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_4: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_5: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_6: "Deals Nature damage to melee attackers."
+      AuraDescription_lang_7: "Deals Nature damage to melee attackers."
+      ManaCost: 0
+      ManaCostPct: 0
+      ShapeshiftMask: 0
+      ShapeshiftExclude: 0
+      Attributes: 65600
+      DurationIndex: 21
+      ImplicitTargetA_1: 1
+  # 61070 <- 6552: Crowd Pummel
+  - type: copy
+    key: 6552
+    values:
+      ID: 61070
+      Name_lang_0: "Crowd Pummel"
+      Name_lang_1: "Crowd Pummel"
+      Name_lang_2: "Crowd Pummel"
+      Name_lang_3: "Crowd Pummel"
+      Name_lang_4: "Crowd Pummel"
+      Name_lang_5: "Crowd Pummel"
+      Name_lang_6: "Crowd Pummel"
+      Name_lang_7: "Crowd Pummel"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_1: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_2: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_3: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_4: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_5: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_6: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      Description_lang_7: "Pummels an enemy for $s1 damage, interrupting the spell being cast for $d."
+      ManaCost: 0
+      ManaCostPct: 0
+      ShapeshiftMask: 0
+      ShapeshiftExclude: 0
+      RecoveryTime: 20000
+      DurationIndex: 7
