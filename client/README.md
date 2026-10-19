@@ -14,7 +14,7 @@ MPQ patch.
 | `Interface\GlueXML\CharacterCreate.lua` | `CLASS_ICON_TCOORDS["NECROMANCER"]`, icon coords |
 | `Interface\GlueXML\GlueStrings.lua` | `CLASS_NECROMANCER` creation-screen text |
 | `Glues\CharacterCreate\UI-CharacterCreate-Classes.blp` | class icon in the free atlas cell |
-| `DBFilesClient\Spell.dbc` | class spells batches 1-2 (61010-61023): renamed/ranked, disease dispel types and edited Cripple effects |
+| `DBFilesClient\Spell.dbc` | class spells (batches 1-4 + corrections) and the trainer learn spells 61100-61130 |
 | `DBFilesClient\SkillLine.dbc` | "Necromancy" skill line 700 (spellbook tab) |
 | `DBFilesClient\SkillLineAbility.dbc` | spell-to-skill mapping for the tab (rows 7211-7225) |
 | `DBFilesClient\SkillRaceClassInfo.dbc` | grants skill 700 to class 10 |

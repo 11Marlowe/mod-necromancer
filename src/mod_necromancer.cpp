@@ -103,69 +103,15 @@ namespace
         NECRO_CREATURE_WIGHT       = 11621,   // Spectral Corpse
     };
 
-    // Spells taught automatically when a Necromancer reaches the level.
-    // The rank-1 spells of level 1 are granted at creation via
-    // playercreateinfo_spell; this list covers rank-ups and later abilities
-    // (idempotent: known spells are skipped).  Trainers are not used yet.
-    struct ClassSpell
-    {
-        uint32 spellId;
-        uint8  level;
-    };
-
-    constexpr ClassSpell NecromancerSpells[] =
-    {
-        { NECRO_SPELL_PLAGUE_BOLT_R2,        8 },
-        { NECRO_SPELL_HARVEST,              10 },
-        { NECRO_SPELL_RAISE_ZOMBIE,         10 },
-        { NECRO_SPELL_RAISE_SHADE,          10 },
-        { NECRO_SPELL_CALL_OF_THE_GRAVE_R1, 12 },
-        { NECRO_SPELL_REAP_R2,              12 },
-        { NECRO_SPELL_DEATH_COIL,           14 },
-        { NECRO_SPELL_RAISE_GHOUL,          14 },
-        { NECRO_SPELL_RAISE_SKELETON,       14 },
-        { NECRO_SPELL_PLAGUE_BOLT_R3,       16 },
-        { NECRO_SPELL_DESECRATION_R1,       20 },
-        { NECRO_SPELL_DISEASE_CLOUD,        20 },
-        { NECRO_SPELL_CRIPPLE,              20 },
-        { NECRO_SPELL_TETHER,               20 },
-        { NECRO_SPELL_SACRIFICE_MINION,     20 },
-        { NECRO_SPELL_GHOUL_FRENZY,         20 },
-        { NECRO_SPELL_RAISE_BANSHEE,        20 },
-        { NECRO_SPELL_ARMY_OF_THE_DEAD_R1,  20 },
-        { NECRO_SPELL_CALL_OF_THE_GRAVE_R2, 24 },
-        { NECRO_SPELL_RAISE_WRAITH,         30 },
-        { NECRO_SPELL_CALL_OF_THE_GRAVE_R3, 34 },
-        { NECRO_SPELL_DESECRATION_R2,       34 },
-        { NECRO_SPELL_RAISE_BLOODMAGE,      38 },
-        { NECRO_SPELL_RAISE_ABOMINATION,    40 },
-        { NECRO_SPELL_ARMY_OF_THE_DEAD_R2,  40 },
-        { NECRO_SPELL_MEAT_CATAPULT,        44 },
-        { NECRO_SPELL_DESECRATION_R3,       46 },
-        { NECRO_SPELL_RAISE_WIGHT,          58 },
-    };
-
-    void TeachClassSpells(Player* player)
+    // Trainers now teach the class (one in Orgrimmar, one in Stormwind; see
+    // data/sql/world/20261019200000_world.sql).  The module only cleans up
+    // the legacy auto-learned shared Warlock Death Coil (6789); the class's
+    // own Death Coil (61074) replaces it.
+    void CleanupLegacySpells(Player* player)
     {
         if (!player || player->GetClass() != 10)
             return;
 
-        uint8 level = player->GetLevel();
-        for (ClassSpell const& entry : NecromancerSpells)
-        {
-            if (level >= entry.level && !player->HasSpell(entry.spellId))
-            {
-                // Army of the Dead rank 2 replaces rank 1 (talent rank rule)
-                if (entry.spellId == NECRO_SPELL_ARMY_OF_THE_DEAD_R2 &&
-                        player->HasSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R1))
-                    player->RemoveSpell(NECRO_SPELL_ARMY_OF_THE_DEAD_R1, false, false);
-
-                player->LearnSpell(entry.spellId, false);
-            }
-        }
-
-        // spell-correction pass: the class's own Death Coil (61074) replaces
-        // the shared Warlock spell (6789) that earlier builds auto-learned
         if (player->HasSpell(NECRO_SPELL_DEATH_COIL) &&
                 player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
             player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
@@ -176,18 +122,23 @@ namespace
     public:
         NecromancerPlayerScript()
             : PlayerScript("mod_necromancer_player",
-                           { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEVEL_CHANGED })
+                           { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEARN_SPELL })
         {
         }
 
         void OnLogin(Player* player) override
         {
-            TeachClassSpells(player);
+            CleanupLegacySpells(player);
         }
 
-        void OnLevelChanged(Player* player, uint8 /*oldLevel*/) override
+        void OnLearnSpell(Player* player, uint32 spellId) override
         {
-            TeachClassSpells(player);
+            if (!player || player->GetClass() != 10)
+                return;
+
+            if (spellId == NECRO_SPELL_DEATH_COIL &&
+                    player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
+                player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
         }
     };
 
@@ -578,7 +529,7 @@ namespace
 
     // Army of the Dead (design A.3 slot 21): each rank allows an additional
     // active minion.  Base cap 1 is a placeholder (the design gives no base
-    // value); the ranks are auto-learned at L20/L40 until talents exist.
+    // value); the ranks are trainer-taught at L20/L40 until talents exist.
     // "Only one minion can be Tethered" is inherent - a player has one pet.
     uint32 GetMinionCap(Player const* player)
     {
@@ -1509,8 +1460,8 @@ namespace
                                uint32(sNecroCorpseOverrides.size()));
             }
 
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 spell-correction pass: "
-                           "design A.6-A.9 + A72)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
+                           "are trainer-taught; auto-learn retired)");
         }
     };
 }
