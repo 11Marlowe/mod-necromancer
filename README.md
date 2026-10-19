@@ -40,6 +40,10 @@ built as a standalone module on the core's **class-support** layer.
 > the design/handoff document:
 > <https://github.com/11Marlowe/wow-tools> (private) or the project's
 > `Necromancer-Design.md`.
+>
+> **Server-side verification (2026-10-18):** the batch-3 slice-3b checklist
+> was verified headlessly with `turtle-agent` (see *Testing tips*); the
+> in-client pass remains for client-rendered items only.
 
 ## Spells
 
@@ -81,11 +85,22 @@ nearby, or 1 Lump of Flesh") and the Wight transform.  The disease spells'
 rank-up mechanics are placeholders until the talent/effect polish batches;
 "Disease Cloud", "Cripple" and "Tether" are talents in the source design and
 are auto-learned at level 20 until talents exist. Custom tuning/tooltips and
-the rest of the design (the Corpse Bag container, Army of the Dead, Meat
-Catapult, per-minion abilities, Grim Reaper, Lichborne, ...) arrive in later
-batches. Spells are granted by the
+the rest of the design (the Corpse Bag container, per-minion abilities,
+Grim Reaper, Lichborne, ...) arrive in later batches. Spells are granted by the
 module's auto-learn (`src/mod_necromancer.cpp`); trainers are planned but not
 required yet.
+
+**Known server-side issues (found 2026-10-18 with `turtle-agent`):**
+
+- **Ravage/Entropic Bolt** cost mana, but the melee-tier minion templates
+  (Ghoul, Skeleton, Zombie, Shade, Abomination, Wight) and the Banshee have no
+  mana — their pet active fails with "not enough mana" (`pet_error
+  no_power`). Only the Wraith and Bloodmage can pay. Fix queued with the
+  per-minion abilities batch.
+- **Harvest** inherits Cannibalize's Humanoid/Undead target restriction, so a
+  **beast corpse** cannot be harvested yet (with the beast selected the cast
+  is refused with "Invalid target"; otherwise it is a silent no-op). Fix
+  queued for the spell-correction pass.
 
 Server data: `data/sql/world/20261014160000_world.sql` (batch 1),
 `20261014170000_world.sql` (batch 2), `20261014180000_world.sql` (batch 3
@@ -118,10 +133,21 @@ startup - without it a tethered minion has no pet-bar abilities (see below).
 
 ## Testing tips
 
-- `.character level <n>` is a **GM command**. Either use a GM-rank account or
-  run `account set gmlevel <user> 4 -1` in the mangosd console. Beware
-  `GM.StartOnGMIsland = 1`: characters *created* on a GM account spawn on GM
-  island with a GM starter kit — create test characters on a normal account.
+**Standard (2026-10-18): verify server-side first.** Module changes are checked
+with the headless `turtle-agent` client (JSON-RPC; project
+`TurtleAgent-Workflow.md`, `SESSION_NOTES.md` §10f) — auto-learn/spells,
+casts and event damage/auras, cast gates, minions/pet, bag items — before the
+in-client pass, which is only for client-rendered items (icons, tooltips,
+models, Glue UI). The 2026-10-18 spike verified the whole slice-3b list this
+way.
+
+- **Level changes use `.levelup <n>`** (adds n levels; the core has no
+  `.character level`) and are a **GM command** (rank 3+). Either use a GM-rank
+  account or run `account set gmlevel <user> 4 -1` in the mangosd console (a
+  rank change needs a mangosd restart — the rank cache loads at startup).
+  Beware `GM.StartOnGMIsland = 1`: characters *created* on a GM account spawn
+  on GM island with a GM starter kit — create test characters on a normal
+  account.
 - **Batch-2 test flow:** level a Necromancer to 12 (Call of the Grave is
   auto-learned on level-up/login), cast it on a mob and watch the ticks — the
   **final tick deals triple damage**; the debuff is a *disease* (dispellable
@@ -156,7 +182,7 @@ startup - without it a tethered minion has no pet-bar abilities (see below).
   heals 5% of its max health every 3 s for 30 s; fear/root the pet first to
   see the CC break.  Die with a tethered pet and take the spirit healer's
   resurrection: the minion is re-summoned (new in slice 2).
-- **Batch-3 slice-3 checks:** level to 58 (`.character level` is GM-only) to
+- **Batch-3 slice-3 checks:** level to 58 with `.levelup` (GM-only) to
   see every tier: Raise Zombie/Shade (10), Banshee (20), Wraith (30),
   Bloodmage (38), Abomination (40), Wight (58).  Each raises its guardian;
   different tiers can be summoned at the same time (no limit yet).  Raise
