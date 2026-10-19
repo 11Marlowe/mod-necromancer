@@ -4,7 +4,8 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-> **Status: Phase 2, batch 4 (per-minion abilities).** Class identity (Phase 1)
+> **Status: Phase 2, trainers + placeholder class quests (auto-learn retired; post-correction pass).**
+> Class identity (Phase 1)
 > works end-to-end for all 10 races. Batch 1: **Plague Bolt** (ranks 1-3),
 > **Reap** (ranks 1-2), **Bone Armor** and a shared **Death Coil** at level
 > 14. Batch 2 (disease mechanics): **Call of the Grave** (ranks 1-3, disease
@@ -30,13 +31,14 @@ built as a standalone module on the core's **class-support** layer.
 > classification (model/gender heuristics + an override table) and the
 > design **cast times**. Batch 3 slice 3b adds the **Army of the Dead**
 > multi-minion limit (base 1 active minion; +1/+2 via the two passives
-> auto-learned at L20/L40; over-limit raises are refused, one tethered
+> trainer-taught at L20/L40; over-limit raises are refused, one tethered
 > minion at a time) and the **Meat Catapult** (L44: a Thorium Grenade clone
 > - 1.5-sec cast, 20 yd, 3-yd radius Shadow damage + 2-sec stun, 1-min
 > cooldown - that consumes one Corpse Bag item). Batch 4 gives every minion
 > tier its design A.7 ability set (20 spells, 61051-61070; all free and
 > autocast by default - this resolved A71); Ravage and Entropic Bolt are
-> retired (re-tether a pet once to pick up its new set). The
+> retired (an old saved pet keeps its old list: dismiss it, raise that tier
+> again and Tether the new guardian once to pick up its new set). The
 > **spell-correction pass** (2026-10-19, design A.6-A.9 + A72) aligns the
 > shipped placeholders: **Plague Bolt** is Nature damage and infects the
 > target with the new **Toxic Plague** disease (+3% direct damage per
@@ -45,18 +47,27 @@ built as a standalone module on the core's **class-support** layer.
 > Rot, **Cripple** has no cooldown, **Ghoul Frenzy** has a 1.5 min cooldown,
 > **Harvest** takes beast corpses, and the class got its **own Death Coil
 > (61074)** that damages enemies or heals your undead minion (the shared
-> Warlock spell is no longer learned). All spells/ranks are taught
-> automatically at level-up/login (no trainers yet; the quest/item gates are
-> deferred). Later batches add the Corpse Bag container, the remaining
-> spellbook entries, trainers and talents. See the design/handoff document:
-> <https://github.com/11Marlowe/wow-tools> (private) or the project's
-> `Necromancer-Design.md`.
+> Warlock spell is no longer learned). **Trainers (2026-10-19):** the
+> module's auto-learn is retired. One class trainer in Orgrimmar (Cleft of
+> Shadow) and one in Stormwind (Slaughtered Lamb cellar) teach every shipped
+> spell/rank through learn spells 61100-61130 (see *Trainers* below). The
+> **placeholder class quests (A85, 2026-10-19)** then gate the seven
+> quest-gated spells: both trainers offer one level-gated item turn-in per
+> spell (Raise Zombie/Shade/Harvest at 10, Raise Ghoul/Skeleton at 14, Raise
+> Banshee at 20, Raise Wraith at 30); the items are Corpse Bag items except
+> Harvest, which uses Linen Cloth. The real spell is the reward. Those spells
+> were removed from `npc_trainer`. The design's real
+> quest/item gates remain deferred. Later batches add the Corpse Bag
+> container, the remaining spellbook entries and talents. See the
+> design/handoff document: <https://github.com/11Marlowe/wow-tools> (private)
+> or the project's `Necromancer-Design.md`.
 >
 > **Verification (2026-10-19):** every batch is checked headlessly with
 > `turtle-agent` (see *Testing tips*) before the user's in-client pass, which
 > covers client-rendered items only.  Batch 4 passed both (in-client:
-> pet-bar icons and ability tooltips, 2026-10-18); the correction pass
-> passed the server-side pass (2026-10-19) and awaits its in-client pass.
+> pet-bar icons and ability tooltips, 2026-10-18); the correction pass passed
+> the server-side pass (2026-10-19) and the in-client check; the trainers
+> and the placeholder class quests passed the server-side pass (2026-10-19).
 
 ## Spells
 
@@ -71,20 +82,20 @@ built as a standalone module on the core's **class-support** layer.
 | Desecration | 1-3 | 20 / 34 / 46 | Rain of Fire | disease, ground channel |
 | Disease Cloud | 1 | 20 | Flamestrike | requires your disease (Toxic Plague/Grave Rot) on the target |
 | Cripple | 1 | 20 | Cripple (mob 89) | 10% slow + -20 AP, 10 sec, no CD |
-| Raise Ghoul | 1 | 14 | Summon Atal'ai Skeleton | guardian minion (creature 846), 60 sec |
-| Raise Skeleton | 1 | 14 | Summon Atal'ai Skeleton | guardian minion (creature 6412), 60 sec |
+| Raise Ghoul | 1 | 14 (quest) | Summon Atal'ai Skeleton | guardian minion (creature 846), 60 sec |
+| Raise Skeleton | 1 | 14 (quest) | Summon Atal'ai Skeleton | guardian minion (creature 6412), 60 sec |
 | Tether | 1 | 20 | Renew (friendly-target carrier) | converts your minion into a permanent pet |
 | Ravage | 1 | pet | Lash of Pain | pet-bar active of the melee minion tiers (61027) |
 | Entropic Bolt | 1 | pet | Firebolt | ranged pet-bar active of Banshee/Bloodmage (61041) |
 | Sacrifice Minion | 1 | 20 | Renew (friendly-target carrier) | heal (x2 on the tethered pet) + Death Pact buff, despawns the minion |
-| Harvest | 1 | 10 | Cannibalize | 3-sec channel: stores a corpse as a Corpse Bag item (aura 61030); beast corpses included (A72 fixed) |
+| Harvest | 1 | 10 (quest) | Cannibalize | 3-sec channel: stores a corpse as a Corpse Bag item (aura 61030); beast corpses included (A72 fixed) |
 | Corpse Bag items | - | - | items 63100-63103 | Lump of Flesh / Pile of Bones / Ectoplasm / Banshee Essence (normal bags) |
 | Death Pact (Ghoul/Skeleton) | 1 | buff | Cannibalize aura scaffold | +2% physical damage done / -2% physical damage taken, 30 min |
 | Death Pact (Banshee/Shade/Wraith/Hulk/Bloodmage) | 1 | buff | same scaffold | 2% mana/4 s / -5% threat / +2% speed / +5% health / +2% spell damage, 30 min |
 | Ghoul Frenzy | 1 | 20 | Renew | tethered minion: CC break, +25% melee/casting speed, 50% max-health heal over 30 sec; 1.5 min CD |
-| Raise Zombie / Raise Shade | 1 | 10 | Summon Atal'ai Skeleton | guardian (creature 1501 / 7370) |
-| Raise Banshee | 1 | 20 | Summon Atal'ai Skeleton | guardian (creature 10463) |
-| Raise Wraith | 1 | 30 | Summon Atal'ai Skeleton | guardian (creature 1800) |
+| Raise Zombie / Raise Shade | 1 | 10 (quest) | Summon Atal'ai Skeleton | guardian (creature 1501 / 7370) |
+| Raise Banshee | 1 | 20 (quest) | Summon Atal'ai Skeleton | guardian (creature 10463) |
+| Raise Wraith | 1 | 30 (quest) | Summon Atal'ai Skeleton | guardian (creature 1800) |
 | Raise Bloodmage | 1 | 38 | Summon Atal'ai Skeleton | guardian (creature 8526) |
 | Raise Abomination | 1 | 40 | Summon Atal'ai Skeleton | guardian (creature 8545); needs three corpses nearby (not consumed) |
 | Raise Wight | 1 | 58 | Renew (friendly-target carrier) | transforms a Zombie/Ghoul minion into a Wight (tethered stays tethered) |
@@ -99,12 +110,11 @@ zombie corpse nearby, or 1 Lump of Flesh"), the Wight transform and the
 correction-pass spells (Plague Bolt, Toxic Plague, Reap, Call of the Grave,
 Death Coil).  The disease spells' rank-up mechanics are placeholders until
 the talent/effect polish batches; "Disease Cloud", "Cripple" and "Tether"
-are talents in the source design and are auto-learned at level 20 until
+are talents in the source design and are trainer-taught at level 20 until
 talents exist. Custom tuning/tooltips and the rest of the design (the
 Corpse Bag container, the Desecration/Disease Cloud/Bone Armor corrections,
-Grim Reaper, Lichborne, ...) arrive in later batches. Spells are granted by
-the module's auto-learn (`src/mod_necromancer.cpp`); trainers are planned but
-not required yet.
+Grim Reaper, Lichborne, ...) arrive in later batches. Spells are now taught
+by the trainers (see *Trainers* below), not auto-learned.
 
 **Minion abilities (batch 4, design A.7):** taught per tier through
 `petcreateinfo_spell`; they autocast by default and all cost 0 mana.
@@ -141,10 +151,16 @@ slice 1), `20261015120000_world.sql` (batch 3 slice 2),
 table, Harvest/Wight cast-time + spell updates),
 `20261018180000_world.sql` (batch 3 slice 3b: Army of the Dead passives +
 Meat Catapult), `20261018230000_world.sql` (batch 4: per-minion abilities +
-petcreateinfo sets) and `20261019120000_world.sql` (spell-correction pass:
-A.6-A.9 + A72, Death Coil 61074 + Toxic Plague), all generated by the
-scripts in `tools/`.  Client patches: `client/patches/40-spells.yaml`
-(corrections as `update` blocks after the `copy` blocks) and
+petcreateinfo sets), `20261019120000_world.sql` (spell-correction pass:
+A.6-A.9 + A72, Death Coil 61074 + Toxic Plague) and
+`20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61130,
+`npc_trainer`), `20261019220000_world.sql` (placeholder class quests, quest
+relations, questgiver flag, removal of the seven gated trainer rows) and
+`data/sql/character/20261019210000_char.sql` (one-time refresh of
+pre-batch-4 saved pets), all generated by the scripts in `tools/` (the
+character migration is hand-written).  Client patches:
+`client/patches/40-spells.yaml` (corrections as `update` blocks after the
+`copy` blocks), `41-learn-spells.yaml` (the trainer learn spells) and
 `50-skilllines.yaml` (new "Necromancy" skill line 700; Death Coil row 7217
 points at 61074).
 
@@ -171,11 +187,73 @@ match the registrations in
 `permanentSummonPetTypes` (undead) on the core's `ClassDescriptor` at
 startup - without it a tethered minion has no pet-bar abilities (see below).
 
+## Trainers
+
+The class is trained, not auto-learned (the module's level-up/login grants
+were removed on 2026-10-19):
+
+| City | NPC | Where | Entry |
+| --- | --- | --- | --- |
+| Orgrimmar | **Gorvoth the Gravewarden** | Cleft of Shadow, by the warlock trainers | 950010 |
+| Stormwind | **Mordecai Gravewhisper** | Slaughtered Lamb cellar, by the warlock trainers | 950011 |
+
+Both have `trainer_class = 10` and teach the **24 non-quest spells and ranks**
+(learn spells 61100-61130, `npc_trainer` rows); the other seven are the rewards
+of the placeholder class quests below.  Prices use the vanilla class-trainer
+level table (10 copper at level 1 up to 240 silver at 58); rank 2/3 spells still
+require the previous rank (`spell_chain`).  The design's real quest/item gates
+(L10 quest chain, L38 Amnennar, L58 Gandling, L40 Abomination) remain deferred.
+
+### Placeholder class quests (A85)
+
+Both trainers have `npc_flags` **19** (gossip + trainer + questgiver) and
+`creature_questrelation` / `creature_involvedrelation` rows for every quest.
+The quests are class-10 only (`RequiredClasses` 0x200), level-gated, and each
+turns in one item (a Corpse Bag item, except Harvest, which uses Linen Cloth).
+`RewSpell` is the real spell (client icon/name)
+and `RewSpellCast` is the matching learn-spell wrapper, so the reward teaches
+the spell.  The seven spells were removed from `npc_trainer`; existing
+characters keep any spell they already know.
+
+| Level | Quest | Spell | Turn-in |
+| --- | --- | --- | --- |
+| 10 | 950100 | Raise Zombie | 1x Lump of Flesh (63100) |
+| 10 | 950101 | Raise Shade | 1x Ectoplasm (63102) |
+| 10 | 950102 | Harvest | 1x Linen Cloth (2589) |
+| 14 | 950103 | Raise Ghoul | 1x Lump of Flesh (63100) |
+| 14 | 950104 | Raise Skeleton | 1x Pile of Bones (63101) |
+| 20 | 950105 | Raise Banshee | 1x Banshee Essence (63103) |
+| 30 | 950106 | Raise Wraith | 1x Ectoplasm (63102) |
+
+Quest IDs 950100-950106 are reserved for these placeholders; the titles and
+descriptions are marked PLACEHOLDER.  Harvest deliberately uses **Linen Cloth**
+(2589) rather than a Corpse Bag item, so a fresh character can start the
+Harvest -> corpse item -> raise chain without a GM or trade; the other six
+quests use the design's Corpse Bag items.  Recorded in the design doc A85.
+
+- **Learn-spell wrappers:** vanilla trainers list *learn spells* (effect 36)
+  whose `EffectTriggerSpell[0]` is the real spell.  The server rows are
+  `spell_template` 61100-61130 (cloned from Immolate's learn spell 1374); the
+  client gets their names/ranks/icons/descriptions from
+  `client/patches/41-learn-spells.yaml` (rebuilt into `patch-Z.mpq`).
+- **Auto-learn retired:** new characters use the trainers; existing characters
+  keep what they already know.  The module still strips the old shared Warlock
+  Death Coil (6789) on login/learn.
+- **Army of the Dead:** both ranks are trainer-taught; rank 2 is not removed
+  from characters that already have rank 1 (the minion cap checks rank 2 first).
+- Regenerate the server SQL and client YAML with
+  `tools/generate_trainers.py` (re-runnable; it uses the live DB for donors).
+- Regenerate the quest SQL with `tools/generate_placeholder_quests.py`
+  (re-runnable; it validates the trainers, items and learn-spell wrappers).
+- Trainer SQL: `data/sql/world/20261019200000_world.sql` (trainers, spawns,
+  greetings, learn spells, `npc_trainer`).  Quest SQL:
+  `data/sql/world/20261019220000_world.sql`.
+
 ## Testing tips
 
 **Standard (since 2026-10-18): verify server-side first.** Module changes are
 checked with the headless `turtle-agent` client (JSON-RPC; project
-`TurtleAgent-Workflow.md`, `SESSION_NOTES.md` §10f) — auto-learn/spells,
+`TurtleAgent-Workflow.md`, `SESSION_NOTES.md` §10f) — trainers/spells,
 casts and event damage/auras, cast gates, minions/pet, bag items — before the
 in-client pass, which is only for client-rendered items (icons, tooltips,
 models, Glue UI). The 2026-10-18 spike verified the whole slice-3b list and
@@ -193,19 +271,26 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   Beware `GM.StartOnGMIsland = 1`: characters *created* on a GM account spawn
   on GM island with a GM starter kit — create test characters on a normal
   account.
-- **Batch-2 test flow:** level a Necromancer to 12 (Call of the Grave is
-  auto-learned on level-up/login), cast it on a mob and watch the ticks — the
-  **final tick deals triple damage**; the debuff is a *disease* (dispellable
-  by cure-disease effects). At 20 you also get Desecration (ground channel),
-  Disease Cloud and Cripple. Disease Cloud cast on an enemy shows
+- **Placeholder class quest checks (2026-10-19, server-side verified with
+  `turtle-agent`):** both trainers list 7 PLACEHOLDER quests in the gossip
+  menu, and `trainer_list` has 24 entries (the seven quest spells are gone).
+  Accept a quest, fetch its item with `.additem <id> 1` (GM), hand it in and
+  take the reward: the NPC casts the learn spell and the real spell appears in
+  `spells`.  Harvest's item is Linen Cloth (2589); the rest are Corpse Bag
+  items.  Quests 950100-950106; see the table above.
+- **Batch-2 test flow:** level a Necromancer to 12 and **train Call of the
+  Grave** (Orgrimmar/Stormwind trainer), cast it on a mob and watch the ticks —
+  the **final tick deals triple damage**; the debuff is a *disease*
+  (dispellable by cure-disease effects). At 20 train Desecration (ground
+  channel), Disease Cloud and Cripple. Disease Cloud cast on an enemy shows
   "You can't do that yet" until the enemy carries your Toxic Plague (or
   Call of the Grave); ground-target casts cannot be verified server-side yet
   (placeholder, see the design doc) and are allowed. Cripple should show
   -10% move speed and -20 attack power for 10 sec and has no cooldown.
-- **Batch-3 minion checks:** at 14 cast Raise Ghoul / Raise Skeleton — a
-  temporary (60 sec) guardian appears, follows you and fights nearby enemies;
-  casting the same Raise again dismisses it (toggle). At 20 cast Tether on
-  your minion (select it, then cast): it becomes your **permanent,
+- **Batch-3 minion checks:** at 14 train and cast Raise Ghoul / Raise Skeleton —
+  a temporary (60 sec) guardian appears, follows you and fights nearby enemies;
+  casting the same Raise again dismisses it (toggle). At 20 train Tether and
+  cast it on your minion (select it, then cast): it becomes your **permanent,
   controllable pet** (pet bar appears; only one at a time; persists across
   logout and taxis like a warlock pet). Minions are vanilla undead models
   (Ghoul 846 / Skeleton 6412) re-scaled to your level by the module
@@ -220,7 +305,7 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   (doubled on the tethered pet), grants the skull-icon **Death Pact** buff
   (+2% physical damage done for a Ghoul, -2% physical damage taken for a
   Skeleton) and despawns the minion; the buff disappears when you Raise or
-  Tether a new minion.  **Harvest** (learned at 10) channels 3 s on a
+  Tether a new minion.  **Harvest** (trained at 10) channels 3 s on a
   corpse within 5 yd and stores it as a Corpse Bag item (see the slice-3c
   checks below); damage/movement interrupts it.
   **Ghoul Frenzy** on the tethered minion hastes it (+25% melee/casting) and
@@ -252,8 +337,8 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   each other.  If a corpse harvests into the wrong item type, that entry
   needs a row in `necromancer_corpse_class` (see the design doc A.58).
 - **Batch-3 slice-3b checks:** the **minion limit** is 1 active minion
-  (guardian or tethered) until **Army of the Dead** is auto-learned at 20
-  (2 minions) and 40 (3 minions; rank 2 replaces rank 1) - over-limit raises
+  (guardian or tethered) until **Army of the Dead** is trained at 20
+  (2 minions) and 40 (3 minions; rank 2 is checked first) - over-limit raises
   are refused ("You already control a summoned creature"); recasting a raise
   whose own minion is up still dismisses it, and an Abomination replaces an
   active Wight.  **Meat Catapult** (L44) throws your Corpse Bag corpse at a
@@ -262,9 +347,13 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   Ectoplasm, Essence); without any corpse item the cast is refused.  It
   cannot be used while moving (engine limitation).
 - **Batch-4 checks (server-side ✅ verified with `turtle-agent`; the client
-  pass is pet-bar icons/tooltips only):** re-tether each minion once to load
-  its ability set (listed above).  Abilities autocast and cost nothing;
-  Cannibalize needs a humanoid/undead corpse within 5 yd
+  pass is pet-bar icons/tooltips only):** a minion saved **before** batch 4
+  keeps its old Ravage/Entropic Bolt rows; Tether reuses the saved pet number,
+  so re-tethering alone does not refresh it.  Apply
+  `data/sql/character/20261019210000_char.sql` (rewrites every class-10 saved
+  pet's `pet_spell` rows and clears `abdata`) and relog/restart the server
+  cache.  New pets get the set at summon; the migration also enables autocast
+  on the refreshed saved pets.  Cannibalize needs a humanoid/undead corpse within 5 yd
   (`no_edible_corpses` otherwise); the Wight transform (Raise Wight on a
   Zombie/Ghoul minion) keeps the Wight's Taunt/Cleave/Crowd
   Pummel/Cannibalize set.
