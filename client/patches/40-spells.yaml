@@ -62,6 +62,17 @@
 #                     requires and consumes one Corpse Bag item)
 #   Army of the Dead R1/R2 <- Dodge 81 (passives; the module reads the learned
 #                     ranks to raise the active-minion limit by +1/+2)
+# spell-correction pass (2026-10-19; design A.6-A.9 + A72):
+#   Plague Bolt R1-3 -> Nature damage + Toxic Plague disease (61071-61073)
+#   Reap R1-2        -> reworked: Death Coil 6789 clone, Shadow life-steal,
+#                       instant, 10 yd, 8 s CD (was Raptor Strike; icon kept)
+#   Call of the Grave -> instant cast, 24 s Grave Rot (duration index 106)
+#   Cripple          -> no cooldown
+#   Harvest          -> TargetCreatureType 0 (beast corpses; A72)
+#   Ghoul Frenzy     -> 1.5 min cooldown
+#   Death Coil 61074 -> the class's own clone of 6789 (no fear; heals undead
+#                       minions; 2.5 s cast, no cooldown); SkillLineAbility
+#                       row 7217 repointed from 6789
 # Icons/costs stay the models' for now; custom tuning/tooltips come in a
 # later batch (Cripple's tooltip is already custom because its effects are).
 #
@@ -128,8 +139,9 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 3"
       NameSubtext_lang_6: "Rank 3"
       NameSubtext_lang_7: "Rank 3"
+  # 61013 <- 6789: Reap (spell-correction pass 2026-10-19: shadow life-steal)
   - type: copy
-    key: 2973
+    key: 6789
     values:
       ID: 61013
       Name_lang_0: "Reap"
@@ -148,8 +160,55 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 1"
       NameSubtext_lang_6: "Rank 1"
       NameSubtext_lang_7: "Rank 1"
+      Description_lang_0: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_1: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_2: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_3: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_4: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_5: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_6: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_7: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      RangeIndex: 7
+      RecoveryTime: 8000
+      Category: 0
+      CategoryRecoveryTime: 0
+      ManaCost: 15
+      SpellIconID: 26
+      AttributesEx2: 0
+      BaseLevel: 1
+      SpellLevel: 1
+      MaxLevel: 0
+      EffectDieSides_1: 4
+      EffectBasePoints_1: 9
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectDicePerLevel_2: 0
+      EffectRealPointsPerLevel_2: 0
+      EffectBasePoints_2: 0
+      EffectMechanic_2: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetB_2: 0
+      EffectRadiusIndex_2: 0
+      EffectAura_2: 0
+      EffectAmplitude_2: 0
+      EffectMultipleValue_2: 0
+      EffectChainTarget_2: 0
+      EffectItemType_2: 0
+      EffectMiscValue_2: 0
+      EffectTriggerSpell_2: 0
+      EffectPointsPerCombo_2: 0
+  # 61014 <- 6789: Reap (spell-correction pass 2026-10-19: shadow life-steal)
   - type: copy
-    key: 14260
+    key: 6789
     values:
       ID: 61014
       Name_lang_0: "Reap"
@@ -168,6 +227,52 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 2"
       NameSubtext_lang_6: "Rank 2"
       NameSubtext_lang_7: "Rank 2"
+      Description_lang_0: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_1: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_2: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_3: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_4: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_5: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_6: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      Description_lang_7: "Steals $s1 life from the target, causing Shadow damage.  Generates a high amount of threat."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      RangeIndex: 7
+      RecoveryTime: 8000
+      Category: 0
+      CategoryRecoveryTime: 0
+      ManaCost: 25
+      SpellIconID: 26
+      AttributesEx2: 0
+      BaseLevel: 1
+      SpellLevel: 1
+      MaxLevel: 0
+      EffectDieSides_1: 8
+      EffectBasePoints_1: 30
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectDicePerLevel_2: 0
+      EffectRealPointsPerLevel_2: 0
+      EffectBasePoints_2: 0
+      EffectMechanic_2: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetB_2: 0
+      EffectRadiusIndex_2: 0
+      EffectAura_2: 0
+      EffectAmplitude_2: 0
+      EffectMultipleValue_2: 0
+      EffectChainTarget_2: 0
+      EffectItemType_2: 0
+      EffectMiscValue_2: 0
+      EffectTriggerSpell_2: 0
+      EffectPointsPerCombo_2: 0
   - type: copy
     key: 168
     values:
@@ -2301,3 +2406,317 @@ Spell.dbc:
       ShapeshiftExclude: 0
       RecoveryTime: 20000
       DurationIndex: 7
+  # ---- spell-correction pass (2026-10-19, A.6-A.9 + A72) ----
+  # Updates patch the existing copy blocks above in place; the copy blocks
+  # below are the new/reworked spells (61071-61074; 61013/61014 were replaced
+  # in place above).
+  # 61010: Plague Bolt
+  - type: update
+    key: 61010
+    values:
+      Description_lang_0: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_1: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_2: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_3: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_4: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_5: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_6: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_7: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      School: 3
+      CastingTimeIndex: 14
+  # 61011: Plague Bolt
+  - type: update
+    key: 61011
+    values:
+      Description_lang_0: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_1: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_2: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_3: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_4: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_5: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_6: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_7: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      School: 3
+      CastingTimeIndex: 14
+  # 61012: Plague Bolt
+  - type: update
+    key: 61012
+    values:
+      Description_lang_0: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_1: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_2: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_3: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_4: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_5: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_6: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      Description_lang_7: "Hurls a bolt of plague at an enemy, inflicting $s1 Nature damage and infecting it with Toxic Plague.  Damage increased by 3% per disease on the target."
+      School: 3
+      CastingTimeIndex: 14
+  # 61016: Call of the Grave
+  - type: update
+    key: 61016
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      DurationIndex: 106
+      CastingTimeIndex: 1
+  # 61017: Call of the Grave
+  - type: update
+    key: 61017
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      DurationIndex: 106
+      CastingTimeIndex: 1
+  # 61018: Call of the Grave
+  - type: update
+    key: 61018
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
+      DurationIndex: 106
+      CastingTimeIndex: 1
+  # 61023: Cripple
+  - type: update
+    key: 61023
+    values:
+      Description_lang_0: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_1: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_2: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_3: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_4: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_5: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_6: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      Description_lang_7: "Cripples the target, reducing its movement speed by $s1% and its attack power by $s2 for $d."
+      RecoveryTime: 0
+  # 61029: Harvest
+  - type: update
+    key: 61029
+    values:
+      Description_lang_0: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_1: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_2: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_3: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_4: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_5: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_6: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_7: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      TargetCreatureType: 0
+  # 61033: Ghoul Frenzy
+  - type: update
+    key: 61033
+    values:
+      Description_lang_0: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_1: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_2: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_3: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_4: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_5: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_6: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      Description_lang_7: "Sends your tethered minion into a frenzy, breaking all crowd control effects, increasing its melee and casting speed by $s1% and healing it for 50% of its health over $d."
+      RecoveryTime: 90000
+  # 61071 <- 6222: Toxic Plague
+  - type: copy
+    key: 6222
+    values:
+      ID: 61071
+      Name_lang_0: "Toxic Plague"
+      Name_lang_1: "Toxic Plague"
+      Name_lang_2: "Toxic Plague"
+      Name_lang_3: "Toxic Plague"
+      Name_lang_4: "Toxic Plague"
+      Name_lang_5: "Toxic Plague"
+      Name_lang_6: "Toxic Plague"
+      Name_lang_7: "Toxic Plague"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+      Description_lang_0: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_1: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_2: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_3: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_4: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_5: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_6: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_7: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      AuraDescription_lang_0: "$s1 Nature damage periodically."
+      AuraDescription_lang_1: "$s1 Nature damage periodically."
+      AuraDescription_lang_2: "$s1 Nature damage periodically."
+      AuraDescription_lang_3: "$s1 Nature damage periodically."
+      AuraDescription_lang_4: "$s1 Nature damage periodically."
+      AuraDescription_lang_5: "$s1 Nature damage periodically."
+      AuraDescription_lang_6: "$s1 Nature damage periodically."
+      AuraDescription_lang_7: "$s1 Nature damage periodically."
+      School: 3
+      DispelType: 3
+      DurationIndex: 8
+      EffectBasePoints_1: 3
+  # 61072 <- 6223: Toxic Plague
+  - type: copy
+    key: 6223
+    values:
+      ID: 61072
+      Name_lang_0: "Toxic Plague"
+      Name_lang_1: "Toxic Plague"
+      Name_lang_2: "Toxic Plague"
+      Name_lang_3: "Toxic Plague"
+      Name_lang_4: "Toxic Plague"
+      Name_lang_5: "Toxic Plague"
+      Name_lang_6: "Toxic Plague"
+      Name_lang_7: "Toxic Plague"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+      Description_lang_0: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_1: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_2: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_3: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_4: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_5: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_6: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_7: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      AuraDescription_lang_0: "$s1 Nature damage periodically."
+      AuraDescription_lang_1: "$s1 Nature damage periodically."
+      AuraDescription_lang_2: "$s1 Nature damage periodically."
+      AuraDescription_lang_3: "$s1 Nature damage periodically."
+      AuraDescription_lang_4: "$s1 Nature damage periodically."
+      AuraDescription_lang_5: "$s1 Nature damage periodically."
+      AuraDescription_lang_6: "$s1 Nature damage periodically."
+      AuraDescription_lang_7: "$s1 Nature damage periodically."
+      School: 3
+      DispelType: 3
+      DurationIndex: 8
+      EffectBasePoints_1: 6
+  # 61073 <- 7648: Toxic Plague
+  - type: copy
+    key: 7648
+    values:
+      ID: 61073
+      Name_lang_0: "Toxic Plague"
+      Name_lang_1: "Toxic Plague"
+      Name_lang_2: "Toxic Plague"
+      Name_lang_3: "Toxic Plague"
+      Name_lang_4: "Toxic Plague"
+      Name_lang_5: "Toxic Plague"
+      Name_lang_6: "Toxic Plague"
+      Name_lang_7: "Toxic Plague"
+      NameSubtext_lang_0: "Rank 3"
+      NameSubtext_lang_1: "Rank 3"
+      NameSubtext_lang_2: "Rank 3"
+      NameSubtext_lang_3: "Rank 3"
+      NameSubtext_lang_4: "Rank 3"
+      NameSubtext_lang_5: "Rank 3"
+      NameSubtext_lang_6: "Rank 3"
+      NameSubtext_lang_7: "Rank 3"
+      Description_lang_0: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_1: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_2: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_3: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_4: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_5: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_6: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      Description_lang_7: "Infects the target with Toxic Plague, causing $*5;s1 Nature damage over $d."
+      AuraDescription_lang_0: "$s1 Nature damage periodically."
+      AuraDescription_lang_1: "$s1 Nature damage periodically."
+      AuraDescription_lang_2: "$s1 Nature damage periodically."
+      AuraDescription_lang_3: "$s1 Nature damage periodically."
+      AuraDescription_lang_4: "$s1 Nature damage periodically."
+      AuraDescription_lang_5: "$s1 Nature damage periodically."
+      AuraDescription_lang_6: "$s1 Nature damage periodically."
+      AuraDescription_lang_7: "$s1 Nature damage periodically."
+      School: 3
+      DispelType: 3
+      DurationIndex: 8
+      EffectBasePoints_1: 11
+  # 61074 <- 6789: Death Coil (the class's own clone)
+  - type: copy
+    key: 6789
+    values:
+      ID: 61074
+      Name_lang_0: "Death Coil"
+      Name_lang_1: "Death Coil"
+      Name_lang_2: "Death Coil"
+      Name_lang_3: "Death Coil"
+      Name_lang_4: "Death Coil"
+      Name_lang_5: "Death Coil"
+      Name_lang_6: "Death Coil"
+      Name_lang_7: "Death Coil"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_1: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_2: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_3: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_4: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_5: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_6: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      Description_lang_7: "Causes $s1 Shadow damage to an enemy target, or heals your Undead minion for $s1."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      CastingTimeIndex: 19
+      RecoveryTime: 0
+      CategoryRecoveryTime: 0
+      Category: 0
+      BaseLevel: 1
+      SpellLevel: 1
+      MaxLevel: 0
+      Effect_1: 2
+      ImplicitTargetA_1: 25
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectDicePerLevel_2: 0
+      EffectRealPointsPerLevel_2: 0
+      EffectBasePoints_2: 0
+      EffectMechanic_2: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetB_2: 0
+      EffectRadiusIndex_2: 0
+      EffectAura_2: 0
+      EffectAmplitude_2: 0
+      EffectMultipleValue_2: 0
+      EffectChainTarget_2: 0
+      EffectItemType_2: 0
+      EffectMiscValue_2: 0
+      EffectTriggerSpell_2: 0
+      EffectPointsPerCombo_2: 0

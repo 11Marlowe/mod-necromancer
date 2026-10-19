@@ -36,41 +36,52 @@ built as a standalone module on the core's **class-support** layer.
 > cooldown - that consumes one Corpse Bag item). Batch 4 gives every minion
 > tier its design A.7 ability set (20 spells, 61051-61070; all free and
 > autocast by default - this resolved A71); Ravage and Entropic Bolt are
-> retired (re-tether a pet once to pick up its new set). All spells/ranks are
-> taught automatically at level-up/login (no trainers yet; the quest/item
-> gates are deferred). Later batches add the Corpse Bag container, the
-> remaining spellbook entries, the spell-correction pass and talents. See
-> the design/handoff document:
+> retired (re-tether a pet once to pick up its new set). The
+> **spell-correction pass** (2026-10-19, design A.6-A.9 + A72) aligns the
+> shipped placeholders: **Plague Bolt** is Nature damage and infects the
+> target with the new **Toxic Plague** disease (+3% direct damage per
+> disease), **Reap** is a shadow life-steal (instant, 10 yd, 8 s CD; no
+> longer Raptor Strike), **Call of the Grave** is instant with a 24 s Grave
+> Rot, **Cripple** has no cooldown, **Ghoul Frenzy** has a 1.5 min cooldown,
+> **Harvest** takes beast corpses, and the class got its **own Death Coil
+> (61074)** that damages enemies or heals your undead minion (the shared
+> Warlock spell is no longer learned). All spells/ranks are taught
+> automatically at level-up/login (no trainers yet; the quest/item gates are
+> deferred). Later batches add the Corpse Bag container, the remaining
+> spellbook entries, trainers and talents. See the design/handoff document:
 > <https://github.com/11Marlowe/wow-tools> (private) or the project's
 > `Necromancer-Design.md`.
 >
-> **Server-side verification (2026-10-18):** the batch-3 slice-3b checklist
-> was verified headlessly with `turtle-agent` (see *Testing tips*); the
-> in-client pass remains for client-rendered items only.
+> **Verification (2026-10-19):** every batch is checked headlessly with
+> `turtle-agent` (see *Testing tips*) before the user's in-client pass, which
+> covers client-rendered items only.  Batch 4 passed both (in-client:
+> pet-bar icons and ability tooltips, 2026-10-18); the correction pass
+> passed the server-side pass (2026-10-19) and awaits its in-client pass.
 
 ## Spells
 
 | Spell | Ranks | Learned at | Model used | Notes |
 | --- | --- | --- | --- | --- |
-| Plague Bolt | 1-3 | 1 / 8 / 16 | Shadow Bolt | batch 1 |
-| Reap | 1-2 | 1 / 12 | Raptor Strike | on-next-melee-swing (batch 1) |
+| Plague Bolt | 1-3 | 1 / 8 / 16 | Shadow Bolt | Nature damage + **Toxic Plague** rider, 3 s cast (correction pass) |
+| Toxic Plague | 1-3 | applied by Plague Bolt | Corruption | Nature disease, 15 s (3 s ticks 4/7/12), ids 61071-61073; no spellbook row |
+| Reap | 1-2 | 1 / 12 | Death Coil 6789 (health leech) | instant **shadow life-steal**, 10 yd, 8 s CD, high threat (correction pass) |
 | Bone Armor | 1 | 1 | Frost Armor | batch 1 |
-| Death Coil | — | 14 | Warlock's Death Coil | shared spell id (batch 1) |
-| Call of the Grave | 1-3 | 12 / 24 / 34 | Corruption | disease, final tick x3 (AuraScript) |
+| Death Coil | — | 14 | Death Coil 6789 | the class's own **61074**: 2.5 s cast, no CD, damages enemies **or heals your undead minion** (correction pass) |
+| Call of the Grave | 1-3 | 12 / 24 / 34 | Corruption | disease, instant, 24 s, final tick x3 (AuraScript) |
 | Desecration | 1-3 | 20 / 34 / 46 | Rain of Fire | disease, ground channel |
-| Disease Cloud | 1 | 20 | Flamestrike | requires your disease on the target |
-| Cripple | 1 | 20 | Cripple (mob 89) | 10% slow + -20 AP, 10 sec |
+| Disease Cloud | 1 | 20 | Flamestrike | requires your disease (Toxic Plague/Grave Rot) on the target |
+| Cripple | 1 | 20 | Cripple (mob 89) | 10% slow + -20 AP, 10 sec, no CD |
 | Raise Ghoul | 1 | 14 | Summon Atal'ai Skeleton | guardian minion (creature 846), 60 sec |
 | Raise Skeleton | 1 | 14 | Summon Atal'ai Skeleton | guardian minion (creature 6412), 60 sec |
 | Tether | 1 | 20 | Renew (friendly-target carrier) | converts your minion into a permanent pet |
 | Ravage | 1 | pet | Lash of Pain | pet-bar active of the melee minion tiers (61027) |
 | Entropic Bolt | 1 | pet | Firebolt | ranged pet-bar active of Banshee/Bloodmage (61041) |
 | Sacrifice Minion | 1 | 20 | Renew (friendly-target carrier) | heal (x2 on the tethered pet) + Death Pact buff, despawns the minion |
-| Harvest | 1 | 10 | Cannibalize | 3-sec channel: stores a corpse as a Corpse Bag item (aura 61030) |
+| Harvest | 1 | 10 | Cannibalize | 3-sec channel: stores a corpse as a Corpse Bag item (aura 61030); beast corpses included (A72 fixed) |
 | Corpse Bag items | - | - | items 63100-63103 | Lump of Flesh / Pile of Bones / Ectoplasm / Banshee Essence (normal bags) |
 | Death Pact (Ghoul/Skeleton) | 1 | buff | Cannibalize aura scaffold | +2% physical damage done / -2% physical damage taken, 30 min |
 | Death Pact (Banshee/Shade/Wraith/Hulk/Bloodmage) | 1 | buff | same scaffold | 2% mana/4 s / -5% threat / +2% speed / +5% health / +2% spell damage, 30 min |
-| Ghoul Frenzy | 1 | 20 | Renew | tethered minion: CC break, +25% melee/casting speed, 50% max-health heal over 30 sec |
+| Ghoul Frenzy | 1 | 20 | Renew | tethered minion: CC break, +25% melee/casting speed, 50% max-health heal over 30 sec; 1.5 min CD |
 | Raise Zombie / Raise Shade | 1 | 10 | Summon Atal'ai Skeleton | guardian (creature 1501 / 7370) |
 | Raise Banshee | 1 | 20 | Summon Atal'ai Skeleton | guardian (creature 10463) |
 | Raise Wraith | 1 | 30 | Summon Atal'ai Skeleton | guardian (creature 1800) |
@@ -80,18 +91,20 @@ built as a standalone module on the core's **class-support** layer.
 | Meat Catapult | 1 | 44 | Thorium Grenade | 1.5 s cast, 20 yd, 3-yd radius Shadow damage + 2 s stun, 1 min CD; consumes one Corpse Bag item |
 | Army of the Dead | 2 (passive) | 20 / 40 | Dodge (passive scaffold) | active-minion limit: base 1, +1 (R1) / +2 (R2); R2 replaces R1 |
 
-For these batches the icons and costs are the model spells' (renamed via the
-client patch).  Tooltips are the models' except where the mechanics differ:
-Cripple, Harvest and all Raise spells (since 2026-10-18 the raise tooltips
-state the corpse/bag requirement, e.g. "requires a humanoid or zombie corpse
-nearby, or 1 Lump of Flesh") and the Wight transform.  The disease spells'
-rank-up mechanics are placeholders until the talent/effect polish batches;
-"Disease Cloud", "Cripple" and "Tether" are talents in the source design and
-are auto-learned at level 20 until talents exist. Custom tuning/tooltips and
-the rest of the design (the Corpse Bag container, per-minion abilities,
-Grim Reaper, Lichborne, ...) arrive in later batches. Spells are granted by the
-module's auto-learn (`src/mod_necromancer.cpp`); trainers are planned but not
-required yet.
+For these batches the icons and costs are mostly the model spells' (renamed
+via the client patch).  Tooltips are the models' except where the mechanics
+differ: Cripple, Harvest, all Raise spells (since 2026-10-18 the raise
+tooltips state the corpse/bag requirement, e.g. "requires a humanoid or
+zombie corpse nearby, or 1 Lump of Flesh"), the Wight transform and the
+correction-pass spells (Plague Bolt, Toxic Plague, Reap, Call of the Grave,
+Death Coil).  The disease spells' rank-up mechanics are placeholders until
+the talent/effect polish batches; "Disease Cloud", "Cripple" and "Tether"
+are talents in the source design and are auto-learned at level 20 until
+talents exist. Custom tuning/tooltips and the rest of the design (the
+Corpse Bag container, the Desecration/Disease Cloud/Bone Armor corrections,
+Grim Reaper, Lichborne, ...) arrive in later batches. Spells are granted by
+the module's auto-learn (`src/mod_necromancer.cpp`); trainers are planned but
+not required yet.
 
 **Minion abilities (batch 4, design A.7):** taught per tier through
 `petcreateinfo_spell`; they autocast by default and all cost 0 mana.
@@ -110,10 +123,15 @@ Thorns-style aura); Wight Taunt, Cleave, Crowd Pummel (Pummel), Cannibalize.
 - ✅ **Ravage/Entropic Bolt fixed (batch 4):** the two actives are retired
   from `petcreateinfo_spell` (their costs are also zeroed so pets tethered
   earlier are not blocked by `no_power`); every minion ability costs 0.
-- **Harvest** inherits Cannibalize's Humanoid/Undead target restriction, so a
-  **beast corpse** cannot be harvested yet (with the beast selected the cast
-  is refused with "Invalid target"; otherwise it is a silent no-op). Fix
-  queued for the spell-correction pass (design doc A72).
+- ✅ **Harvest beast corpses fixed (correction pass 2026-10-19):**
+  `targetCreatureType` is 0 now; verified on a Rabid Dire Wolf corpse
+  (Lump of Flesh).  The module's corpse taxonomy still gates the item types.
+- **Spell-correction placeholders (design doc A78):** Harvest keeps the
+  model's 2-min cooldown (design: no cooldown); Desecration is still a
+  channeled Rain of Fire (design: instant Shadow + healing reduction);
+  Disease Cloud's damage/tooltip are still Flamestrike's; Bone Armor is
+  still Frost Armor; "Grave Rot" displays as "Call of the Grave"; damage
+  values are placeholders.
 
 Server data: `data/sql/world/20261014160000_world.sql` (batch 1),
 `20261014170000_world.sql` (batch 2), `20261014180000_world.sql` (batch 3
@@ -122,13 +140,19 @@ slice 1), `20261015120000_world.sql` (batch 3 slice 2),
 `20261017180000_world.sql` (batch 3 slice 3c: Corpse Bag items, corpse-class
 table, Harvest/Wight cast-time + spell updates),
 `20261018180000_world.sql` (batch 3 slice 3b: Army of the Dead passives +
-Meat Catapult) and `20261018230000_world.sql` (batch 4: per-minion
-abilities + petcreateinfo sets), all generated by the scripts in `tools/`.
-Client patch: `client/patches/40-spells.yaml` and `50-skilllines.yaml` (new
-"Necromancy" skill line 700).
+Meat Catapult), `20261018230000_world.sql` (batch 4: per-minion abilities +
+petcreateinfo sets) and `20261019120000_world.sql` (spell-correction pass:
+A.6-A.9 + A72, Death Coil 61074 + Toxic Plague), all generated by the
+scripts in `tools/`.  Client patches: `client/patches/40-spells.yaml`
+(corrections as `update` blocks after the `copy` blocks) and
+`50-skilllines.yaml` (new "Necromancy" skill line 700; Death Coil row 7217
+points at 61074).
 
-Eleven spells are bound to module scripts through `spell_template.script_name`
-(SQL): `spell_necromancer_call_of_the_grave` (AuraScript, final-tick triple
+Fourteen spells are bound to module scripts through
+`spell_template.script_name` (SQL): `spell_necromancer_plague_bolt`
+(Toxic Plague rider + 3% damage per disease), `spell_necromancer_reap`
+(extra threat), `spell_necromancer_death_coil` (friendly-minion heal gate),
+`spell_necromancer_call_of_the_grave` (AuraScript, final-tick triple
 damage), `spell_necromancer_disease_cloud` (SpellScript, cast gate),
 `spell_necromancer_raise_minion` (re-scales the guardian to the caster's
 level; enforces the corpse/bag requirement and the Army of the Dead minion
@@ -149,13 +173,18 @@ startup - without it a tethered minion has no pet-bar abilities (see below).
 
 ## Testing tips
 
-**Standard (2026-10-18): verify server-side first.** Module changes are checked
-with the headless `turtle-agent` client (JSON-RPC; project
+**Standard (since 2026-10-18): verify server-side first.** Module changes are
+checked with the headless `turtle-agent` client (JSON-RPC; project
 `TurtleAgent-Workflow.md`, `SESSION_NOTES.md` §10f) — auto-learn/spells,
 casts and event damage/auras, cast gates, minions/pet, bag items — before the
 in-client pass, which is only for client-rendered items (icons, tooltips,
-models, Glue UI). The 2026-10-18 spike verified the whole slice-3b list this
-way.
+models, Glue UI). The 2026-10-18 spike verified the whole slice-3b list and
+batch 4; the 2026-10-19 pass verified the spell corrections + A72.
+
+- ⚠️ **Turn GM mode off first.** The test character can log in with GM mode
+  ON (a persisted flag). A GM attacker makes creatures evade/reset, which
+  wipes debuffs between casts — debuff-persistence checks (Toxic Plague,
+  the +3%/disease) fail spuriously. Send `.gm off` after login.
 
 - **Level changes use `.levelup <n>`** (adds n levels; the core has no
   `.character level`) and are a **GM command** (rank 3+). Either use a GM-rank
@@ -169,10 +198,10 @@ way.
   **final tick deals triple damage**; the debuff is a *disease* (dispellable
   by cure-disease effects). At 20 you also get Desecration (ground channel),
   Disease Cloud and Cripple. Disease Cloud cast on an enemy shows
-  "You can't do that yet" until the enemy carries your Call of the Grave;
-  ground-target casts cannot be verified server-side yet (placeholder, see
-  the design doc) and are allowed. Cripple should show -10% move speed and
-  -20 attack power for 10 sec.
+  "You can't do that yet" until the enemy carries your Toxic Plague (or
+  Call of the Grave); ground-target casts cannot be verified server-side yet
+  (placeholder, see the design doc) and are allowed. Cripple should show
+  -10% move speed and -20 attack power for 10 sec and has no cooldown.
 - **Batch-3 minion checks:** at 14 cast Raise Ghoul / Raise Skeleton — a
   temporary (60 sec) guardian appears, follows you and fights nearby enemies;
   casting the same Raise again dismisses it (toggle). At 20 cast Tether on
@@ -182,9 +211,9 @@ way.
   (Ghoul 846 / Skeleton 6412) re-scaled to your level by the module
   (placeholder tuning). Known placeholder: a tethered minion is not restored
   by the spirit healer / BG resurrect yet.
-- **Reap** is an *on next melee swing* attack (Raptor Strike clone): it needs
-  an equipped weapon, otherwise the queued swing blocks other abilities
-  ("another action in progress").
+- **Reap** (correction pass) is an instant **shadow life-steal**: it damages
+  the target and heals you, has a 10 yd range and an 8 s cooldown, and no
+  longer needs a weapon (it is no longer Raptor Strike).
 - **Batch-3 slice-2 checks:** a tethered minion's **pet bar shows "Ravage"**
   (a pet tethered *before* this update must be re-tethered once) - click it
   while the pet fights.  At 20, **Sacrifice Minion** on your minion heals you
@@ -239,6 +268,14 @@ way.
   (`no_edible_corpses` otherwise); the Wight transform (Raise Wight on a
   Zombie/Ghoul minion) keeps the Wight's Taunt/Cleave/Crowd
   Pummel/Cannibalize set.
+- **Correction-pass checks (server-side ✅ verified with `turtle-agent`
+  2026-10-19; the in-client pass covers the tooltips/icons):** Plague Bolt is
+  Nature (green numbers) and applies the **Toxic Plague** disease (+3% direct
+  damage per disease on the target); Reap is the instant shadow life-steal
+  with an 8 s cooldown; Call of the Grave is instant with a 24 s Grave Rot
+  (final tick x3); Cripple has no cooldown; Ghoul Frenzy shows 1.5 min;
+  Death Coil is the class's own 2.5 s/no-CD spell and **heals your undead
+  minion** when cast on it; Harvest takes beast corpses.
 - Startup should log `mask 0x7DF`, `Loaded 1 class descriptor override(s)` and
   the module line. `Wrong class 10` means one of the halves is missing
   (`ChrClasses.dbc` in the server's `dbc\`, or the SQL not applied).

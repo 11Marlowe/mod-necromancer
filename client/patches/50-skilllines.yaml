@@ -2,8 +2,9 @@
 # SkillLineAbility rows are cloned from the model spells' own rows
 # (686/695/705/2973/14260/168/6789, batch-2 models 6222/6223/7648/5740/
 # 6219/11677/2120/89 and 139 for Tether; the minion rows reuse the 1430/1431
-# donors) so the client groups our spells in a spellbook tab; Death Coil
-# (6789) is shared with Warlocks.
+# donors) so the client groups our spells in a spellbook tab.  Death Coil is
+# the class's own clone 61074 since the spell-correction pass (2026-10-19);
+# the shared Warlock 6789 is no longer learned.
 SkillLine.dbc:
   - type: insert
     key: 700
@@ -29,7 +30,7 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1921, values: { id: 7214, skillId: 700, spellId: 61013, classmask: 512 } }
   - { type: copy, key: 2153, values: { id: 7215, skillId: 700, spellId: 61014, classmask: 512 } }
   - { type: copy, key: 575,  values: { id: 7216, skillId: 700, spellId: 61015, classmask: 512 } }
-  - { type: copy, key: 3163, values: { id: 7217, skillId: 700, spellId: 6789,  classmask: 512 } }
+  - { type: copy, key: 3163, values: { id: 7217, skillId: 700, spellId: 61074, classmask: 512 } }
   # batch 2 (disease mechanics)
   - { type: copy, key: 3219, values: { id: 7218, skillId: 700, spellId: 61016, classmask: 512 } }
   - { type: copy, key: 3220, values: { id: 7219, skillId: 700, spellId: 61017, classmask: 512 } }

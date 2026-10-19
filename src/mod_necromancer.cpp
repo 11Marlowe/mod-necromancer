@@ -30,9 +30,11 @@ namespace
 {
     enum NecromancerSpellIds
     {
+        NECRO_SPELL_PLAGUE_BOLT_R1       = 61010,
         NECRO_SPELL_PLAGUE_BOLT_R2       = 61011,
-        NECRO_SPELL_REAP_R2              = 61014,
         NECRO_SPELL_PLAGUE_BOLT_R3       = 61012,
+        NECRO_SPELL_REAP_R1              = 61013,
+        NECRO_SPELL_REAP_R2              = 61014,
         NECRO_SPELL_CALL_OF_THE_GRAVE_R1 = 61016,
         NECRO_SPELL_CALL_OF_THE_GRAVE_R2 = 61017,
         NECRO_SPELL_CALL_OF_THE_GRAVE_R3 = 61018,
@@ -69,8 +71,12 @@ namespace
         NECRO_SPELL_ARMY_OF_THE_DEAD_R1  = 61049,   // passive: +1 active minion
         NECRO_SPELL_ARMY_OF_THE_DEAD_R2  = 61050,   // passive: +2 active minions
         NECRO_SPELL_MINION_CANNIBALIZE   = 61052,   // pet ability (batch 4)
+        NECRO_SPELL_TOXIC_PLAGUE_R1      = 61071,   // Plague Bolt's disease (corrections pass)
+        NECRO_SPELL_TOXIC_PLAGUE_R2      = 61072,
+        NECRO_SPELL_TOXIC_PLAGUE_R3      = 61073,
+        NECRO_SPELL_DEATH_COIL           = 61074,   // the class's own clone (corrections pass)
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
-        NECRO_SPELL_DEATH_COIL           = 6789,
+        NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
     };
 
     // Corpse Bag items (server-side item_template; see the slice-3c SQL)
@@ -157,6 +163,12 @@ namespace
                 player->LearnSpell(entry.spellId, false);
             }
         }
+
+        // spell-correction pass: the class's own Death Coil (61074) replaces
+        // the shared Warlock spell (6789) that earlier builds auto-learned
+        if (player->HasSpell(NECRO_SPELL_DEATH_COIL) &&
+                player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
+            player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
     }
 
     class NecromancerPlayerScript : public PlayerScript
@@ -190,11 +202,20 @@ namespace
                spellId == NECRO_SPELL_CALL_OF_THE_GRAVE_R3;
     }
 
-    // The Necromancer's disease family, used by Disease Cloud.  Outbreak and
-    // Corrosion will be added here with their batches.
+    bool IsToxicPlague(uint32 spellId)
+    {
+        return spellId == NECRO_SPELL_TOXIC_PLAGUE_R1 ||
+               spellId == NECRO_SPELL_TOXIC_PLAGUE_R2 ||
+               spellId == NECRO_SPELL_TOXIC_PLAGUE_R3;
+    }
+
+    // The Necromancer's disease family, used by Disease Cloud.  The design
+    // explodes "a victim of your Toxic Plague"; Grave Rot stays accepted as a
+    // superset placeholder.  Outbreak and Corrosion will be added here with
+    // their batches.
     bool IsNecromancerDisease(uint32 spellId)
     {
-        return IsCallOfTheGrave(spellId);
+        return IsCallOfTheGrave(spellId) || IsToxicPlague(spellId);
     }
 
     bool HasCasterDisease(Unit* target, ObjectGuid const& casterGuid)
@@ -1138,6 +1159,151 @@ namespace
         }
     };
 
+    // ------------------------------------------------------------------
+    // Spell corrections (2026-10-19, design A.6-A.9 + A72)
+    // ------------------------------------------------------------------
+
+    // Plague Bolt (A.9): Nature damage that also infects the target with the
+    // Toxic Plague disease (the matching rank) and deals 3% more direct
+    // damage per disease already on the victim.
+    struct spell_necromancer_plague_bolt : public SpellScript
+    {
+        static uint32 GetToxicPlagueId(uint32 spellId)
+        {
+            switch (spellId)
+            {
+                case NECRO_SPELL_PLAGUE_BOLT_R1: return NECRO_SPELL_TOXIC_PLAGUE_R1;
+                case NECRO_SPELL_PLAGUE_BOLT_R2: return NECRO_SPELL_TOXIC_PLAGUE_R2;
+                case NECRO_SPELL_PLAGUE_BOLT_R3: return NECRO_SPELL_TOXIC_PLAGUE_R3;
+                default: return 0;
+            }
+        }
+
+        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex effIdx, float& damage) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || damage <= 0.0f)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target)
+                return;
+
+            uint32 diseases = 0;
+            for (auto const& itr : target->GetSpellAuraHolderMap())
+            {
+                SpellAuraHolder const* holder = itr.second;
+                if (holder && !holder->IsDeleted() && holder->GetSpellProto() &&
+                        holder->GetSpellProto()->Dispel == DISPEL_DISEASE)
+                    ++diseases;
+            }
+
+            if (diseases)
+                damage *= 1.0f + 0.03f * float(diseases);
+        }
+
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            uint32 plagueId = GetToxicPlagueId(spell->m_spellInfo->Id);
+            Unit* target = spell->GetUnitTarget();
+            if (!plagueId || !target || !target->IsAlive())
+                return;
+
+            // only one rank of the disease at a time
+            static const uint32 toxicPlagueRanks[] =
+            {
+                NECRO_SPELL_TOXIC_PLAGUE_R1,
+                NECRO_SPELL_TOXIC_PLAGUE_R2,
+                NECRO_SPELL_TOXIC_PLAGUE_R3,
+            };
+            for (uint32 rank : toxicPlagueRanks)
+                if (rank != plagueId)
+                    target->RemoveAurasDueToSpell(rank);
+
+            spell->m_casterUnit->CastSpell(target, plagueId, true);
+        }
+    };
+
+    // Reap (A.8): "Generates a high amount of threat" - the health-leech
+    // effect only produces the normal damage threat, so an equal amount of
+    // school threat is added on a hostile hit (placeholder magnitude).
+    struct spell_necromancer_reap : public SpellScript
+    {
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target || !target->IsAlive() || !spell->m_casterUnit->IsHostileTo(target))
+                return;
+
+            if (spell->damage > 0)
+                target->AddThreat(spell->m_casterUnit, float(spell->damage), false,
+                                  SPELL_SCHOOL_MASK_SHADOW, spell->m_spellInfo);
+        }
+    };
+
+    // Death Coil (the class's own 61074, A.6): "X-Y Shadow damage to an enemy
+    // or heals an Undead minion for X-Y".  The clone targets any unit
+    // (implicit target 25); friendly casts are gated to the caster's own
+    // undead minion and heal it, hostile casts keep the default damage.
+    struct spell_necromancer_death_coil : public SpellScript
+    {
+        static Pet* GetHealableMinion(Spell* spell)
+        {
+            if (!spell || !spell->m_casterUnit)
+                return nullptr;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            Pet* minion = target ? target->ToPet() : nullptr;
+            if (!minion || !minion->IsAlive())
+                return nullptr;
+            if (minion->GetOwnerGuid() != spell->m_casterUnit->GetObjectGuid())
+                return nullptr;
+            if (!IsMinionEntry(minion->GetEntry()))
+                return nullptr;
+
+            return minion;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            if (!target)
+                return SPELL_FAILED_BAD_TARGETS;
+
+            // hostile targets take the default damage; friendly targets must
+            // be one of the caster's own undead minions (guardians included)
+            if (spell->m_casterUnit->IsFriendlyTo(target) && !GetHealableMinion(spell))
+                return SPELL_FAILED_BAD_TARGETS;
+
+            return SPELL_CAST_OK;
+        }
+
+        bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return true;
+
+            Pet* minion = GetHealableMinion(spell);
+            if (!minion)
+                return true;    // enemy target: the default damage runs
+
+            // "or heals an Undead minion for X-Y" - heal for the computed
+            // amount of the damage effect
+            if (spell->damage > 0)
+                spell->m_casterUnit->DealHeal(minion, uint32(spell->damage), spell->m_spellInfo);
+
+            return false;   // effect fully handled by the script
+        }
+    };
+
     // Ghoul Frenzy: sends the tethered minion into a frenzy - breaks all
     // crowd control on it, +25% melee and casting speed and a heal of 50% of
     // its maximum health over the duration (the periodic amount is computed
@@ -1266,6 +1432,21 @@ namespace
         return new spell_necromancer_minion_cannibalize();
     }
 
+    SpellScript* GetPlagueBoltSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_plague_bolt();
+    }
+
+    SpellScript* GetReapSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_reap();
+    }
+
+    SpellScript* GetDeathCoilSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_death_coil();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -1328,8 +1509,8 @@ namespace
                                uint32(sNecroCorpseOverrides.size()));
             }
 
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 batch 4: per-minion special "
-                           "abilities, design A.7)");
+            sLog.outString("[mod-necromancer] module loaded (Phase 2 spell-correction pass: "
+                           "design A.6-A.9 + A72)");
         }
     };
 }
@@ -1358,4 +1539,9 @@ void AddNecromancerScripts()
     RegisterSpellScript("spell_necromancer_raise_wight", GetRaiseWightSpellScript);
     RegisterSpellScript("spell_necromancer_meat_catapult", GetMeatCatapultSpellScript);
     RegisterSpellScript("spell_necromancer_minion_cannibalize", GetMinionCannibalizeSpellScript);
+
+    // spell-correction pass (2026-10-19, design A.6-A.9 + A72)
+    RegisterSpellScript("spell_necromancer_plague_bolt", GetPlagueBoltSpellScript);
+    RegisterSpellScript("spell_necromancer_reap", GetReapSpellScript);
+    RegisterSpellScript("spell_necromancer_death_coil", GetDeathCoilSpellScript);
 }
