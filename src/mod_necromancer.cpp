@@ -87,6 +87,9 @@ namespace
         NECRO_SPELL_UNHOLY_SHIELD        = 61084,
         NECRO_SPELL_LICH_ARMOR           = 61085,
         NECRO_SPELL_DARK_PUNISHMENT      = 61086,
+        NECRO_SPELL_NECRO_KNIGHT         = 61090,   // armor/weapon progression passives
+        NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT = 61091,
+        NECRO_SPELL_GRIM_REAPER          = 61092,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -135,7 +138,8 @@ namespace
     public:
         NecromancerPlayerScript()
             : PlayerScript("mod_necromancer_player",
-                           { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEARN_SPELL })
+                           { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEARN_SPELL,
+                             PLAYERHOOK_ON_FORGOT_SPELL })
         {
         }
 
@@ -152,6 +156,111 @@ namespace
             if (spellId == NECRO_SPELL_DEATH_COIL &&
                     player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
                 player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
+
+            // Armor/weapon progression (A.4 slots 9/17/25; talent shortcuts).
+            // The passives' SPELL_EFFECT_PROFICIENCY sets the item-proficiency
+            // mask, but CanUseItem also checks the actual skill value, so the
+            // skill lines are granted here on learn (no SRCI class bit, which
+            // would hand them out at character creation).
+            switch (spellId)
+            {
+                case NECRO_SPELL_NECRO_KNIGHT:
+                    GrantNecroKnightSkills(player);
+                    break;
+                case NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT:
+                    GrantWillSkills(player);
+                    break;
+                case NECRO_SPELL_GRIM_REAPER:
+                    GrantGrimReaperSkills(player);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void OnForgotSpell(Player* player, uint32 spellId) override
+        {
+            if (!player || player->GetClass() != 10)
+                return;
+
+            // Talent removal (or a GM unlearn) must invalidate the gear the
+            // passive allowed.  Remove the skill lines and move any item that
+            // no longer passes CanUseItem back to the bags (or mail it when
+            // the bags are full).
+            switch (spellId)
+            {
+                case NECRO_SPELL_NECRO_KNIGHT:
+                    RemoveSkill(player, SKILL_LEATHER);
+                    RemoveSkill(player, SKILL_MAIL);
+                    UnequipInvalidArmor(player);
+                    break;
+                case NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT:
+                    RemoveSkill(player, SKILL_PLATE_MAIL);
+                    UnequipInvalidArmor(player);
+                    break;
+                case NECRO_SPELL_GRIM_REAPER:
+                    RemoveSkill(player, SKILL_AXES);
+                    RemoveSkill(player, SKILL_2H_AXES);
+                    RemoveSkill(player, SKILL_MACES);
+                    RemoveSkill(player, SKILL_2H_MACES);
+                    RemoveSkill(player, SKILL_POLEARMS);
+                    RemoveSkill(player, SKILL_SWORDS);
+                    RemoveSkill(player, SKILL_2H_SWORDS);
+                    player->SetCanDualWield(false);
+                    player->AutoUnequipItemFromSlot(EQUIPMENT_SLOT_OFFHAND);
+                    player->AutoUnequipWeaponsIfNeed();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    private:
+        static void GrantSkill(Player* player, uint16 skill)
+        {
+            // HasSkill() can be true for a skill entry with value 0 (some
+            // class skills are initialized empty); check the value instead.
+            if (player->GetSkillValue(skill) == 0)
+                player->SetSkill(skill, 1, player->GetSkillMaxForLevel());
+        }
+
+        static void RemoveSkill(Player* player, uint16 skill)
+        {
+            if (player->GetSkillValue(skill) != 0)
+                player->SetSkill(skill, 0, 0);
+        }
+
+        static void UnequipInvalidArmor(Player* player)
+        {
+            for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; ++slot)
+            {
+                if (Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                    if (player->CanUseItem(item) != EQUIP_ERR_OK)
+                        player->AutoUnequipItemFromSlot(slot);
+            }
+        }
+
+        static void GrantNecroKnightSkills(Player* player)
+        {
+            GrantSkill(player, SKILL_LEATHER);
+            GrantSkill(player, SKILL_MAIL);
+        }
+
+        static void GrantWillSkills(Player* player)
+        {
+            GrantSkill(player, SKILL_PLATE_MAIL);
+        }
+
+        static void GrantGrimReaperSkills(Player* player)
+        {
+            GrantSkill(player, SKILL_AXES);
+            GrantSkill(player, SKILL_2H_AXES);
+            GrantSkill(player, SKILL_MACES);
+            GrantSkill(player, SKILL_2H_MACES);
+            GrantSkill(player, SKILL_POLEARMS);
+            GrantSkill(player, SKILL_SWORDS);
+            GrantSkill(player, SKILL_2H_SWORDS);
+            player->SetCanDualWield(true);
         }
     };
 

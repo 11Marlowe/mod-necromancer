@@ -1,4 +1,4 @@
-# Learn spells 61100-61142 for the Necromancer trainers.
+# Learn spells 61100-61145 for the Necromancer trainers.
 # Cloned from Immolate's vanilla learn spell 1374 (Effect[0] =
 # LEARN_SPELL); the trigger is the real Necromancer spell.  The
 # trainer packet sends these ids, so the client needs their names/
@@ -40,7 +40,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 213
+      SpellIconID: 2520
       EffectTriggerSpell_1: 61010
   - type: copy
     key: 1374
@@ -78,7 +78,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 26
+      SpellIconID: 2214
       EffectTriggerSpell_1: 61013
   - type: copy
     key: 1374
@@ -100,14 +100,14 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_1: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_2: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_3: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_4: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_5: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_6: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
-      Description_lang_7: "Increases Armor by $s1.  If an enemy strikes the caster, they may have their movement slowed by $6136s2% and the time between their attacks increased by $6136s1% for $6136d.  Only one type of Armor spell can be active on the Mage at any time.  Lasts $d."
+      Description_lang_0: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_1: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_2: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_3: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_4: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_5: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_6: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_7: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
       AuraDescription_lang_0: "Increases Armor by $s1 and may slow attackers."
       AuraDescription_lang_1: "Increases Armor by $s1 and may slow attackers."
       AuraDescription_lang_2: "Increases Armor by $s1 and may slow attackers."
@@ -116,7 +116,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Increases Armor by $s1 and may slow attackers."
       AuraDescription_lang_6: "Increases Armor by $s1 and may slow attackers."
       AuraDescription_lang_7: "Increases Armor by $s1 and may slow attackers."
-      SpellIconID: 181
+      SpellIconID: 1614
       EffectTriggerSpell_1: 61015
   - type: copy
     key: 1374
@@ -154,7 +154,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 213
+      SpellIconID: 2520
       EffectTriggerSpell_1: 61011
   - type: copy
     key: 1374
@@ -176,14 +176,14 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_1: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_2: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_3: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_4: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_5: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_6: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
-      Description_lang_7: "Harvests a nearby corpse, storing it in your Corpse Bag to be Raised at a later time."
+      Description_lang_0: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_1: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_2: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_3: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_4: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_5: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_6: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
+      Description_lang_7: "Harvests a nearby corpse, storing a corpse item in your Corpse Bag to be used for Raising.  Channeled for $d; moving or taking damage interrupts the harvest."
       AuraDescription_lang_0: ""
       AuraDescription_lang_1: ""
       AuraDescription_lang_2: ""
@@ -268,7 +268,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 113
       EffectTriggerSpell_1: 61035
   - type: copy
     key: 1374
@@ -298,14 +298,14 @@ Spell.dbc:
       Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
-      AuraDescription_lang_0: ""
-      AuraDescription_lang_1: ""
-      AuraDescription_lang_2: ""
-      AuraDescription_lang_3: ""
-      AuraDescription_lang_4: ""
-      AuraDescription_lang_5: ""
-      AuraDescription_lang_6: ""
-      AuraDescription_lang_7: ""
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec."
       SpellIconID: 313
       EffectTriggerSpell_1: 61016
   - type: copy
@@ -344,7 +344,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 26
+      SpellIconID: 2214
       EffectTriggerSpell_1: 61014
   - type: copy
     key: 1374
@@ -420,7 +420,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 221
       EffectTriggerSpell_1: 61024
   - type: copy
     key: 1374
@@ -458,7 +458,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 599
       EffectTriggerSpell_1: 61025
   - type: copy
     key: 1374
@@ -496,7 +496,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 213
+      SpellIconID: 2520
       EffectTriggerSpell_1: 61012
   - type: copy
     key: 1374
@@ -518,23 +518,23 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 1"
       NameSubtext_lang_6: "Rank 1"
       NameSubtext_lang_7: "Rank 1"
-      Description_lang_0: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_1: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_2: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_3: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_4: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_5: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_6: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_7: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      AuraDescription_lang_0: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_1: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_2: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_3: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_4: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_5: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_6: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_7: "$s1 Fire damage every $t1 seconds."
-      SpellIconID: 547
+      Description_lang_0: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_1: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_2: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_3: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_4: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_5: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_6: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_7: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      AuraDescription_lang_0: "$s1 damage every $t1 sec."
+      AuraDescription_lang_1: "$s1 damage every $t1 sec."
+      AuraDescription_lang_2: "$s1 damage every $t1 sec."
+      AuraDescription_lang_3: "$s1 damage every $t1 sec."
+      AuraDescription_lang_4: "$s1 damage every $t1 sec."
+      AuraDescription_lang_5: "$s1 damage every $t1 sec."
+      AuraDescription_lang_6: "$s1 damage every $t1 sec."
+      AuraDescription_lang_7: "$s1 damage every $t1 sec."
+      SpellIconID: 118
       EffectTriggerSpell_1: 61019
   - type: copy
     key: 1374
@@ -556,23 +556,23 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_1: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_2: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_3: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_4: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_5: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_6: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      Description_lang_7: "Calls down a pillar of fire, burning all enemies within the area for $s1 Fire damage and an additional $o2 Fire damage over $d."
-      AuraDescription_lang_0: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_1: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_2: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_3: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_4: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_5: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_6: "$s2 Fire damage every $t2 seconds."
-      AuraDescription_lang_7: "$s2 Fire damage every $t2 seconds."
-      SpellIconID: 37
+      Description_lang_0: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_1: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_2: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_3: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_4: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_5: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_6: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      Description_lang_7: "Explodes a diseased enemy, dealing $s1 damage to enemies in the area and an additional $o2 damage over $d.  Requires one of your diseases on the target."
+      AuraDescription_lang_0: "$s2 damage every $t2 sec."
+      AuraDescription_lang_1: "$s2 damage every $t2 sec."
+      AuraDescription_lang_2: "$s2 damage every $t2 sec."
+      AuraDescription_lang_3: "$s2 damage every $t2 sec."
+      AuraDescription_lang_4: "$s2 damage every $t2 sec."
+      AuraDescription_lang_5: "$s2 damage every $t2 sec."
+      AuraDescription_lang_6: "$s2 damage every $t2 sec."
+      AuraDescription_lang_7: "$s2 damage every $t2 sec."
+      SpellIconID: 1468
       EffectTriggerSpell_1: 61022
   - type: copy
     key: 1374
@@ -640,14 +640,14 @@ Spell.dbc:
       Description_lang_5: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
       Description_lang_6: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
       Description_lang_7: "Tethers your undead minion to act as a permanent, controllable pet. Only one minion can be tethered at a time."
-      AuraDescription_lang_0: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_1: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_2: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_3: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_4: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_5: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_6: "Healing $s1 damage every $t1 seconds."
-      AuraDescription_lang_7: "Healing $s1 damage every $t1 seconds."
+      AuraDescription_lang_0: "Tethered to a Necromancer."
+      AuraDescription_lang_1: "Tethered to a Necromancer."
+      AuraDescription_lang_2: "Tethered to a Necromancer."
+      AuraDescription_lang_3: "Tethered to a Necromancer."
+      AuraDescription_lang_4: "Tethered to a Necromancer."
+      AuraDescription_lang_5: "Tethered to a Necromancer."
+      AuraDescription_lang_6: "Tethered to a Necromancer."
+      AuraDescription_lang_7: "Tethered to a Necromancer."
       SpellIconID: 1500
       EffectTriggerSpell_1: 61026
   - type: copy
@@ -670,14 +670,14 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_1: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_2: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_3: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_4: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_5: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_6: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
-      Description_lang_7: "Sacrifices your minion, healing you and granting you a Death Pact effect. The healing is doubled when used on your tethered minion."
+      Description_lang_0: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_1: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_2: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_3: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_4: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_5: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_6: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
+      Description_lang_7: "Sacrifices your minion, healing you and granting a Death Pact effect that varies by minion type.  The healing is doubled when used on your tethered minion."
       AuraDescription_lang_0: ""
       AuraDescription_lang_1: ""
       AuraDescription_lang_2: ""
@@ -686,7 +686,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 1488
+      SpellIconID: 130
       EffectTriggerSpell_1: 61028
   - type: copy
     key: 1374
@@ -724,7 +724,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
       AuraDescription_lang_6: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
       AuraDescription_lang_7: "Melee and casting speed increased by $s1%. Healing $s3% of maximum health every $t3 sec."
-      SpellIconID: 957
+      SpellIconID: 108
       EffectTriggerSpell_1: 61033
   - type: copy
     key: 1374
@@ -762,7 +762,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 134
       EffectTriggerSpell_1: 61036
   - type: copy
     key: 1374
@@ -800,7 +800,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 88
+      SpellIconID: 222
       EffectTriggerSpell_1: 61049
   - type: copy
     key: 1374
@@ -830,14 +830,14 @@ Spell.dbc:
       Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
-      AuraDescription_lang_0: ""
-      AuraDescription_lang_1: ""
-      AuraDescription_lang_2: ""
-      AuraDescription_lang_3: ""
-      AuraDescription_lang_4: ""
-      AuraDescription_lang_5: ""
-      AuraDescription_lang_6: ""
-      AuraDescription_lang_7: ""
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec."
       SpellIconID: 313
       EffectTriggerSpell_1: 61017
   - type: copy
@@ -876,7 +876,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 75
       EffectTriggerSpell_1: 61037
   - type: copy
     key: 1374
@@ -906,14 +906,14 @@ Spell.dbc:
       Description_lang_5: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_6: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
       Description_lang_7: "Infects the target with Grave Rot, causing $*8;s1 Shadow damage over $d.  The final tick deals triple damage."
-      AuraDescription_lang_0: ""
-      AuraDescription_lang_1: ""
-      AuraDescription_lang_2: ""
-      AuraDescription_lang_3: ""
-      AuraDescription_lang_4: ""
-      AuraDescription_lang_5: ""
-      AuraDescription_lang_6: ""
-      AuraDescription_lang_7: ""
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec."
       SpellIconID: 313
       EffectTriggerSpell_1: 61018
   - type: copy
@@ -936,23 +936,23 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 2"
       NameSubtext_lang_6: "Rank 2"
       NameSubtext_lang_7: "Rank 2"
-      Description_lang_0: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_1: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_2: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_3: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_4: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_5: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_6: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_7: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      AuraDescription_lang_0: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_1: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_2: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_3: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_4: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_5: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_6: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_7: "$s1 Fire damage every $t1 seconds."
-      SpellIconID: 547
+      Description_lang_0: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_1: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_2: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_3: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_4: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_5: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_6: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_7: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      AuraDescription_lang_0: "$s1 damage every $t1 sec."
+      AuraDescription_lang_1: "$s1 damage every $t1 sec."
+      AuraDescription_lang_2: "$s1 damage every $t1 sec."
+      AuraDescription_lang_3: "$s1 damage every $t1 sec."
+      AuraDescription_lang_4: "$s1 damage every $t1 sec."
+      AuraDescription_lang_5: "$s1 damage every $t1 sec."
+      AuraDescription_lang_6: "$s1 damage every $t1 sec."
+      AuraDescription_lang_7: "$s1 damage every $t1 sec."
+      SpellIconID: 118
       EffectTriggerSpell_1: 61020
   - type: copy
     key: 1374
@@ -990,7 +990,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 541
       EffectTriggerSpell_1: 61038
   - type: copy
     key: 1374
@@ -1028,7 +1028,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 61
+      SpellIconID: 160
       EffectTriggerSpell_1: 61039
   - type: copy
     key: 1374
@@ -1066,7 +1066,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 88
+      SpellIconID: 222
       EffectTriggerSpell_1: 61050
   - type: copy
     key: 1374
@@ -1104,7 +1104,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Stunned.  Any damage will break the effect."
       AuraDescription_lang_6: "Stunned.  Any damage will break the effect."
       AuraDescription_lang_7: "Stunned.  Any damage will break the effect."
-      SpellIconID: 37
+      SpellIconID: 355
       EffectTriggerSpell_1: 61048
   - type: copy
     key: 1374
@@ -1126,23 +1126,23 @@ Spell.dbc:
       NameSubtext_lang_5: "Rank 3"
       NameSubtext_lang_6: "Rank 3"
       NameSubtext_lang_7: "Rank 3"
-      Description_lang_0: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_1: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_2: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_3: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_4: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_5: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_6: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      Description_lang_7: "Calls down a fiery rain to burn enemies in the area of effect for $o1 Fire damage over $d."
-      AuraDescription_lang_0: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_1: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_2: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_3: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_4: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_5: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_6: "$s1 Fire damage every $t1 seconds."
-      AuraDescription_lang_7: "$s1 Fire damage every $t1 seconds."
-      SpellIconID: 547
+      Description_lang_0: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_1: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_2: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_3: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_4: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_5: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_6: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      Description_lang_7: "Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease."
+      AuraDescription_lang_0: "$s1 damage every $t1 sec."
+      AuraDescription_lang_1: "$s1 damage every $t1 sec."
+      AuraDescription_lang_2: "$s1 damage every $t1 sec."
+      AuraDescription_lang_3: "$s1 damage every $t1 sec."
+      AuraDescription_lang_4: "$s1 damage every $t1 sec."
+      AuraDescription_lang_5: "$s1 damage every $t1 sec."
+      AuraDescription_lang_6: "$s1 damage every $t1 sec."
+      AuraDescription_lang_7: "$s1 damage every $t1 sec."
+      SpellIconID: 118
       EffectTriggerSpell_1: 61021
   - type: copy
     key: 1374
@@ -1180,7 +1180,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Healing $s1 damage every $t1 seconds."
       AuraDescription_lang_6: "Healing $s1 damage every $t1 seconds."
       AuraDescription_lang_7: "Healing $s1 damage every $t1 seconds."
-      SpellIconID: 88
+      SpellIconID: 1591
       EffectTriggerSpell_1: 61040
   - type: copy
     key: 1374
@@ -1218,7 +1218,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 130
+      SpellIconID: 498
       EffectTriggerSpell_1: 61075
   - type: copy
     key: 1374
@@ -1256,7 +1256,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 152
+      SpellIconID: 147
       EffectTriggerSpell_1: 61076
   - type: copy
     key: 1374
@@ -1294,7 +1294,7 @@ Spell.dbc:
       AuraDescription_lang_5: ""
       AuraDescription_lang_6: ""
       AuraDescription_lang_7: ""
-      SpellIconID: 24
+      SpellIconID: 201
       EffectTriggerSpell_1: 61077
   - type: copy
     key: 1374
@@ -1354,23 +1354,23 @@ Spell.dbc:
       NameSubtext_lang_5: ""
       NameSubtext_lang_6: ""
       NameSubtext_lang_7: ""
-      Description_lang_0: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_1: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_2: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_3: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_4: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_5: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_6: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      Description_lang_7: "Increases Shadow resistance by $s2 and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
-      AuraDescription_lang_0: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_1: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_2: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_3: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_4: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_5: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_6: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      AuraDescription_lang_7: "Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
-      SpellIconID: 89
+      Description_lang_0: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_1: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_2: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_3: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_4: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_5: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_6: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      Description_lang_7: "Increases armor by $s1 and Shadow resistance by $s2, and heals you for 3% of all damage you deal.  Only one Armor spell can be active."
+      AuraDescription_lang_0: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_1: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_2: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_3: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_4: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_5: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_6: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      AuraDescription_lang_7: "Armor increased by $s1.  Shadow resistance increased by $s2.  Heals you for 3% of all damage you deal."
+      SpellIconID: 93
       EffectTriggerSpell_1: 61079
   - type: copy
     key: 1374
@@ -1408,7 +1408,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Damage received reduced by 10%."
       AuraDescription_lang_6: "Damage received reduced by 10%."
       AuraDescription_lang_7: "Damage received reduced by 10%."
-      SpellIconID: 99
+      SpellIconID: 1611
       EffectTriggerSpell_1: 61080
   - type: copy
     key: 1374
@@ -1446,7 +1446,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Intellect reduced by $s1."
       AuraDescription_lang_6: "Intellect reduced by $s1."
       AuraDescription_lang_7: "Intellect reduced by $s1."
-      SpellIconID: 543
+      SpellIconID: 77
       EffectTriggerSpell_1: 61081
   - type: copy
     key: 1374
@@ -1484,7 +1484,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Shadow damage and disease spread."
       AuraDescription_lang_6: "Shadow damage and disease spread."
       AuraDescription_lang_7: "Shadow damage and disease spread."
-      SpellIconID: 548
+      SpellIconID: 116
       EffectTriggerSpell_1: 61082
   - type: copy
     key: 1374
@@ -1522,7 +1522,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Shackled."
       AuraDescription_lang_6: "Shackled."
       AuraDescription_lang_7: "Shackled."
-      SpellIconID: 27
+      SpellIconID: 309
       EffectTriggerSpell_1: 61083
   - type: copy
     key: 1374
@@ -1560,7 +1560,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Immune to magic."
       AuraDescription_lang_6: "Immune to magic."
       AuraDescription_lang_7: "Immune to magic."
-      SpellIconID: 99
+      SpellIconID: 207
       EffectTriggerSpell_1: 61084
   - type: copy
     key: 1374
@@ -1598,7 +1598,7 @@ Spell.dbc:
       AuraDescription_lang_5: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
       AuraDescription_lang_6: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
       AuraDescription_lang_7: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
-      SpellIconID: 1711
+      SpellIconID: 182
       EffectTriggerSpell_1: 61085
   - type: copy
     key: 1374
@@ -1636,5 +1636,119 @@ Spell.dbc:
       AuraDescription_lang_5: "Damage dealt increased by 15%.  Losing 2% of maximum health every second."
       AuraDescription_lang_6: "Damage dealt increased by 15%.  Losing 2% of maximum health every second."
       AuraDescription_lang_7: "Damage dealt increased by 15%.  Losing 2% of maximum health every second."
-      SpellIconID: 169
+      SpellIconID: 1477
       EffectTriggerSpell_1: 61086
+  - type: copy
+    key: 1374
+    values:
+      ID: 61143
+      Name_lang_0: "Grim Reaper"
+      Name_lang_1: "Grim Reaper"
+      Name_lang_2: "Grim Reaper"
+      Name_lang_3: "Grim Reaper"
+      Name_lang_4: "Grim Reaper"
+      Name_lang_5: "Grim Reaper"
+      Name_lang_6: "Grim Reaper"
+      Name_lang_7: "Grim Reaper"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_1: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_2: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_3: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_4: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_5: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_6: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      Description_lang_7: "Allows the use of all two-handed weapons and dual wielding one-handed weapons."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 1884
+      EffectTriggerSpell_1: 61092
+  - type: copy
+    key: 1374
+    values:
+      ID: 61144
+      Name_lang_0: "Necro Knight"
+      Name_lang_1: "Necro Knight"
+      Name_lang_2: "Necro Knight"
+      Name_lang_3: "Necro Knight"
+      Name_lang_4: "Necro Knight"
+      Name_lang_5: "Necro Knight"
+      Name_lang_6: "Necro Knight"
+      Name_lang_7: "Necro Knight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Allows the use of Leather and Mail armor."
+      Description_lang_1: "Allows the use of Leather and Mail armor."
+      Description_lang_2: "Allows the use of Leather and Mail armor."
+      Description_lang_3: "Allows the use of Leather and Mail armor."
+      Description_lang_4: "Allows the use of Leather and Mail armor."
+      Description_lang_5: "Allows the use of Leather and Mail armor."
+      Description_lang_6: "Allows the use of Leather and Mail armor."
+      Description_lang_7: "Allows the use of Leather and Mail armor."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 326
+      EffectTriggerSpell_1: 61090
+  - type: copy
+    key: 1374
+    values:
+      ID: 61145
+      Name_lang_0: "Will of the Death Knight"
+      Name_lang_1: "Will of the Death Knight"
+      Name_lang_2: "Will of the Death Knight"
+      Name_lang_3: "Will of the Death Knight"
+      Name_lang_4: "Will of the Death Knight"
+      Name_lang_5: "Will of the Death Knight"
+      Name_lang_6: "Will of the Death Knight"
+      Name_lang_7: "Will of the Death Knight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Allows the use of Plate armor."
+      Description_lang_1: "Allows the use of Plate armor."
+      Description_lang_2: "Allows the use of Plate armor."
+      Description_lang_3: "Allows the use of Plate armor."
+      Description_lang_4: "Allows the use of Plate armor."
+      Description_lang_5: "Allows the use of Plate armor."
+      Description_lang_6: "Allows the use of Plate armor."
+      Description_lang_7: "Allows the use of Plate armor."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 440
+      EffectTriggerSpell_1: 61091

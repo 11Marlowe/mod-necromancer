@@ -101,6 +101,10 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1430, values: { id: 7250, skillId: 700, spellId: 61083, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7251, skillId: 700, spellId: 61084, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7252, skillId: 700, spellId: 61085, classmask: 512, learnOnGetSkill: 0 } }
+  # armor/weapon progression (A.4 slots 9/17/25)
+  - { type: copy, key: 1430, values: { id: 7254, skillId: 701, spellId: 61090, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7255, skillId: 701, spellId: 61091, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7256, skillId: 701, spellId: 61092, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert

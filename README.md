@@ -68,8 +68,17 @@ built as a standalone module on the core's **class-support** layer.
 > batch **split the single Necromancy tab into the design's three tabs -
 > Reanimation (700), Blood (701) and Plague (702)** (A87); existing
 > characters got skills 701/702 from a character migration, new characters
-> learn them from the rank-1 starting spells. Later batches add the Corpse
-> Bag container, custom tooltips/icons, armor progression and talents. See the
+> learn them from the rank-1 starting spells. The **icon/tooltip cosmetic
+> pass (A89, 2026-10-20)** then gave every class spell, minion ability and
+> trainer learn-spell a hand-picked **existing `SpellIcon.dbc` icon** (no new
+> art) and fixed the remaining donor tooltips (Bone Armor, Desecration,
+> Disease Cloud, Tether, Harvest, Grave Rot, Toxic Plague, Ghoul Armor).
+> The **armor/weapon progression pass (A90, 2026-10-20)** adds trainer-taught
+> **Grim Reaper** (L20), **Necro Knight** (L30) and **Will of the Death
+> Knight** (L40) passives: dual wield + 1H/2H weapons, Leather/Mail and Plate
+> (learn spells 61143-61145; both trainers now list 38 rows).
+> Later batches add the Corpse Bag container, the class-creation icon art and
+> talents. See the
 > design/handoff document: <https://github.com/11Marlowe/wow-tools> (private)
 > or the project's `Necromancer-Design.md`.
 >
@@ -79,7 +88,8 @@ built as a standalone module on the core's **class-support** layer.
 > pet-bar icons and ability tooltips, 2026-10-18); the correction pass passed
 > the server-side pass (2026-10-19) and the in-client check; the trainers,
 > the placeholder class quests and Plague Strike passed the server-side pass
-> (2026-10-19); the remaining spellbook batch + three-tab split passed the
+> (2026-10-19); the remaining spellbook batch + three-tab split, the
+> icon/tooltip cosmetic pass and the armor/weapon progression passed the
 > server-side pass (2026-10-20).
 
 ## Spells
@@ -126,26 +136,34 @@ built as a standalone module on the core's **class-support** layer.
 | Unholy Shield | 1 | 34 (Reanimation) | Anti-Magic Shield | 8 s magic immunity, 3 min CD (placeholder for -50% spell damage + magic-effect prevention) |
 | Lich Armor | 1 | 40 (Reanimation) | Mage Armor | +10 Frost resistance, +3% spell crit, 15% mana regen while casting; mutually exclusive with Bone/Ghoul Armor; melee slow not implemented |
 | Dark Punishment | 1 | 42 (Blood) | Death Wish | 20 s: +15% all damage done, drains 2% max health/second, 3 min CD, uncancellable |
+| Grim Reaper | 1 (passive) | 20 (Blood) | Dual Wield | 1H/2H axes, maces, swords, polearms + dual wield |
+| Necro Knight | 1 (passive) | 30 (Blood) | Leather proficiency | Leather + Mail armor |
+| Will of the Death Knight | 1 (passive) | 40 (Blood) | Plate proficiency | Plate armor |
 
-For these batches the icons and costs are mostly the model spells' (renamed
-via the client patch).  Tooltips are the models' except where the mechanics
-differ: Cripple, Harvest, all Raise spells (since 2026-10-18 the raise
-tooltips state the corpse/bag requirement, e.g. "requires a humanoid or
-zombie corpse nearby, or 1 Lump of Flesh"), the Wight transform, the
-correction-pass spells (Plague Bolt, Toxic Plague, Reap, Call of the Grave,
-Death Coil) and the remaining-batch spells (Bloodlet, Dark Command, Terror,
-Ghoul Armor, Embalm, Lobotomize, Outbreak, Rule Undead, Unholy Shield, Lich
-Armor, Dark Punishment).  The disease spells' rank-up mechanics are
-placeholders until the talent/effect polish batches; "Disease Cloud",
-"Cripple", "Tether", "Bloodlet" (L6), "Dark Command" (L10), "Terror" (L14),
-"Outbreak" (L26), "Rule Undead" (L28), "Unholy Shield" (L34) and
-"Dark Punishment" (L42) are design spellbook/talent entries and are
-trainer-taught until the real gates/talents exist.  The spellbook now has the
-design's three tabs - **Reanimation (700), Blood (701), Plague (702)** - see
-A87.  Custom tuning/tooltips and the rest of the design (the Corpse Bag
-container, the Desecration/Disease Cloud/Bone Armor corrections, Grim
-Reaper, Lichborne, ...) arrive in later batches. Spells are taught by the
-trainers (see *Trainers* below), not auto-learned.
+Costs are still mostly the model spells' (renamed via the client patch).
+Icons are **hand-picked existing `SpellIcon.dbc` entries** (cosmetic pass A89,
+2026-10-20; no new art) - e.g. Plague Bolt -> Devouring Plague, Reap ->
+Shadow Strikes, Bone Armor -> Call of Bone, Desecration -> Death and Decay,
+Disease Cloud -> Creeping Plague, Toxic Plague -> Plague Cloud.  Tooltips are
+custom wherever the mechanics differ: Cripple, Harvest, all Raise spells
+(since 2026-10-18 the raise tooltips state the corpse/bag requirement, e.g.
+"requires a humanoid or zombie corpse nearby, or 1 Lump of Flesh"), the Wight
+transform, the correction-pass spells (Plague Bolt, Toxic Plague, Reap, Call
+of the Grave, Death Coil), the remaining-batch spells (Bloodlet, Dark Command,
+Terror, Ghoul Armor, Embalm, Lobotomize, Outbreak, Rule Undead, Unholy
+Shield, Lich Armor, Dark Punishment) and the cosmetic pass's donor fixes
+(Bone Armor, Desecration, Disease Cloud, Tether, Harvest, Grave Rot, Toxic
+Plague, Ghoul Armor).  The disease spells' rank-up mechanics are placeholders
+until the talent/effect polish batches; "Disease Cloud", "Cripple", "Tether",
+"Bloodlet" (L6), "Dark Command" (L10), "Terror" (L14), "Outbreak" (L26),
+"Rule Undead" (L28), "Unholy Shield" (L34) and "Dark Punishment" (L42) are
+design spellbook/talent entries and are trainer-taught until the real
+gates/talents exist.  The spellbook now has the design's three tabs -
+**Reanimation (700), Blood (701), Plague (702)** - see A87.  Remaining design
+work (the Corpse Bag container, the Desecration/Disease Cloud/Bone Armor
+mechanics, Grim Reaper, Lichborne, the class-creation icon art, ...) arrives
+in later batches. Spells are taught by the trainers (see *Trainers* below),
+not auto-learned.
 
 **Minion abilities (batch 4, design A.7):** taught per tier through
 `petcreateinfo_spell`; they autocast by default and all cost 0 mana.
@@ -170,12 +188,14 @@ Thorns-style aura); Wight Taunt, Cleave, Crowd Pummel (Pummel), Cannibalize.
 - **Spell-correction placeholders (design doc A78):** Harvest keeps the
   model's 2-min cooldown (design: no cooldown); Desecration is still a
   channeled Rain of Fire (design: instant Shadow + healing reduction);
-  Disease Cloud's damage/tooltip are still Flamestrike's; Bone Armor is
-  still Frost Armor; "Grave Rot" displays as "Call of the
-  Grave"; damage values are placeholders.
+  Disease Cloud's damage is still Flamestrike's; Bone Armor is still Frost
+  Armor mechanically; the "Grave Rot" debuff still shows the spell name
+  "Call of the Grave" (the aura description now names Grave Rot); damage
+  values are placeholders.  Tooltips/icons for these were corrected by the
+  cosmetic pass (A89) where the text referred to the donor class.
 - **Plague Strike placeholders (design doc A86):** 25 mana, 6 s cooldown,
   5 yd, one rank; the flat weapon bonus is Sinister Strike's (3), the icon is
-  Sinister Strike's (130), and the disease is Toxic Plague rank 1.  The
+  Garrote (498), and the disease is Toxic Plague rank 1.  The
   +3%-per-disease direct damage uses the shared Plague Bolt hook; a higher
   Toxic Plague rank is not downgraded.
 - **Remaining-spellbook placeholders (design doc A88):** Bloodlet uses the
@@ -186,6 +206,13 @@ Thorns-style aura); Wight Taunt, Cleave, Crowd Pummel (Pummel), Cannibalize.
   implemented; Dark Punishment buffs all damage (not just physical/direct
   spells); Terror/Lobotomize/Rule Undead/Outbreak values and the tab icons
   are placeholders.  The three armor buffs are mutually exclusive.
+- **Armor/weapon progression placeholders (design doc A90):** the three
+  passives are trainer-taught talent shortcuts (Grim Reaper L20, Necro Knight
+  L30, Will L40); Will's 4%-physical-as-Shadow rider, sigils, "no Wands"
+  removal, Grim Reaper's dual-wield strike and fist-weapon proficiency are
+  deferred, and the talent prerequisites are not enforced.  Losing a passive
+  is handled (`OnForgotSpell` removes the skills and unequips invalid gear),
+  so the talent phase can use the same path.
 
 Server data: `data/sql/world/20261014160000_world.sql` (batch 1),
 `20261014170000_world.sql` (batch 2), `20261014180000_world.sql` (batch 3
@@ -197,20 +224,24 @@ table, Harvest/Wight cast-time + spell updates),
 Meat Catapult), `20261018230000_world.sql` (batch 4: per-minion abilities +
 petcreateinfo sets), `20261019120000_world.sql` (spell-correction pass:
 A.6-A.9 + A72, Death Coil 61074 + Toxic Plague),
-`20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61142,
+`20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61145,
 `npc_trainer`), `20261019220000_world.sql` (placeholder class quests, quest
 relations, questgiver flag, removal of the seven gated trainer rows),
 `20261019230000_world.sql` (Plague Strike 61075, learn spell 61131, skill-line
 row and quest 950107), `20261020090000_world.sql` (remaining batch
-61076-61086 + the A87 tab reassignments) and
+61076-61086 + the A87 tab reassignments), `20261020120000_world.sql`
+(icon/tooltip cosmetic pass, A89), `20261020140000_world.sql`
+(armor/weapon progression passives, A90) and
 `data/sql/character/20261019210000_char.sql` (one-time refresh of pre-batch-4
 saved pets) + `20261020090000_char.sql` (grant tabs 701/702 to existing
 characters), all generated by the scripts in `tools/` (the character
 migrations are hand-written).  Client patches:
 `client/patches/40-spells.yaml` (corrections as `update` blocks after the
 `copy` blocks), `41-learn-spells.yaml` (the trainer learn spells, now through
-61142), `42-plague-strike.yaml` (Plague Strike 61075),
-`43-remaining-spells.yaml` (the remaining batch) and
+61145), `42-plague-strike.yaml` (Plague Strike 61075),
+`43-remaining-spells.yaml` (the remaining batch),
+`44-cosmetic-pass.yaml` (A89 icons/tooltips; run the generator last),
+`45-armor-progression.yaml` (A90 passives) and
 `50-skilllines.yaml` (the three tabs Reanimation 700 / Blood 701 / Plague 702;
 every spell's `SkillLineAbility.skillId` reassigned; new rows 7243-7253;
 `SkillRaceClassInfo` grants 1010-1012).
@@ -254,8 +285,8 @@ were removed on 2026-10-19):
 | Orgrimmar | **Gorvoth the Gravewarden** | Cleft of Shadow, by the warlock trainers | 950010 |
 | Stormwind | **Mordecai Gravewhisper** | Slaughtered Lamb cellar, by the warlock trainers | 950011 |
 
-Both have `trainer_class = 10` and teach the **35 non-quest spells and ranks**
-(learn spells 61100-61142, `npc_trainer` rows); the other eight are the rewards
+Both have `trainer_class = 10` and teach the **38 non-quest spells and ranks**
+(learn spells 61100-61145, `npc_trainer` rows); the other eight are the rewards
 of the placeholder class quests below (seven A85 minion/harvest quests plus
 Plague Strike).  Prices use the vanilla class-trainer
 level table (10 copper at level 1 up to 240 silver at 58); rank 2/3 spells still
@@ -318,6 +349,26 @@ casts and event damage/auras, cast gates, minions/pet, bag items — before the
 in-client pass, which is only for client-rendered items (icons, tooltips,
 models, Glue UI). The 2026-10-18 spike verified the whole slice-3b list and
 batch 4; the 2026-10-19 pass verified the spell corrections + A72.
+
+- **Cosmetic pass (2026-10-20, client-rendered):** relaunch the client and
+  check the spellbook icons/tooltips.  Icons are existing `SpellIcon.dbc`
+  entries only (no new art); the pass fixed Bone Armor, Desecration, Disease
+  Cloud, Tether, Harvest, Grave Rot, Toxic Plague and Ghoul Armor text.  No
+  server behavior changed; SQL/DB and the built DBC were inspected.  The
+  class-creation icon cell is still unpainted.
+
+- **Armor/weapon progression checks (2026-10-20, server-side with
+  `turtle-agent`):** the trainers list learn spells **61143-61145** (38 rows
+  total).  Train **Grim Reaper** (L20), **Necro Knight** (L30) and **Will of
+  the Death Knight** (L40); the real spells 61092/61090/61091 appear in
+  `spells`, and the character gains Leather/Mail/Plate plus the 1H/2H weapon
+  skills (value 1, max level*5).  Equip plate, mail, leather and a 2H weapon
+  (no `inventory_error`); after Grim Reaper, a second 1H weapon equips in the
+  off hand.  **Losing a passive** (`.unlearn`, and later a talent respec)
+  runs `OnForgotSpell`: the skills are removed and invalid gear is moved to
+  the bags (or mailed if full); verified on a fresh character by unlearning
+  all three while wearing plate/mail/1H/2H.  Deferred: sigils, wand removal,
+  Will's Shadow rider and fist weapons.
 
 - ⚠️ **Turn GM mode off first.** The test character can log in with GM mode
   ON (a persisted flag). A GM attacker makes creatures evade/reset, which
