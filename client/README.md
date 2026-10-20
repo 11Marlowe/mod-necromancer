@@ -13,8 +13,11 @@ MPQ patch.
 | `DBFilesClient\CharStartOutfit.dbc` | starting outfit per race/gender |
 | `Interface\GlueXML\CharacterCreate.lua` | `CLASS_ICON_TCOORDS["NECROMANCER"]`, icon coords |
 | `Interface\GlueXML\GlueStrings.lua` | `CLASS_NECROMANCER` creation-screen text |
-| `Glues\CharacterCreate\UI-CharacterCreate-Classes.blp` | class icon in the free atlas cell |
-| `DBFilesClient\Spell.dbc` | class spells (batches 1-4, corrections, remaining batch 61076-61086) and the trainer learn spells 61100-61142 |
+| `Interface\GlueXML\CharacterSelect.lua` | red class color in the character list |
+| `Interface\FrameXML\Fonts.xml` | `RAID_CLASS_COLORS["NECROMANCER"]` (red) |
+| `Interface\FrameXML\Globals.lua` | `TW_CLASS_TOKEN["Necromancer"] = "NECROMANCER"` |
+| `Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes.blp` | class icon in the free atlas cell (placeholder art) |
+| `DBFilesClient\Spell.dbc` | class spells (batches 1-4, corrections, remaining batch 61076-61086) and the trainer learn spells 61100-61145 |
 | `DBFilesClient\SkillLine.dbc` | the three spellbook tabs: Reanimation (700), Blood (701), Plague (702) |
 | `DBFilesClient\SkillLineAbility.dbc` | spell-to-tab mapping (rows 7211-7253) |
 | `DBFilesClient\SkillRaceClassInfo.dbc` | grants skills 700/701/702 to class 10 (rows 1010-1012) |
@@ -56,9 +59,11 @@ CLASS_NECROMANCER = "        亡灵法师掌握着死亡的禁忌之力。他们
 
 (The deployed development client already has this line.)
 
-## Known Phase-1 placeholders
+## Known placeholders
 
-- The creation-screen class icon points at a free atlas cell in
-  `UI-CharacterCreate-Classes.blp`; the texture is not painted yet, so the icon
-  is blank until Phase 2 art. The class name/description and everything else
-  are functional.
+- The creation-screen class icon uses the existing **Call of Bone** spell icon
+  as placeholder art in the free atlas cell of
+  `Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes.blp`. Replace it
+  with custom Necromancer art when available.
+- Class color is red (`RAID_CLASS_COLORS`/`CLASS_COLORS`), applied to `/who`,
+  friends/guild lists, raid frames, tooltips and the character-select list.

@@ -7,8 +7,9 @@ built as a standalone module on the core's **class-support** layer.
 **Status:** Phase 2 is content-complete through the armor/weapon progression
 pass (2026-10-20). Identity, spells, minions, trainers, placeholder quests, the
 three-tab spellbook, icons/tooltips and the Blood-tree armor passives are
-implemented, deployed and server-side verified with `turtle-agent`. Remaining
-work: class color, creation-screen icon art, talents/talent spells; the Corpse
+implemented, deployed and server-side verified with `turtle-agent`. Class color
+(red) and a placeholder creation-screen icon are now in the client patch.
+Remaining work: custom creation-screen art, talents/talent spells; the Corpse
 Bag container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
@@ -27,7 +28,8 @@ lessons) and **§14** (assumptions A1-A90) before changing spells or mechanics.
   Wight transform.
 - Trainers replace auto-learn; the eight quest-gated spells come from
   placeholder class quests.
-- Client half ships as `patch-Z.mpq` (DBCs + creation-screen Glue UI).
+- Client half ships as `patch-Z.mpq` (DBCs, creation-screen Glue UI, red class
+  color and a placeholder class icon).
 
 ## Spellbook
 
@@ -154,6 +156,9 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
 - Spellbook tabs are client-rendered; `turtle-agent` cannot verify them.
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
+- **pfQuest:** class-quest filtering needs the custom class bit (512) in
+  `pfDB.bitclasses`; without it a Necromancer raises `bad argument #2 to
+  'band'`. The fix and nil guards are documented in the design doc A91.
 
 ## Layout
 
