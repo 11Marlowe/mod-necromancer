@@ -75,7 +75,19 @@ namespace
         NECRO_SPELL_TOXIC_PLAGUE_R2      = 61072,
         NECRO_SPELL_TOXIC_PLAGUE_R3      = 61073,
         NECRO_SPELL_DEATH_COIL           = 61074,   // the class's own clone (corrections pass)
-        NECRO_SPELL_PLAGUE_STRIKE        = 61075,   // melee strike + Toxic Plague (next batch)
+        NECRO_SPELL_PLAGUE_STRIKE        = 61075,   // melee strike + Toxic Plague
+        NECRO_SPELL_BLOODLET             = 61076,   // remaining spellbook batch
+        NECRO_SPELL_DARK_COMMAND         = 61077,
+        NECRO_SPELL_TERROR               = 61078,
+        NECRO_SPELL_GHOUL_ARMOR          = 61079,
+        NECRO_SPELL_EMBALM               = 61080,
+        NECRO_SPELL_LOBOTOMIZE           = 61081,
+        NECRO_SPELL_OUTBREAK             = 61082,
+        NECRO_SPELL_RULE_UNDEAD          = 61083,
+        NECRO_SPELL_UNHOLY_SHIELD        = 61084,
+        NECRO_SPELL_LICH_ARMOR           = 61085,
+        NECRO_SPELL_DARK_PUNISHMENT      = 61086,
+        NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
     };
@@ -140,6 +152,37 @@ namespace
             if (spellId == NECRO_SPELL_DEATH_COIL &&
                     player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
                 player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
+        }
+    };
+
+    // Ghoul Armor (remaining spellbook batch): heals the Necromancer for 3%
+    // of all damage they deal while the armor buff is active.  Player damage
+    // can come from spells, melee or pets the player owns; the hook only
+    // counts damage whose attacker is the player itself (design "damage you
+    // deal"), and skips self-damage.
+    class NecromancerGhoulArmorUnitScript : public UnitScript
+    {
+    public:
+        NecromancerGhoulArmorUnitScript()
+            : UnitScript("mod_necromancer_ghoul_armor", { UNITHOOK_ON_DAMAGE })
+        {
+        }
+
+        void OnDamage(Unit* attacker, Unit* victim, uint32& damage) override
+        {
+            if (!attacker || !victim || attacker == victim || damage == 0)
+                return;
+
+            Player* player = attacker->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            Aura* armor = player->GetAura(NECRO_SPELL_GHOUL_ARMOR, EFFECT_INDEX_0);
+            if (!armor)
+                return;
+
+            uint32 heal = std::max<uint32>(1, damage * 3 / 100);
+            player->DealHeal(player, heal, armor->GetSpellProto());
         }
     };
 
@@ -1188,6 +1231,200 @@ namespace
     {
     };
 
+    // Armor buffs (Bone Armor, Ghoul Armor, Lich Armor) are mutually
+    // exclusive: the design treats them as one armor line.  The script is
+    // bound to all three spells through spell_template.script_name.
+    struct spell_necromancer_armor : public SpellScript
+    {
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            static const uint32 armorSpells[] =
+            {
+                NECRO_SPELL_BONE_ARMOR,
+                NECRO_SPELL_GHOUL_ARMOR,
+                NECRO_SPELL_LICH_ARMOR,
+            };
+
+            for (uint32 id : armorSpells)
+                if (id != spell->m_spellInfo->Id)
+                    spell->m_casterUnit->RemoveAurasDueToSpell(id);
+        }
+    };
+
+    // Bloodlet: takes one tick of the strongest disease the caster has on
+    // the victim, deals that much Shadow damage and restores the same amount
+    // of mana.  Placeholder: the strongest tick is read from the aura and the
+    // disease's duration is shortened by one tick; the design's exact value
+    // is undefined.
+    struct spell_necromancer_bloodlet : public SpellScript
+    {
+        static Aura* FindStrongestDisease(Unit* caster, Unit* target)
+        {
+            if (!caster || !target)
+                return nullptr;
+
+            Aura* best = nullptr;
+            int32 bestAmount = 0;
+            for (auto const& itr : target->GetSpellAuraHolderMap())
+            {
+                SpellAuraHolder* holder = itr.second;
+                if (!holder || holder->IsDeleted() || !holder->GetSpellProto())
+                    continue;
+                if (holder->GetSpellProto()->Dispel != DISPEL_DISEASE)
+                    continue;
+                if (holder->GetCasterGuid() != caster->GetObjectGuid())
+                    continue;
+
+                for (uint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+                {
+                    Aura* aura = holder->GetAuraByEffectIndex(SpellEffectIndex(i));
+                    if (!aura || aura->GetModifier()->m_auraname != SPELL_AURA_PERIODIC_DAMAGE)
+                        continue;
+                    if (aura->GetModifier()->m_amount > bestAmount)
+                    {
+                        bestAmount = aura->GetModifier()->m_amount;
+                        best = aura;
+                    }
+                }
+            }
+
+            return best;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            if (!target || !target->IsAlive() ||
+                    !FindStrongestDisease(spell->m_casterUnit, target))
+                return SPELL_FAILED_BAD_TARGETS;
+
+            return SPELL_CAST_OK;
+        }
+
+        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex effIdx, float& damage) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            Aura* disease = FindStrongestDisease(spell->m_casterUnit, spell->GetUnitTarget());
+            if (disease)
+                damage = float(std::max<int32>(1, disease->GetModifier()->m_amount));
+        }
+
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit || spell->damage == 0)
+                return;
+
+            Aura* disease = FindStrongestDisease(spell->m_casterUnit, spell->GetUnitTarget());
+            if (!disease)
+                return;
+
+            // "in exchange for stealing an equal amount of mana"
+            spell->m_casterUnit->EnergizeBySpell(spell->m_casterUnit,
+                    spell->m_spellInfo->Id, spell->damage, POWER_MANA);
+
+            // One tick of the disease is consumed by the transfer.
+            SpellAuraHolder* holder = disease->GetHolder();
+            if (holder)
+            {
+                int32 period = disease->GetModifier()->periodictime;
+                if (period > 0)
+                    holder->SetAuraDuration(std::max(0, holder->GetAuraDuration() - period));
+            }
+        }
+    };
+
+    // Embalm: reduces the damage received by the caster's tethered minion by
+    // 10% for 1 min.  The aura itself is data (SPELL_AURA_MOD_DAMAGE_PERCENT_TAKEN);
+    // the script only gates the target to the tethered minion.
+    struct spell_necromancer_embalm : public SpellScript
+    {
+        static Pet* GetTetheredMinion(Spell* spell)
+        {
+            if (!spell || !spell->m_casterUnit)
+                return nullptr;
+
+            Unit* target = spell->m_targets.getUnitTarget();
+            Pet* minion = target ? target->ToPet() : nullptr;
+            if (!minion || !minion->IsAlive())
+                return nullptr;
+            if (minion->GetOwnerGuid() != spell->m_casterUnit->GetObjectGuid())
+                return nullptr;
+            if (minion->getPetType() != SUMMON_PET)
+                return nullptr;
+
+            return minion;
+        }
+
+        SpellCastResult OnCheckCast(Spell* spell, bool /*strict*/) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return SPELL_CAST_OK;
+
+            return GetTetheredMinion(spell) ? SPELL_CAST_OK : SPELL_FAILED_BAD_TARGETS;
+        }
+    };
+
+    // Outbreak: channeled Shadow damage that refreshes the caster's diseases
+    // on the victim and spreads them to up to 3 nearby enemies (design A.9).
+    struct spell_necromancer_outbreak : public AuraScript
+    {
+        void OnPeriodicTick(Aura* aura) override
+        {
+            if (!aura || aura->GetId() != NECRO_SPELL_OUTBREAK ||
+                    aura->GetEffIndex() != EFFECT_INDEX_0)
+                return;
+
+            Unit* caster = aura->GetCaster();
+            Unit* target = aura->GetTarget();
+            if (!caster || !target || !target->IsAlive())
+                return;
+
+            std::vector<uint32> diseaseIds;
+            for (auto const& itr : target->GetSpellAuraHolderMap())
+            {
+                SpellAuraHolder* holder = itr.second;
+                if (!holder || holder->IsDeleted() || !holder->GetSpellProto())
+                    continue;
+                if (holder->GetSpellProto()->Dispel != DISPEL_DISEASE)
+                    continue;
+                if (holder->GetCasterGuid() != caster->GetObjectGuid())
+                    continue;
+
+                diseaseIds.push_back(holder->GetId());
+                holder->RefreshHolder();
+            }
+
+            if (diseaseIds.empty())
+                return;
+
+            std::list<Unit*> nearby;
+            MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck check(target, caster, 8.0f);
+            MaNGOS::UnitListSearcher<MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck> searcher(nearby, check);
+            Cell::VisitAllObjects(target, searcher, 8.0f);
+
+            uint32 spread = 0;
+            for (Unit* unit : nearby)
+            {
+                if (!unit || unit == target)
+                    continue;
+                if (spread >= 3)
+                    break;
+
+                for (uint32 diseaseId : diseaseIds)
+                    caster->CastSpell(unit, diseaseId, true);
+                ++spread;
+            }
+        }
+    };
+
     // Reap (A.8): "Generates a high amount of threat" - the health-leech
     // effect only produces the normal damage threat, so an equal amount of
     // school threat is added on a hostile hit (placeholder magnitude).
@@ -1404,6 +1641,26 @@ namespace
         return new spell_necromancer_plague_strike();
     }
 
+    SpellScript* GetArmorSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_armor();
+    }
+
+    SpellScript* GetBloodletSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_bloodlet();
+    }
+
+    SpellScript* GetEmbalmSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_embalm();
+    }
+
+    AuraScript* GetOutbreakAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_outbreak();
+    }
+
     SpellScript* GetReapSpellScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_reap();
@@ -1486,6 +1743,7 @@ void AddNecromancerScripts()
 {
     new NecromancerWorldScript();
     new NecromancerPlayerScript();
+    new NecromancerGhoulArmorUnitScript();
 
     // class-support: the class's summon pets of the declared creature types
     // count as permanent pets (pet action-bar spells, spirit-healer restore,
@@ -1512,4 +1770,10 @@ void AddNecromancerScripts()
     RegisterSpellScript("spell_necromancer_plague_strike", GetPlagueStrikeSpellScript);
     RegisterSpellScript("spell_necromancer_reap", GetReapSpellScript);
     RegisterSpellScript("spell_necromancer_death_coil", GetDeathCoilSpellScript);
+
+    // remaining spellbook batch (2026-10-19)
+    RegisterSpellScript("spell_necromancer_armor", GetArmorSpellScript);
+    RegisterSpellScript("spell_necromancer_bloodlet", GetBloodletSpellScript);
+    RegisterSpellScript("spell_necromancer_embalm", GetEmbalmSpellScript);
+    RegisterAuraScript("spell_necromancer_outbreak", GetOutbreakAuraScript);
 }

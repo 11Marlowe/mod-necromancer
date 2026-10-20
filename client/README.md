@@ -14,10 +14,10 @@ MPQ patch.
 | `Interface\GlueXML\CharacterCreate.lua` | `CLASS_ICON_TCOORDS["NECROMANCER"]`, icon coords |
 | `Interface\GlueXML\GlueStrings.lua` | `CLASS_NECROMANCER` creation-screen text |
 | `Glues\CharacterCreate\UI-CharacterCreate-Classes.blp` | class icon in the free atlas cell |
-| `DBFilesClient\Spell.dbc` | class spells (batches 1-4 + corrections) and the trainer learn spells 61100-61130 |
-| `DBFilesClient\SkillLine.dbc` | "Necromancy" skill line 700 (spellbook tab) |
-| `DBFilesClient\SkillLineAbility.dbc` | spell-to-skill mapping for the tab (rows 7211-7225) |
-| `DBFilesClient\SkillRaceClassInfo.dbc` | grants skill 700 to class 10 |
+| `DBFilesClient\Spell.dbc` | class spells (batches 1-4, corrections, remaining batch 61076-61086) and the trainer learn spells 61100-61142 |
+| `DBFilesClient\SkillLine.dbc` | the three spellbook tabs: Reanimation (700), Blood (701), Plague (702) |
+| `DBFilesClient\SkillLineAbility.dbc` | spell-to-tab mapping (rows 7211-7253) |
+| `DBFilesClient\SkillRaceClassInfo.dbc` | grants skills 700/701/702 to class 10 (rows 1010-1012) |
 
 Load order: the patch is named `patch-Z.mpq` so it loads after everything
 including Turtle's `patch-9.mpq` (highest wins, whole-file replacement).

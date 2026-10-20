@@ -4,7 +4,7 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-> **Status: Phase 2, trainers + placeholder class quests + Plague Strike (auto-learn retired; post-correction pass).**
+> **Status: Phase 2, remaining spellbook batch + three-tab spellbook split (auto-learn retired; post-correction pass).**
 > Class identity (Phase 1)
 > works end-to-end for all 10 races. Batch 1: **Plague Bolt** (ranks 1-3),
 > **Reap** (ranks 1-2), **Bone Armor** and a shared **Death Coil** at level
@@ -50,29 +50,37 @@ built as a standalone module on the core's **class-support** layer.
 > Warlock spell is no longer learned). **Trainers (2026-10-19):** the
 > module's auto-learn is retired. One class trainer in Orgrimmar (Cleft of
 > Shadow) and one in Stormwind (Slaughtered Lamb cellar) teach every shipped
-> spell/rank through learn spells 61100-61130 (see *Trainers* below; 61131 is
+> spell/rank through learn spells 61100-61142 (see *Trainers* below; 61131 is
 > the Plague Strike quest wrapper). The
 > **placeholder class quests (A85, 2026-10-19)** then gate the seven
 > quest-gated spells: both trainers offer one level-gated item turn-in per
 > spell (Raise Zombie/Shade/Harvest at 10, Raise Ghoul/Skeleton at 14, Raise
 > Banshee at 20, Raise Wraith at 30); the items are Corpse Bag items except
 > Harvest, which uses Linen Cloth. The real spell is the reward. Those spells
-> were removed from `npc_trainer`. **Plague Strike (A.8, 2026-10-19)** is the
-> first remaining spellbook entry: an instant melee strike (61075, 5 yd, 6 s
-> CD, 25 mana) that applies Toxic Plague and uses the +3%-per-disease direct
-> damage hook; it is quest-gated by 950107 (1x Lump of Flesh). The design's
-> real quest/item gates remain deferred. Later batches add the Corpse Bag
-> container, the remaining spellbook entries and talents. See the
+> were removed from `npc_trainer`. **Plague Strike (A.8, 2026-10-19)** is an
+> instant melee strike (61075, 5 yd, 6 s CD, 25 mana) that applies Toxic
+> Plague and uses the +3%-per-disease direct damage hook; it is quest-gated
+> by 950107 (1x Lump of Flesh). The design's real quest/item gates remain
+> deferred. **Remaining spellbook batch (2026-10-20):** Bloodlet, Dark
+> Command, Terror, Ghoul Armor, Embalm, Lobotomize, Outbreak, Rule Undead,
+> Unholy Shield, Lich Armor and Dark Punishment (61076-61086), trainer-taught
+> via learn spells 61132-61142 (both trainers now list 35 rows). The same
+> batch **split the single Necromancy tab into the design's three tabs -
+> Reanimation (700), Blood (701) and Plague (702)** (A87); existing
+> characters got skills 701/702 from a character migration, new characters
+> learn them from the rank-1 starting spells. Later batches add the Corpse
+> Bag container, custom tooltips/icons, armor progression and talents. See the
 > design/handoff document: <https://github.com/11Marlowe/wow-tools> (private)
 > or the project's `Necromancer-Design.md`.
 >
-> **Verification (2026-10-19):** every batch is checked headlessly with
+> **Verification (2026-10-19/20):** every batch is checked headlessly with
 > `turtle-agent` (see *Testing tips*) before the user's in-client pass, which
 > covers client-rendered items only.  Batch 4 passed both (in-client:
 > pet-bar icons and ability tooltips, 2026-10-18); the correction pass passed
 > the server-side pass (2026-10-19) and the in-client check; the trainers,
 > the placeholder class quests and Plague Strike passed the server-side pass
-> (2026-10-19).
+> (2026-10-19); the remaining spellbook batch + three-tab split passed the
+> server-side pass (2026-10-20).
 
 ## Spells
 
@@ -107,20 +115,37 @@ built as a standalone module on the core's **class-support** layer.
 | Raise Wight | 1 | 58 | Renew (friendly-target carrier) | transforms a Zombie/Ghoul minion into a Wight (tethered stays tethered) |
 | Meat Catapult | 1 | 44 | Thorium Grenade | 1.5 s cast, 20 yd, 3-yd radius Shadow damage + 2 s stun, 1 min CD; consumes one Corpse Bag item |
 | Army of the Dead | 2 (passive) | 20 / 40 | Dodge (passive scaffold) | active-minion limit: base 1, +1 (R1) / +2 (R2); R2 replaces R1 |
+| Bloodlet | 1 | 6 (Blood) | Mind Blast | instant, 30 yd; consumes one tick of your strongest disease on the target (Shadow damage) and restores the same mana; shortens the disease by one tick |
+| Dark Command | 1 | 10 (Blood) | Taunt | taunts the target (5 yd, 10 s CD, mana) |
+| Terror | 1 | 14 (Plague) | Fear | 2 s cast, 20 yd, 10 s fear, 10 s CD |
+| Ghoul Armor | 1 | 20 (Reanimation) | Demon Armor | +100 armor / +10 Shadow resistance (placeholders) and heals 3% of all damage you deal; mutually exclusive with Bone/Lich Armor |
+| Embalm | 1 | 24 (Reanimation) | Ancient Embalming | -10% damage taken by your **tethered** minion for 60 s, 3 min CD |
+| Lobotomize | 1 | 26 (Reanimation) | Curse of Idiocy | instant, 30 yd, -15 Intellect for 30 s |
+| Outbreak | 1 | 26 (Plague) | Mind Flay | 4 s Shadow channel; refreshes your diseases on the victim and spreads them to up to 3 nearby enemies |
+| Rule Undead | 1 | 28 (Reanimation) | Shackle Undead | instant, 30 yd, 45 s shackle on undead; damage breaks it |
+| Unholy Shield | 1 | 34 (Reanimation) | Anti-Magic Shield | 8 s magic immunity, 3 min CD (placeholder for -50% spell damage + magic-effect prevention) |
+| Lich Armor | 1 | 40 (Reanimation) | Mage Armor | +10 Frost resistance, +3% spell crit, 15% mana regen while casting; mutually exclusive with Bone/Ghoul Armor; melee slow not implemented |
+| Dark Punishment | 1 | 42 (Blood) | Death Wish | 20 s: +15% all damage done, drains 2% max health/second, 3 min CD, uncancellable |
 
 For these batches the icons and costs are mostly the model spells' (renamed
 via the client patch).  Tooltips are the models' except where the mechanics
 differ: Cripple, Harvest, all Raise spells (since 2026-10-18 the raise
 tooltips state the corpse/bag requirement, e.g. "requires a humanoid or
-zombie corpse nearby, or 1 Lump of Flesh"), the Wight transform and the
+zombie corpse nearby, or 1 Lump of Flesh"), the Wight transform, the
 correction-pass spells (Plague Bolt, Toxic Plague, Reap, Call of the Grave,
-Death Coil).  The disease spells' rank-up mechanics are placeholders until
-the talent/effect polish batches; "Disease Cloud", "Cripple" and "Tether"
-are talents in the source design and are trainer-taught at level 20 until
-talents exist. Custom tuning/tooltips and the rest of the design (the
-Corpse Bag container, the Desecration/Disease Cloud/Bone Armor corrections,
-Grim Reaper, Lichborne, ...) arrive in later batches. Spells are now taught
-by the trainers (see *Trainers* below), not auto-learned.
+Death Coil) and the remaining-batch spells (Bloodlet, Dark Command, Terror,
+Ghoul Armor, Embalm, Lobotomize, Outbreak, Rule Undead, Unholy Shield, Lich
+Armor, Dark Punishment).  The disease spells' rank-up mechanics are
+placeholders until the talent/effect polish batches; "Disease Cloud",
+"Cripple", "Tether", "Bloodlet" (L6), "Dark Command" (L10), "Terror" (L14),
+"Outbreak" (L26), "Rule Undead" (L28), "Unholy Shield" (L34) and
+"Dark Punishment" (L42) are design spellbook/talent entries and are
+trainer-taught until the real gates/talents exist.  The spellbook now has the
+design's three tabs - **Reanimation (700), Blood (701), Plague (702)** - see
+A87.  Custom tuning/tooltips and the rest of the design (the Corpse Bag
+container, the Desecration/Disease Cloud/Bone Armor corrections, Grim
+Reaper, Lichborne, ...) arrive in later batches. Spells are taught by the
+trainers (see *Trainers* below), not auto-learned.
 
 **Minion abilities (batch 4, design A.7):** taught per tier through
 `petcreateinfo_spell`; they autocast by default and all cost 0 mana.
@@ -153,6 +178,14 @@ Thorns-style aura); Wight Taunt, Cleave, Crowd Pummel (Pummel), Cannibalize.
   Sinister Strike's (130), and the disease is Toxic Plague rank 1.  The
   +3%-per-disease direct damage uses the shared Plague Bolt hook; a higher
   Toxic Plague rank is not downgraded.
+- **Remaining-spellbook placeholders (design doc A88):** Bloodlet uses the
+  strongest disease tick and shortens it by one tick; Ghoul Armor's
+  armor/shadow values are invented and its 3% heal uses pre-mitigation damage;
+  Embalm is tethered-minion-only; Unholy Shield is magic immunity rather than
+  -50% spell damage + effect prevention; Lich Armor's melee slow is not
+  implemented; Dark Punishment buffs all damage (not just physical/direct
+  spells); Terror/Lobotomize/Rule Undead/Outbreak values and the tab icons
+  are placeholders.  The three armor buffs are mutually exclusive.
 
 Server data: `data/sql/world/20261014160000_world.sql` (batch 1),
 `20261014170000_world.sql` (batch 2), `20261014180000_world.sql` (batch 3
@@ -163,21 +196,26 @@ table, Harvest/Wight cast-time + spell updates),
 `20261018180000_world.sql` (batch 3 slice 3b: Army of the Dead passives +
 Meat Catapult), `20261018230000_world.sql` (batch 4: per-minion abilities +
 petcreateinfo sets), `20261019120000_world.sql` (spell-correction pass:
-A.6-A.9 + A72, Death Coil 61074 + Toxic Plague) and
-`20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61130,
+A.6-A.9 + A72, Death Coil 61074 + Toxic Plague),
+`20261019200000_world.sql` (trainers: NPCs, spawns, learn spells 61100-61142,
 `npc_trainer`), `20261019220000_world.sql` (placeholder class quests, quest
 relations, questgiver flag, removal of the seven gated trainer rows),
 `20261019230000_world.sql` (Plague Strike 61075, learn spell 61131, skill-line
-row and quest 950107) and `data/sql/character/20261019210000_char.sql`
-(one-time refresh of pre-batch-4 saved pets), all generated by the scripts in
-`tools/` (the character migration is hand-written).  Client patches:
+row and quest 950107), `20261020090000_world.sql` (remaining batch
+61076-61086 + the A87 tab reassignments) and
+`data/sql/character/20261019210000_char.sql` (one-time refresh of pre-batch-4
+saved pets) + `20261020090000_char.sql` (grant tabs 701/702 to existing
+characters), all generated by the scripts in `tools/` (the character
+migrations are hand-written).  Client patches:
 `client/patches/40-spells.yaml` (corrections as `update` blocks after the
 `copy` blocks), `41-learn-spells.yaml` (the trainer learn spells, now through
-61131), `42-plague-strike.yaml` (Plague Strike 61075) and
-`50-skilllines.yaml` (new "Necromancy" skill line 700; Death Coil row 7217
-points at 61074; Plague Strike row 7242).
+61142), `42-plague-strike.yaml` (Plague Strike 61075),
+`43-remaining-spells.yaml` (the remaining batch) and
+`50-skilllines.yaml` (the three tabs Reanimation 700 / Blood 701 / Plague 702;
+every spell's `SkillLineAbility.skillId` reassigned; new rows 7243-7253;
+`SkillRaceClassInfo` grants 1010-1012).
 
-Fifteen spells are bound to module scripts through
+Nineteen spells are bound to module scripts through
 `spell_template.script_name` (SQL): `spell_necromancer_plague_bolt`
 (Toxic Plague rider + 3% damage per disease), `spell_necromancer_plague_strike`
 (the same rider/hook from the melee strike), `spell_necromancer_reap`
@@ -194,10 +232,15 @@ cap), `spell_necromancer_tether`
 `spell_necromancer_ghoul_frenzy` (SpellScript *and* AuraScript; CC break +
 script-computed heal), `spell_necromancer_raise_wight` (Zombie/Ghoul ->
 Wight transform), `spell_necromancer_meat_catapult` (cast gate + Corpse
-Bag item consumption) and `spell_necromancer_minion_cannibalize` (minion
-corpse gate + the vanilla Cannibalize regen aura 20578).  The names must
-match the registrations in
-`AddNecromancerScripts()`.  The module also registers its class's
+Bag item consumption), `spell_necromancer_minion_cannibalize` (minion
+corpse gate + the vanilla Cannibalize regen aura 20578),
+`spell_necromancer_armor` (Bone/Ghoul/Lich Armor are mutually exclusive),
+`spell_necromancer_bloodlet` (strongest disease tick -> damage + mana),
+`spell_necromancer_embalm` (tethered-minion target gate) and
+`spell_necromancer_outbreak` (AuraScript: refresh + spread diseases).  The
+names must match the registrations in `AddNecromancerScripts()`.  The module
+also registers a `UnitScript` (`NecromancerGhoulArmorUnitScript`) that heals
+3% of all damage dealt while Ghoul Armor is active, and its class's
 `permanentSummonPetTypes` (undead) on the core's `ClassDescriptor` at
 startup - without it a tethered minion has no pet-bar abilities (see below).
 
@@ -211,8 +254,8 @@ were removed on 2026-10-19):
 | Orgrimmar | **Gorvoth the Gravewarden** | Cleft of Shadow, by the warlock trainers | 950010 |
 | Stormwind | **Mordecai Gravewhisper** | Slaughtered Lamb cellar, by the warlock trainers | 950011 |
 
-Both have `trainer_class = 10` and teach the **24 non-quest spells and ranks**
-(learn spells 61100-61130, `npc_trainer` rows); the other eight are the rewards
+Both have `trainer_class = 10` and teach the **35 non-quest spells and ranks**
+(learn spells 61100-61142, `npc_trainer` rows); the other eight are the rewards
 of the placeholder class quests below (seven A85 minion/harvest quests plus
 Plague Strike).  Prices use the vanilla class-trainer
 level table (10 copper at level 1 up to 240 silver at 58); rank 2/3 spells still
@@ -290,7 +333,8 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   account.
 - **Placeholder class quest checks (2026-10-19, server-side verified with
   `turtle-agent`):** both trainers list the PLACEHOLDER quests in the gossip
-  menu, and `trainer_list` has 24 entries (the seven quest spells are gone).
+  menu, and `trainer_list` has **35 entries** after the remaining-spellbook
+  batch (the eight quest-gated spells are gone).
   Accept a quest, fetch its item with `.additem <id> 1` (GM), hand it in and
   take the reward: the NPC casts the learn spell and the real spell appears in
   `spells`.  Harvest's item is Linen Cloth (2589); the rest are Corpse Bag
@@ -302,6 +346,21 @@ batch 4; the 2026-10-19 pass verified the spell corrections + A72.
   damage uses the shared Plague Bolt hook.  A weapon skill of 1 makes the
   strike miss almost every time; for tests use `.gm on`, select yourself,
   `.setskill 173 300 335`, `.gm off` (then save/relog).
+- **Remaining-spellbook checks (2026-10-20, server-side verified with
+  `turtle-agent`):** train the 11 new spells (learn 61132-61142); the real
+  spells are 61076-61086.  **Bloodlet** needs one of your diseases on the
+  target (Plague Bolt/Call of the Grave) - it deals one disease tick and
+  restores the same mana, and fails `bad_targets` without a disease.
+  **Dark Command** taunts a mob within 5 yd (its target changes to you).
+  **Terror** fears a living humanoid for up to 10 s (undead can be immune).
+  **Ghoul Armor** heals 3% of damage dealt while active and replaces
+  Bone/Lich Armor.  **Embalm** applies -10% damage taken to your **tethered**
+  minion and fails on any other target.  **Lobotomize** applies -15 Int;
+  **Rule Undead** shackles undead; **Outbreak** channels 4 s and spreads your
+  diseases to up to 3 nearby enemies; **Unholy Shield** gives 8 s magic
+  immunity; **Lich Armor** gives the Frost resist/crit/mana-regen buff;
+  **Dark Punishment** drains 2% max health per second.  The three spellbook
+  tabs (Reanimation/Blood/Plague) are the client-rendered check.
 - **Batch-2 test flow:** level a Necromancer to 12 and **train Call of the
   Grave** (Orgrimmar/Stormwind trainer), cast it on a mob and watch the ticks —
   the **final tick deals triple damage**; the debuff is a *disease*

@@ -1,10 +1,9 @@
-# Necromancer skill line ("Necromancy", id 700) and its spell mappings.
-# SkillLineAbility rows are cloned from the model spells' own rows
-# (686/695/705/2973/14260/168/6789, batch-2 models 6222/6223/7648/5740/
-# 6219/11677/2120/89 and 139 for Tether; the minion rows reuse the 1430/1431
-# donors) so the client groups our spells in a spellbook tab.  Death Coil is
-# the class's own clone 61074 since the spell-correction pass (2026-10-19);
-# the shared Warlock 6789 is no longer learned.
+# Necromancer spellbook tabs (A87, 2026-10-19): Reanimation (700),
+# Blood (701) and Plague (702), like a vanilla class's spellbook tabs.
+# SkillLineAbility rows are cloned from the model spells' own rows and
+# reassigned to the tab their design tree belongs to.  The three rank-1
+# starting spells keep learnOnGetSkill (donor default 2) so they grant the
+# skill lines; all later spells/ranks are trainer-taught or quest rewards.
 SkillLine.dbc:
   - type: insert
     key: 700
@@ -12,45 +11,80 @@ SkillLine.dbc:
       id: 700
       categoryId: 7
       skillCostID: 0
-      name_lang_0: "Necromancy"
-      name_lang_1: "Necromancy"
-      name_lang_2: "Necromancy"
-      name_lang_3: "Necromancy"
-      name_lang_4: "Necromancy"
-      name_lang_5: "Necromancy"
-      name_lang_6: "Necromancy"
-      name_lang_7: "Necromancy"
+      name_lang_0: "Reanimation"
+      name_lang_1: "Reanimation"
+      name_lang_2: "Reanimation"
+      name_lang_3: "Reanimation"
+      name_lang_4: "Reanimation"
+      name_lang_5: "Reanimation"
+      name_lang_6: "Reanimation"
+      name_lang_7: "Reanimation"
       nameFlags: 4128894
       spellIcon: 547
+  - type: insert
+    key: 701
+    values:
+      id: 701
+      categoryId: 7
+      skillCostID: 0
+      name_lang_0: "Blood"
+      name_lang_1: "Blood"
+      name_lang_2: "Blood"
+      name_lang_3: "Blood"
+      name_lang_4: "Blood"
+      name_lang_5: "Blood"
+      name_lang_6: "Blood"
+      name_lang_7: "Blood"
+      nameFlags: 4128894
+      spellIcon: 514
+  - type: insert
+    key: 702
+    values:
+      id: 702
+      categoryId: 7
+      skillCostID: 0
+      name_lang_0: "Plague"
+      name_lang_1: "Plague"
+      name_lang_2: "Plague"
+      name_lang_3: "Plague"
+      name_lang_4: "Plague"
+      name_lang_5: "Plague"
+      name_lang_6: "Plague"
+      name_lang_7: "Plague"
+      nameFlags: 4128894
+      spellIcon: 183
 
 SkillLineAbility.dbc:
-  - { type: copy, key: 1430, values: { id: 7211, skillId: 700, spellId: 61010, classmask: 512 } }
-  - { type: copy, key: 1431, values: { id: 7212, skillId: 700, spellId: 61011, classmask: 512 } }
-  - { type: copy, key: 1432, values: { id: 7213, skillId: 700, spellId: 61012, classmask: 512 } }
-  - { type: copy, key: 1921, values: { id: 7214, skillId: 700, spellId: 61013, classmask: 512 } }
-  - { type: copy, key: 2153, values: { id: 7215, skillId: 700, spellId: 61014, classmask: 512 } }
+  # Plague
+  - { type: copy, key: 1430, values: { id: 7211, skillId: 702, spellId: 61010, classmask: 512 } }
+  - { type: copy, key: 1431, values: { id: 7212, skillId: 702, spellId: 61011, classmask: 512 } }
+  - { type: copy, key: 1432, values: { id: 7213, skillId: 702, spellId: 61012, classmask: 512 } }
+  - { type: copy, key: 3219, values: { id: 7218, skillId: 702, spellId: 61016, classmask: 512 } }
+  - { type: copy, key: 3220, values: { id: 7219, skillId: 702, spellId: 61017, classmask: 512 } }
+  - { type: copy, key: 3221, values: { id: 7220, skillId: 702, spellId: 61018, classmask: 512 } }
+  - { type: copy, key: 1446, values: { id: 7221, skillId: 702, spellId: 61019, classmask: 512 } }
+  - { type: copy, key: 1447, values: { id: 7222, skillId: 702, spellId: 61020, classmask: 512 } }
+  - { type: copy, key: 1448, values: { id: 7223, skillId: 702, spellId: 61021, classmask: 512 } }
+  - { type: copy, key: 40,   values: { id: 7224, skillId: 702, spellId: 61022, classmask: 512 } }
+  - { type: copy, key: 6177, values: { id: 7225, skillId: 702, spellId: 61023, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7245, skillId: 702, spellId: 61078, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7249, skillId: 702, spellId: 61082, classmask: 512, learnOnGetSkill: 0 } }
+  # Blood
+  - { type: copy, key: 1921, values: { id: 7214, skillId: 701, spellId: 61013, classmask: 512 } }
+  - { type: copy, key: 2153, values: { id: 7215, skillId: 701, spellId: 61014, classmask: 512 } }
+  - { type: copy, key: 1430, values: { id: 7242, skillId: 701, spellId: 61075, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7243, skillId: 701, spellId: 61076, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7244, skillId: 701, spellId: 61077, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7253, skillId: 701, spellId: 61086, classmask: 512, learnOnGetSkill: 0 } }
+  # Reanimation
   - { type: copy, key: 575,  values: { id: 7216, skillId: 700, spellId: 61015, classmask: 512 } }
   - { type: copy, key: 3163, values: { id: 7217, skillId: 700, spellId: 61074, classmask: 512 } }
-  # batch 2 (disease mechanics)
-  - { type: copy, key: 3219, values: { id: 7218, skillId: 700, spellId: 61016, classmask: 512 } }
-  - { type: copy, key: 3220, values: { id: 7219, skillId: 700, spellId: 61017, classmask: 512 } }
-  - { type: copy, key: 3221, values: { id: 7220, skillId: 700, spellId: 61018, classmask: 512 } }
-  - { type: copy, key: 1446, values: { id: 7221, skillId: 700, spellId: 61019, classmask: 512 } }
-  - { type: copy, key: 1447, values: { id: 7222, skillId: 700, spellId: 61020, classmask: 512 } }
-  - { type: copy, key: 1448, values: { id: 7223, skillId: 700, spellId: 61021, classmask: 512 } }
-  - { type: copy, key: 40,   values: { id: 7224, skillId: 700, spellId: 61022, classmask: 512 } }
-  - { type: copy, key: 6177, values: { id: 7225, skillId: 700, spellId: 61023, classmask: 512, learnOnGetSkill: 0 } }
-  # batch 3 slice 1 (minions)
   - { type: copy, key: 1430, values: { id: 7226, skillId: 700, spellId: 61024, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1431, values: { id: 7227, skillId: 700, spellId: 61025, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 448,  values: { id: 7228, skillId: 700, spellId: 61026, classmask: 512, learnOnGetSkill: 0 } }
-  # batch 3 slice 2 (minion control; Ravage 61027 is a pet ability and the
-  # Death Pact/Harvest auras are script-applied - no spellbook rows)
   - { type: copy, key: 448,  values: { id: 7229, skillId: 700, spellId: 61028, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 40,   values: { id: 7230, skillId: 700, spellId: 61029, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7231, skillId: 700, spellId: 61033, classmask: 512, learnOnGetSkill: 0 } }
-  # batch 3 slice 3 (higher minion tiers; Entropic Bolt 61041 is a pet
-  # ability and the Death Pact variants are script-applied - no rows)
   - { type: copy, key: 1431, values: { id: 7232, skillId: 700, spellId: 61034, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 448,  values: { id: 7233, skillId: 700, spellId: 61035, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 40,   values: { id: 7234, skillId: 700, spellId: 61036, classmask: 512, learnOnGetSkill: 0 } }
@@ -58,13 +92,15 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1431, values: { id: 7236, skillId: 700, spellId: 61038, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 448,  values: { id: 7237, skillId: 700, spellId: 61039, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 40,   values: { id: 7238, skillId: 700, spellId: 61040, classmask: 512, learnOnGetSkill: 0 } }
-  # batch 3 slice 3b (minion limit + corpse launcher; the Army of the Dead
-  # passives show as passive entries in the Necromancy tab)
   - { type: copy, key: 40,   values: { id: 7239, skillId: 700, spellId: 61048, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7240, skillId: 700, spellId: 61049, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7241, skillId: 700, spellId: 61050, classmask: 512, learnOnGetSkill: 0 } }
-  # Plague Strike (61075, Blood tree L10 quest - A.8)
-  - { type: copy, key: 1430, values: { id: 7242, skillId: 700, spellId: 61075, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7246, skillId: 700, spellId: 61079, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7247, skillId: 700, spellId: 61080, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7248, skillId: 700, spellId: 61081, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7250, skillId: 700, spellId: 61083, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7251, skillId: 700, spellId: 61084, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7252, skillId: 700, spellId: 61085, classmask: 512, learnOnGetSkill: 0 } }
 
 SkillRaceClassInfo.dbc:
   - type: insert
@@ -72,6 +108,28 @@ SkillRaceClassInfo.dbc:
     values:
       id: 1010
       skillId: 700
+      raceMask: 2047
+      classMask: 512
+      flags: 1040
+      reqLevel: 0
+      skillTierId: 0
+      skillCostID: 0
+  - type: insert
+    key: 1011
+    values:
+      id: 1011
+      skillId: 701
+      raceMask: 2047
+      classMask: 512
+      flags: 1040
+      reqLevel: 0
+      skillTierId: 0
+      skillCostID: 0
+  - type: insert
+    key: 1012
+    values:
+      id: 1012
+      skillId: 702
       raceMask: 2047
       classMask: 512
       flags: 1040
