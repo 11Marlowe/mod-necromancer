@@ -69,6 +69,9 @@ SkillLineAbility.dbc:
   - { type: copy, key: 6177, values: { id: 7225, skillId: 702, spellId: 61023, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7245, skillId: 702, spellId: 61078, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7249, skillId: 702, spellId: 61082, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7258, skillId: 702, spellId: 61088, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7259, skillId: 702, spellId: 61089, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7260, skillId: 702, spellId: 61093, classmask: 512, learnOnGetSkill: 0 } }
   # Blood
   - { type: copy, key: 1921, values: { id: 7214, skillId: 701, spellId: 61013, classmask: 512 } }
   - { type: copy, key: 2153, values: { id: 7215, skillId: 701, spellId: 61014, classmask: 512 } }
@@ -76,6 +79,8 @@ SkillLineAbility.dbc:
   - { type: copy, key: 1430, values: { id: 7243, skillId: 701, spellId: 61076, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7244, skillId: 701, spellId: 61077, classmask: 512, learnOnGetSkill: 0 } }
   - { type: copy, key: 1430, values: { id: 7253, skillId: 701, spellId: 61086, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7257, skillId: 701, spellId: 61087, classmask: 512, learnOnGetSkill: 0 } }
+  - { type: copy, key: 1430, values: { id: 7261, skillId: 701, spellId: 61094, classmask: 512, learnOnGetSkill: 0 } }
   # Reanimation
   - { type: copy, key: 575,  values: { id: 7216, skillId: 700, spellId: 61015, classmask: 512 } }
   - { type: copy, key: 3163, values: { id: 7217, skillId: 700, spellId: 61074, classmask: 512 } }

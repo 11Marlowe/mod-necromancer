@@ -17,9 +17,9 @@ MPQ patch.
 | `Interface\FrameXML\Fonts.xml` | `RAID_CLASS_COLORS["NECROMANCER"]` (red) |
 | `Interface\FrameXML\Globals.lua` | `TW_CLASS_TOKEN["Necromancer"] = "NECROMANCER"` |
 | `Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes.blp` | class icon in the free atlas cell (placeholder art) |
-| `DBFilesClient\Spell.dbc` | class spells (batches 1-4, corrections, remaining batch 61076-61086) and the trainer learn spells 61100-61145 |
+| `DBFilesClient\Spell.dbc` | class spells (batches 1-4, corrections, remaining batch 61076-61086, talent spells 61087-61095) and the trainer learn spells 61100-61150 |
 | `DBFilesClient\SkillLine.dbc` | the three spellbook tabs: Reanimation (700), Blood (701), Plague (702) |
-| `DBFilesClient\SkillLineAbility.dbc` | spell-to-tab mapping (rows 7211-7253) |
+| `DBFilesClient\SkillLineAbility.dbc` | spell-to-tab mapping (rows 7211-7261) |
 | `DBFilesClient\SkillRaceClassInfo.dbc` | grants skills 700/701/702 to class 10 (rows 1010-1012) |
 
 Load order: the patch is named `patch-Z.mpq` so it loads after everything

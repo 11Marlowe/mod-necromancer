@@ -305,6 +305,30 @@ Spell.dbc:
     values:
       SpellIconID: 1477
   - type: update
+    key: 61087
+    values:
+      SpellIconID: 2147
+  - type: update
+    key: 61088
+    values:
+      SpellIconID: 182
+  - type: update
+    key: 61089
+    values:
+      SpellIconID: 565
+  - type: update
+    key: 61093
+    values:
+      SpellIconID: 1591
+  - type: update
+    key: 61094
+    values:
+      SpellIconID: 147
+  - type: update
+    key: 61095
+    values:
+      SpellIconID: 182
+  - type: update
     key: 61015
     values:
       Description_lang_0: "Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d."
@@ -833,3 +857,23 @@ Spell.dbc:
     key: 61142
     values:
       SpellIconID: 1477
+  - type: update
+    key: 61146
+    values:
+      SpellIconID: 2147
+  - type: update
+    key: 61147
+    values:
+      SpellIconID: 182
+  - type: update
+    key: 61148
+    values:
+      SpellIconID: 565
+  - type: update
+    key: 61149
+    values:
+      SpellIconID: 1591
+  - type: update
+    key: 61150
+    values:
+      SpellIconID: 147

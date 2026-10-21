@@ -121,6 +121,13 @@ ICONS = {
     61084: 207,    # Unholy Shield - Anti Shadow (was Anti-Magic Shell)
     61085: 182,    # Lich Armor - Chilling Armor (was Mage Armor)
     61086: 1477,   # Dark Punishment - Punishing Blow (was Death Pact)
+    # remaining talent spells (2026-10-20)
+    61087: 2147,   # Soul Strike - Soul Leech
+    61088: 182,    # Icy Touch - Chilling Armor
+    61089: 565,    # Corrosion - Sunder Armor
+    61093: 1591,   # Lichborne - Dead of Night
+    61094: 147,    # Unholy Aura - Vampiric Aura
+    61095: 182,    # Frost Fever (hidden Icy Touch aura)
     # Blood
     61013: 2214,   # Reap - Shadow Strikes (was generic melee)
     61014: 2214,
@@ -219,6 +226,8 @@ LEARN = {
     61076: 61132, 61077: 61133, 61078: 61134, 61079: 61135,
     61080: 61136, 61081: 61137, 61082: 61138, 61083: 61139,
     61084: 61140, 61085: 61141, 61086: 61142,
+    61087: 61146, 61088: 61147, 61089: 61148, 61093: 61149,
+    61094: 61150,
 }
 
 

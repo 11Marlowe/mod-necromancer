@@ -4,13 +4,14 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-**Status:** Phase 2 is content-complete through the armor/weapon progression
-pass (2026-10-20). Identity, spells, minions, trainers, placeholder quests, the
-three-tab spellbook, icons/tooltips and the Blood-tree armor passives are
-implemented, deployed and server-side verified with `turtle-agent`. Class color
-(red) and a placeholder creation-screen icon are now in the client patch.
-Remaining work: custom creation-screen art, talents/talent spells; the Corpse
-Bag container is deferred.
+**Status:** Phase 2 is content-complete through the remaining talent spells
+(2026-10-20). Identity, spells, minions, trainers, placeholder quests, the
+three-tab spellbook, icons/tooltips, the Blood-tree armor passives and the
+last talent-gated spells (Soul Strike, Icy Touch/Frost Fever, Corrosion,
+Lichborne, Unholy Aura) are implemented, deployed and server-side verified with
+`turtle-agent`. Class color (red) and a placeholder creation-screen icon are
+now in the client patch. Remaining work: custom creation-screen art and the
+talent trees themselves; the Corpse Bag container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
@@ -21,8 +22,8 @@ lessons) and **§14** (assumptions A1-A90) before changing spells or mechanics.
 
 - Class 10, mana-based, playable by all 10 existing races.
 - Three spellbook tabs: **Reanimation (700)**, **Blood (701)**, **Plague (702)**.
-- Class spells and minion abilities use ids **61010-61092**; trainer learn-spell
-  wrappers use **61100-61145**.
+- Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
+  wrappers use **61100-61150**.
 - Minion system: nine undead tiers, corpse/Corpse Bag requirements, Tether,
   per-tier abilities, Death Pact, Army of the Dead cap, Meat Catapult and the
   Wight transform.
@@ -39,9 +40,11 @@ lessons) and **§14** (assumptions A1-A90) before changing spells or mechanics.
   spells (Zombie, Shade, Ghoul, Skeleton, Banshee, Wraith, Bloodmage,
   Abomination, Wight).
 - **Blood:** Reap, Bloodlet, Plague Strike, Dark Command, Dark Punishment,
-  Grim Reaper, Necro Knight, Will of the Death Knight.
+  Grim Reaper, Necro Knight, Will of the Death Knight, Soul Strike, Unholy
+  Aura.
 - **Plague:** Plague Bolt (+ Toxic Plague), Call of the Grave, Terror,
-  Desecration, Disease Cloud, Cripple, Outbreak.
+  Desecration, Disease Cloud, Cripple, Outbreak, Icy Touch (+ Frost Fever),
+  Corrosion, Lichborne.
 
 Notable mechanics:
 
@@ -55,16 +58,20 @@ Notable mechanics:
   0; toggle autocast on the pet bar.
 - Bone, Ghoul and Lich Armor are mutually exclusive. The armor/weapon passives
   grant the matching skills and auto-unequip gear when the passive is lost.
+- Icy Touch applies Frost Fever (a disease with Frost damage and melee/casting
+  slows); Soul Strike heals 3% of max health per disease on the target (up to
+  three); Lichborne and Unholy Aura are permanent self/party buffs.
 
 Costs, damage values and some mechanics remain placeholders where the design
 gives no numbers (e.g. Desecration is still a Rain of Fire channel, Bone Armor
-is still Frost Armor, Dark Punishment buffs all damage). See the design doc
-§14 A78/A86/A88/A90 for the current list.
+is still Frost Armor, Dark Punishment buffs all damage, Lichborne does not yet
+accelerate disease ticks). See the design doc §14 A78/A86/A88/A90/A92 for the
+current list.
 
 ## Trainers
 
 The class is trained, not auto-learned. Both NPCs use `trainer_class = 10` and
-teach **38 non-quest spell/rank rows** through learn spells 61100-61145 at
+teach **43 non-quest spell/rank rows** through learn spells 61100-61150 at
 vanilla class-trainer prices.
 
 | City | NPC | Where | Entry |

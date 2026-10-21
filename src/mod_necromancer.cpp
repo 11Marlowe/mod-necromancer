@@ -87,6 +87,12 @@ namespace
         NECRO_SPELL_UNHOLY_SHIELD        = 61084,
         NECRO_SPELL_LICH_ARMOR           = 61085,
         NECRO_SPELL_DARK_PUNISHMENT      = 61086,
+        NECRO_SPELL_SOUL_STRIKE          = 61087,   // remaining talent spells
+        NECRO_SPELL_ICY_TOUCH            = 61088,
+        NECRO_SPELL_CORROSION            = 61089,
+        NECRO_SPELL_LICHBORNE            = 61093,
+        NECRO_SPELL_UNHOLY_AURA          = 61094,
+        NECRO_SPELL_FROST_FEVER          = 61095,   // Icy Touch's hidden disease aura
         NECRO_SPELL_NECRO_KNIGHT         = 61090,   // armor/weapon progression passives
         NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT = 61091,
         NECRO_SPELL_GRIM_REAPER          = 61092,
@@ -313,13 +319,18 @@ namespace
                spellId == NECRO_SPELL_TOXIC_PLAGUE_R3;
     }
 
+    bool IsFrostFever(uint32 spellId)
+    {
+        return spellId == NECRO_SPELL_FROST_FEVER;
+    }
+
     // The Necromancer's disease family, used by Disease Cloud.  The design
     // explodes "a victim of your Toxic Plague"; Grave Rot stays accepted as a
-    // superset placeholder.  Outbreak and Corrosion will be added here with
-    // their batches.
+    // superset placeholder.  Frost Fever (Icy Touch) joins the Plague identity.
     bool IsNecromancerDisease(uint32 spellId)
     {
-        return IsCallOfTheGrave(spellId) || IsToxicPlague(spellId);
+        return IsCallOfTheGrave(spellId) || IsToxicPlague(spellId) ||
+               IsFrostFever(spellId);
     }
 
     bool HasCasterDisease(Unit* target, ObjectGuid const& casterGuid)
@@ -1612,6 +1623,60 @@ namespace
         }
     };
 
+    // Soul Strike (design A.4 slot 11): a 50% weapon strike that heals the
+    // caster for 3% of their total health for each of their diseases on the
+    // target (up to three).
+    struct spell_necromancer_soul_strike : public SpellScript
+    {
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target || !target->IsAlive())
+                return;
+
+            uint32 diseases = 0;
+            for (auto const& itr : target->GetSpellAuraHolderMap())
+            {
+                SpellAuraHolder const* holder = itr.second;
+                if (holder && !holder->IsDeleted() && holder->GetSpellProto() &&
+                        holder->GetCasterGuid() == spell->m_casterUnit->GetObjectGuid() &&
+                        holder->GetSpellProto()->Dispel == DISPEL_DISEASE)
+                    ++diseases;
+            }
+
+            if (!diseases)
+                return;
+
+            if (diseases > 3)
+                diseases = 3;
+
+            uint32 heal = spell->m_casterUnit->GetMaxHealth() * 3 * diseases / 100;
+            if (heal)
+                spell->m_casterUnit->DealHeal(spell->m_casterUnit, heal, spell->m_spellInfo);
+        }
+    };
+
+    // Icy Touch (design A.5 slot 17): Frost damage that infects the target
+    // with Frost Fever (periodic Frost damage plus a melee/casting speed
+    // reduction).  Frost Fever also counts as one of the class's diseases.
+    struct spell_necromancer_icy_touch : public SpellScript
+    {
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target || !target->IsAlive())
+                return;
+
+            spell->m_casterUnit->CastSpell(target, NECRO_SPELL_FROST_FEVER, true);
+        }
+    };
+
     // Ghoul Frenzy: sends the tethered minion into a frenzy - breaks all
     // crowd control on it, +25% melee and casting speed and a heal of 50% of
     // its maximum health over the duration (the periodic amount is computed
@@ -1780,6 +1845,16 @@ namespace
         return new spell_necromancer_death_coil();
     }
 
+    SpellScript* GetSoulStrikeSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_soul_strike();
+    }
+
+    SpellScript* GetIcyTouchSpellScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_icy_touch();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -1885,4 +1960,8 @@ void AddNecromancerScripts()
     RegisterSpellScript("spell_necromancer_bloodlet", GetBloodletSpellScript);
     RegisterSpellScript("spell_necromancer_embalm", GetEmbalmSpellScript);
     RegisterAuraScript("spell_necromancer_outbreak", GetOutbreakAuraScript);
+
+    // remaining talent spells (2026-10-20)
+    RegisterSpellScript("spell_necromancer_soul_strike", GetSoulStrikeSpellScript);
+    RegisterSpellScript("spell_necromancer_icy_touch", GetIcyTouchSpellScript);
 }
