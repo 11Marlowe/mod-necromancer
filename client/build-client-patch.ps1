@@ -40,7 +40,8 @@ New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
 $dbcFiles = @(
     "ChrClasses.dbc", "CharBaseInfo.dbc", "CharStartOutfit.dbc",
-    "Spell.dbc", "SkillLine.dbc", "SkillLineAbility.dbc", "SkillRaceClassInfo.dbc"
+    "Spell.dbc", "SpellIcon.dbc", "Talent.dbc", "TalentTab.dbc",
+    "SkillLine.dbc", "SkillLineAbility.dbc", "SkillRaceClassInfo.dbc"
 )
 $patchFiles = Get-ChildItem (Join-Path $PSScriptRoot "patches\*.yaml") | Sort-Object Name
 

@@ -1,0 +1,469 @@
+{
+  "source": "https://www.talent-builder.dev/trees/XZQH7kv2N2",
+  "savedHtml": "C:\\Users\\gawrg\\.local\\share\\opencode\\tool-output\\tool_13c0e867e001bFbzjCjW4NFDxj",
+  "savedHtmlMtime": "2026-10-14T20:15:47+00:00",
+  "tree": {
+    "id": "XZQH7kv2N2",
+    "name": "Blood",
+    "icon": "Spell_deathknight_butcher2",
+    "class": 0,
+    "classLabel": "Necromancer",
+    "gameVersion": "1.12.1",
+    "rows": 7,
+    "columns": 4,
+    "pages": 1,
+    "talents": 18,
+    "points": 49,
+    "visibility": "public",
+    "author": {
+      "name": "nelsen94",
+      "image": "https://cdn.discordapp.com/avatars/384923749482496031/f1547645be85181d49bc78eaf85c9a8f.webp",
+      "role": "user"
+    },
+    "createdById": "w3MwIRM8U8xfTm6vvPKzo14fa7XsZbSK",
+    "createdAt": "2026-10-11T01:08:42.000Z",
+    "updatedAt": "2026-10-14T18:28:34.000Z",
+    "source": "https://www.talent-builder.dev/trees/XZQH7kv2N2",
+    "savedHtml": "C:\\Users\\gawrg\\.local\\share\\opencode\\tool-output\\tool_13c0e867e001bFbzjCjW4NFDxj",
+    "iconSpellIconIds": []
+  },
+  "icons": {
+    "spellIconDbc": "C:\\Users\\gawrg\\Desktop\\TurtleTest\\server\\dbc\\SpellIcon.dbc",
+    "resolved": 10,
+    "missing": [
+      "Spell_deathknight_butcher2",
+      "Spell_deathknight_vendetta",
+      "ability_creature_disease_05",
+      "ability_rogue_nightblade",
+      "inv12_ability_deathknight_cleavingdeathstrikes",
+      "inv_boots_plate_05",
+      "inv_chest_leather_13",
+      "inv_chest_plate06",
+      "inv_sword_62"
+    ],
+    "textureIds": {
+      "spell_shadow_unholyfrenzy": [
+        95
+      ],
+      "Spell_deathknight_vendetta": [],
+      "spell_shadow_bloodboil": [
+        541
+      ],
+      "spell_shadow_ritualofsacrifice": [
+        130
+      ],
+      "ability_parry": [
+        558
+      ],
+      "inv_boots_plate_05": [],
+      "ability_dualwield": [
+        533
+      ],
+      "ability_rogue_nightblade": [],
+      "inv_axe_09": [
+        366
+      ],
+      "inv_sword_62": [],
+      "ability_racial_cannibalize": [
+        146
+      ],
+      "ability_creature_disease_05": [],
+      "inv_chest_plate06": [],
+      "spell_nature_shamanrage": [
+        2153
+      ],
+      "inv_helmet_08": [
+        1599
+      ],
+      "inv12_ability_deathknight_cleavingdeathstrikes": [],
+      "inv_chest_leather_13": [],
+      "ability_warrior_improveddisciplines": [
+        2200
+      ],
+      "Spell_deathknight_butcher2": []
+    }
+  },
+  "talents": [
+    {
+      "slot": 1,
+      "order": 1,
+      "position": {
+        "row": 1,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "spell_shadow_unholyfrenzy",
+      "name": "Zombification",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Converts 5/10/15/20/25% of your Intellect into Strength.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        95
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_UnholyFrenzy"
+    },
+    {
+      "slot": 2,
+      "order": 2,
+      "position": {
+        "row": 1,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "Spell_deathknight_vendetta",
+      "name": "Unholy Regeneration",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Allows 10/20/30/40/50% of your health regeneration to continue while in combat.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 4,
+      "order": 4,
+      "position": {
+        "row": 2,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "spell_shadow_bloodboil",
+      "name": "Bloodletting",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases the amount of Mana awarded by your Bloodlet ability by 10/20%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        541
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_BloodBoil"
+    },
+    {
+      "slot": 5,
+      "order": 5,
+      "position": {
+        "row": 2,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "spell_shadow_ritualofsacrifice",
+      "name": "Reaping",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Reduces the cooldown of your Reap ability by 1/2 sec.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        130
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_RitualOfSacrifice"
+    },
+    {
+      "slot": 6,
+      "order": 6,
+      "position": {
+        "row": 2,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "ability_parry",
+      "name": "Deflection",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Increases your Parry chance by 2/4/6%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        558
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Parry"
+    },
+    {
+      "slot": 7,
+      "order": 7,
+      "position": {
+        "row": 2,
+        "column": 4,
+        "page": 1
+      },
+      "icon": "inv_boots_plate_05",
+      "name": "Death March",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases your chance to resist Fear and movement slowing effects by an additional 5/10%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 8,
+      "order": 8,
+      "position": {
+        "row": 3,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "ability_dualwield",
+      "name": "Dual Wield Specialization",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Increases the damage dealt with one-handed weapons by 2/4/6/8/10% and the damage done by your off-hand weapon by an additional 5/10/15/20/25%.",
+      "talentNotes": null,
+      "requires": 9,
+      "requiresName": "Grim Reaper",
+      "spellIds": null,
+      "spellIconIds": [
+        533
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_DualWield"
+    },
+    {
+      "slot": 9,
+      "order": 9,
+      "position": {
+        "row": 3,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "ability_rogue_nightblade",
+      "name": "Grim Reaper",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Allows the use of all two-handed weapons and dual wielding all one-handed weapons. While dual wielding, you strike with both weapons when using any melee ability. Additionally, allows the use of Sigils but you can no longer use Wands.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 10,
+      "order": 10,
+      "position": {
+        "row": 3,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "inv_axe_09",
+      "name": "Two-Handed Weapon Specialization",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Increases the damage you deal with two-handed melee weapons by 2/4/6%, and your weapon skill with two-handed swords, maces and axes by 1/2/3.",
+      "talentNotes": null,
+      "requires": 9,
+      "requiresName": "Grim Reaper",
+      "spellIds": null,
+      "spellIconIds": [
+        366
+      ],
+      "spellIconFile": "Interface\\Icons\\INV_Axe_09"
+    },
+    {
+      "slot": 11,
+      "order": 11,
+      "position": {
+        "row": 3,
+        "column": 4,
+        "page": 1
+      },
+      "icon": "inv_sword_62",
+      "name": "Soul Strike",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Instantly strike the target for 50% weapon damage and healing you by 3% of your total health for each of your diseases on the target, up to a total of three diseases.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 12,
+      "order": 12,
+      "position": {
+        "row": 4,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "ability_racial_cannibalize",
+      "name": "Bloodgorged",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Increases your chance to get a critical strike with melee weapons by 1/2/3/4/5% and increases the damage and lifesteal of your Reap ability by 3/6/9/12/15%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        146
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Racial_Cannibalize"
+    },
+    {
+      "slot": 14,
+      "order": 14,
+      "position": {
+        "row": 4,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "ability_creature_disease_05",
+      "name": "Improved Dark Command",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Improves your chance to hit with Dark Command by 4/8%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 17,
+      "order": 17,
+      "position": {
+        "row": 5,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "inv_chest_plate06",
+      "name": "Necro Knight",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Allows the use of Leather and Mail armor.",
+      "talentNotes": null,
+      "requires": 9,
+      "requiresName": "Grim Reaper",
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 18,
+      "order": 18,
+      "position": {
+        "row": 5,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_nature_shamanrage",
+      "name": "Looming Shadow",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Increases your Defense skill by 4/8/12/16/20, and all threat you generate by 20/40/60/80/100%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        2153
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Nature_ShamanRage"
+    },
+    {
+      "slot": 19,
+      "order": 19,
+      "position": {
+        "row": 5,
+        "column": 4,
+        "page": 1
+      },
+      "icon": "inv_helmet_08",
+      "name": "Unholy Aura",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Increases movement speed by 8% and allows 25% of health regeneration to continue in combat for you and your allies in a 30 yard range.",
+      "talentNotes": null,
+      "requires": 18,
+      "requiresName": "Looming Shadow",
+      "spellIds": null,
+      "spellIconIds": [
+        1599
+      ],
+      "spellIconFile": "Interface\\Icons\\INV_Helmet_08"
+    },
+    {
+      "slot": 20,
+      "order": 20,
+      "position": {
+        "row": 6,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "inv12_ability_deathknight_cleavingdeathstrikes",
+      "name": "Butchery",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases the damage of your Plague Strike and Soul Strike by 5/10%. Additionally, your attack speed is increased by 7/15% for your next 3 swings after parrying or dealing a melee critical strike.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 22,
+      "order": 22,
+      "position": {
+        "row": 6,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "inv_chest_leather_13",
+      "name": "Phantom Armor",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Increases your armor value from items by 3/6/10%, and while your Bone Armor, Ghoul Armor or Lich Armor are active, your damage taken is reduced by 3/6/10%. ",
+      "talentNotes": null,
+      "requires": 18,
+      "requiresName": "Looming Shadow",
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 25,
+      "order": 25,
+      "position": {
+        "row": 7,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "ability_warrior_improveddisciplines",
+      "name": "Will of the Death Knight",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Empowers you with the will of a Death Knight, allowing the use of Plate armor and causing you to deal an additional 4% physical damage as Shadow damage.",
+      "talentNotes": null,
+      "requires": 17,
+      "requiresName": "Necro Knight",
+      "spellIds": null,
+      "spellIconIds": [
+        2200
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Warrior_ImprovedDisciplines"
+    }
+  ],
+  "notes_raw": "## Blood Spellbook (WIP)\n\n***\n\n***General Note:*** \n* The Necromancer is a Horde only class, available to Undead, Orcs, Trolls, and Ogres. This Necromancer design approach bridges a major gap in lore and RP for Classic+, as a dark mirror to paladins and avoids class bloat by combining Necromancer and Death Knight into one class.\n* The Necromancer's three talent trees are Reanimation (summoning), Plague (spreading disease), and Blood (melee combat Death Knight pathway). The class has very strong DPS capabilities overall and plays as a competitive tank via the Blood tree.\n* While both the Horde and Alliance broadly shun necromancy, the Forsaken have found a particular affinity to it and see the practice as a point of strength. Thus, the Forsaken lead necromancy within the Horde at the behest of Sylvanas, and have taken hidden sects of Orc, Troll, and Ogre disciples under their wing. \n* Having witnessed the strength of Death Knights during the Scourge's war on Lordaeron, Sylvanas discussed with her council how the Forsaken may harness these powers too. However, since the Forsaken do not possess the powers to raise new conscious undead, the Horde's necromancers can only become Death Knights through sheer martial will. The Forsaken realized it is far easier for a master of volatile death magic to train their body in physical combat than for a common brute to learn complex necromancy. \n* Thus, Horde Necromancers learn to train as Death Knights, just as Alliance Priests learned to train as Paladins. \n\n***\n\n***Level 1 - Reap:*** Steals X to Y life from the target, causing Shadow damage. This ability generates a high amount of threat. ***(Instant, 10 yard range, 8 sec CD)***\n\n***\n\n***Level 6 - Bloodlet:*** Reduces the duration of a disease on the target by one tick, causing you the damage of that tick in exchange for stealing an equal amount of mana. If the target has multiple diseases, this effect will always apply to the strongest disease. ***(Instant, 30 yard range, No CD)***\n\n***\n\n***Level 10 (Quest) - Plague Strike:*** A strike that deals weapon damage plus X and infects the target with Toxic Plague, dealing an additional X to Y Nature damage over 15 seconds. The direct damage is increased by 3% for each of your Diseases on the target. ***(Instant, 6 sec CD)***\n* ***Note:*** At level 10, the Necromancer class trainers provide a quest chain that kicks off the path of a Death Knight and ends in learning Plague Strike. As such, Necromancers do not have melee abilities at baseline - they are obtained through quests (Plague Strike) or through talents (Soul Strike).\n\n***\n\n***Level 10 - Dark Command:*** Commands the target to attack you, but has no effect if the target is already attacking you. ***(Instant, 5 yard range, 10 sec CD)***\n\n***\n\n***Level 20 (Talent) - Grim Reaper:*** Allows the use of all two-handed weapons and dual wielding all one-handed weapons. While dual wielding, you strike with both weapons when using any melee ability. Additionally, allows the use of Sigils but you can no longer use Wands. ***(Passive)***\n\n***\n\n***Level 20 (Talent) - Soul Strike:*** Instantly strike the target for 60% weapon damage and healing you by 3% of your total health for each of your Diseases on the target. ***(Instant, 6 sec CD)***\n\n***\n\n***Level 30 (Talent) - Necro Knight:*** Allows the use of Leather and Mail armor. ***(Passive)***\n\n***\n\n***Level 30 (Talent) - Unholy Aura:*** Increases movement speed by 8% and allows 25% of health regeneration to continue in combat for you and your allies in a 30 yard range. ***(Instant, 30 yard radius, No Duration)***\n\n***\n\n***Level 40 (Talent) - Will of the Death Knight:*** Empowers you with the will of a Death Knight, allowing the use of Plate armor and causing you to deal an additional 4% physical damage as Shadow damage. ***(Passive)***\n\n***\n\n***Level 40 - Dark Punishment:*** When activated, increases your damage done by physical attacks and direct damaging spells by 15% while draining 2% of your maximum health per second. Lasts 20 seconds and cannot be cancelled. ***(Instant, Self-Buff, 20 sec duration, 3 min CD)***\n\n\n"
+}

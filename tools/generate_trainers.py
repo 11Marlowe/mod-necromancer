@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Generate the Necromancer trainer data (server SQL + client learn-spell DBC YAML).
 
 The trainers replace the module's auto-learn (design step 9): one class trainer
@@ -115,6 +115,27 @@ QUEST_GATED = {
     61036,  # Raise Banshee
     61037,  # Raise Wraith
     61075,  # Plague Strike
+}
+
+# These spells are now talent-granted (T1 talent trees) and must not appear in
+# npc_trainer.  Their learn-spell wrappers stay in 61100-61150 so existing learn
+# ids remain stable; the T1 migration deletes the trainer rows.
+TALENT_GATED = {
+    61026,  # Tether
+    61028,  # Sacrifice Minion
+    61033,  # Ghoul Frenzy
+    61049,  # Army of the Dead R1
+    61050,  # Army of the Dead R2
+    61039,  # Raise Abomination
+    61087,  # Soul Strike
+    61088,  # Icy Touch
+    61093,  # Lichborne
+    61094,  # Unholy Aura
+    61022,  # Disease Cloud
+    61023,  # Cripple
+    61090,  # Necro Knight
+    61091,  # Will of the Death Knight
+    61092,  # Grim Reaper
 }
 
 LEARN_SPELL_BASE = 61100
@@ -349,7 +370,7 @@ def main():
     lines.append("-- Quest-gated spells are omitted (A85 placeholder quests).")
     for t in TRAINERS:
         for spell_id, level, rank in TRAINABLE:
-            if spell_id in QUEST_GATED:
+            if spell_id in QUEST_GATED or spell_id in TALENT_GATED:
                 continue
             vals = [str(t["entry"]), str(learn_ids[spell_id]),
                     str(COST_BY_LEVEL[level]), "0", "0", str(level)]

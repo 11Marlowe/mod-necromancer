@@ -1,0 +1,481 @@
+{
+  "source": "https://www.talent-builder.dev/trees/7MUHx-ICEg",
+  "savedHtml": "C:\\Users\\gawrg\\.local\\share\\opencode\\tool-output\\tool_13c0e870a001ftrawp8XEjardV",
+  "savedHtmlMtime": "2026-10-14T20:15:47+00:00",
+  "tree": {
+    "id": "7MUHx-ICEg",
+    "name": "Plague",
+    "icon": "spell_shadow_plaguecloud",
+    "class": 0,
+    "classLabel": "Necromancer",
+    "gameVersion": "1.12.1",
+    "rows": 7,
+    "columns": 4,
+    "pages": 1,
+    "talents": 18,
+    "points": 53,
+    "visibility": "public",
+    "author": {
+      "name": "nelsen94",
+      "image": "https://cdn.discordapp.com/avatars/384923749482496031/f1547645be85181d49bc78eaf85c9a8f.webp",
+      "role": "user"
+    },
+    "createdById": "w3MwIRM8U8xfTm6vvPKzo14fa7XsZbSK",
+    "createdAt": "2026-08-06T15:22:49.000Z",
+    "updatedAt": "2026-10-13T23:39:08.000Z",
+    "source": "https://www.talent-builder.dev/trees/7MUHx-ICEg",
+    "savedHtml": "C:\\Users\\gawrg\\.local\\share\\opencode\\tool-output\\tool_13c0e870a001ftrawp8XEjardV",
+    "iconSpellIconIds": [
+      97
+    ]
+  },
+  "icons": {
+    "spellIconDbc": "C:\\Users\\gawrg\\Desktop\\TurtleTest\\server\\dbc\\SpellIcon.dbc",
+    "resolved": 16,
+    "missing": [
+      "Spell_deathknight_spelldeflection",
+      "Spell_fire_felflamebolt",
+      "spell_deathknight_necroticplague"
+    ],
+    "textureIds": {
+      "Spell_fire_felflamebolt": [],
+      "spell_frost_manaburn": [
+        145
+      ],
+      "Spell_deathknight_spelldeflection": [],
+      "ability_creature_disease_03": [
+        1959
+      ],
+      "spell_shadow_auraofdarkness": [
+        91
+      ],
+      "spell_shadow_cripple": [
+        96
+      ],
+      "spell_shadow_plaguecloud": [
+        97
+      ],
+      "spell_shadow_animatedead": [
+        221
+      ],
+      "spell_shadow_deathanddecay": [
+        118
+      ],
+      "ability_creature_disease_02": [
+        1737
+      ],
+      "ability_rogue_feigndeath": [
+        857
+      ],
+      "spell_shadow_fingerofdeath": [
+        76
+      ],
+      "spell_frost_manarecharge": [
+        36
+      ],
+      "spell_shadow_devouringplague": [
+        2520
+      ],
+      "spell_frost_frostarmor": [
+        119
+      ],
+      "spell_deathknight_necroticplague": [],
+      "ability_creature_cursed_05": [
+        1739
+      ]
+    }
+  },
+  "talents": [
+    {
+      "slot": 1,
+      "order": 1,
+      "position": {
+        "row": 1,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "Spell_fire_felflamebolt",
+      "name": "Improved Plague Bolt",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Reduces the cast time of your Plague Bolt by 0.1/0.2/0.3/0.4/0.5 seconds.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 2,
+      "order": 2,
+      "position": {
+        "row": 1,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_frost_manaburn",
+      "name": "Preservation",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Reduces the mana cost of your Plague spells by 2/4/6/8/10%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        145
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Frost_ManaBurn"
+    },
+    {
+      "slot": 4,
+      "order": 4,
+      "position": {
+        "row": 2,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "Spell_deathknight_spelldeflection",
+      "name": "Precision",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Increases your chance to hit with melee attacks and spells by 1/2/3%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 5,
+      "order": 5,
+      "position": {
+        "row": 2,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "ability_creature_disease_03",
+      "name": "Susceptibility",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Reduces the target's resistance to all your spells by 5/10.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        1959
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Creature_Disease_03"
+    },
+    {
+      "slot": 6,
+      "order": 6,
+      "position": {
+        "row": 2,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_shadow_auraofdarkness",
+      "name": "Improved Terror",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Reduces the cast time of your Terror spell by 0.4/0.8/1.2/1.6/2 seconds.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        91
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_AuraOfDarkness"
+    },
+    {
+      "slot": 8,
+      "order": 8,
+      "position": {
+        "row": 3,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "spell_shadow_cripple",
+      "name": "Cripple",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Reduces the target's movement speed by 10% and reduces its attack power by X. Lasts 10 sec.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        96
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_Cripple"
+    },
+    {
+      "slot": 9,
+      "order": 9,
+      "position": {
+        "row": 3,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "spell_shadow_plaguecloud",
+      "name": "Disease Cloud",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Explodes a victim of your Toxic Plague, instantly inflicting damage equal to one tick to all enemies in an 8 yard radius, and additional Nature damage equal to the total base damage of your Toxic Plague for 8 seconds in the area.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        97
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_PlagueCloud"
+    },
+    {
+      "slot": 10,
+      "order": 10,
+      "position": {
+        "row": 3,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_shadow_animatedead",
+      "name": "Early Grave",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Your Call of the Grave has a 4/8/12/16/20% chance to trigger its final triple damage effect on an earlier tick.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        221
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_AnimateDead"
+    },
+    {
+      "slot": 11,
+      "order": 11,
+      "position": {
+        "row": 3,
+        "column": 4,
+        "page": 1
+      },
+      "icon": "spell_shadow_deathanddecay",
+      "name": "Withering World",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Increases the damage of Desecration and Disease Cloud by 5/10/15%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        118
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_DeathAndDecay"
+    },
+    {
+      "slot": 13,
+      "order": 13,
+      "position": {
+        "row": 4,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "ability_creature_disease_02",
+      "name": "Metastasis",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Your direct damage spells have a 20/40/60/80/100% chance to increase the damage of your Diseases on the target by 3% for 15 seconds. Stacks up to 5 times.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        1737
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Creature_Disease_02"
+    },
+    {
+      "slot": 14,
+      "order": 14,
+      "position": {
+        "row": 4,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "ability_rogue_feigndeath",
+      "name": "Terminal",
+      "maxRank": 3,
+      "highlight": false,
+      "description": "Reduces the chance that your Diseases will be dispelled by 7/14/20%.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        857
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Rogue_FeignDeath"
+    },
+    {
+      "slot": 15,
+      "order": 15,
+      "position": {
+        "row": 4,
+        "column": 4,
+        "page": 1
+      },
+      "icon": "spell_shadow_fingerofdeath",
+      "name": "Death's Reach",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases the range of your Plague spells and Death Coil by 3/6 yards, and the range of your Reap ability by 5/10 yards.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        76
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_FingerOfDeath"
+    },
+    {
+      "slot": 16,
+      "order": 16,
+      "position": {
+        "row": 5,
+        "column": 1,
+        "page": 1
+      },
+      "icon": "spell_shadow_cripple",
+      "name": "Improved Cripple",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases the movement speed reduction of your Cripple ability by 15/30%.",
+      "talentNotes": null,
+      "requires": 8,
+      "requiresName": "Cripple",
+      "spellIds": null,
+      "spellIconIds": [
+        96
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Shadow_Cripple"
+    },
+    {
+      "slot": 17,
+      "order": 17,
+      "position": {
+        "row": 5,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "spell_frost_manarecharge",
+      "name": "Icy Touch",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Causes X to Y Frost damage and infects the target with Frost Fever, causing an additional X Frost damage over 15 seconds and reducing ranged, melee attack and casting speed by 5% for the duration.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        36
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Frost_ManaRecharge"
+    },
+    {
+      "slot": 18,
+      "order": 18,
+      "position": {
+        "row": 5,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_shadow_devouringplague",
+      "name": "Death's Embrace",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "Increases the damage of your Plague spells, Reap, and Death Coil by 3/6% when your target is at or below 35% health. ",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [
+        2520
+      ],
+      "spellIconFile": "Interface\\Icons\\spell_shadow_devouringplague"
+    },
+    {
+      "slot": 21,
+      "order": 21,
+      "position": {
+        "row": 6,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "spell_frost_frostarmor",
+      "name": "Icy Talons",
+      "maxRank": 5,
+      "highlight": false,
+      "description": "Increases the damage of your direct damage spells by 1/2/3/4/5%. Additionally, any time an enemy is affected by your Frost Fever, you increase your spell casting speed by 1/2/3/4/5%.",
+      "talentNotes": null,
+      "requires": 17,
+      "requiresName": "Icy Touch",
+      "spellIds": null,
+      "spellIconIds": [
+        119
+      ],
+      "spellIconFile": "Interface\\Icons\\Spell_Frost_FrostArmor"
+    },
+    {
+      "slot": 22,
+      "order": 22,
+      "position": {
+        "row": 6,
+        "column": 3,
+        "page": 1
+      },
+      "icon": "spell_deathknight_necroticplague",
+      "name": "Wandering Plague",
+      "maxRank": 2,
+      "highlight": false,
+      "description": "When your Diseases damage an enemy, there is a chance equal to your spell hit chance that they will deal 25/50% additional damage to the enemy and all enemies within 8 yards.",
+      "talentNotes": null,
+      "requires": null,
+      "requiresName": null,
+      "spellIds": null,
+      "spellIconIds": [],
+      "spellIconFile": null
+    },
+    {
+      "slot": 25,
+      "order": 25,
+      "position": {
+        "row": 7,
+        "column": 2,
+        "page": 1
+      },
+      "icon": "ability_creature_cursed_05",
+      "name": "Lichborne",
+      "maxRank": 1,
+      "highlight": false,
+      "description": "Assume a Lichform, reducing Physical damage taken by 10% and causing your casting speed increase effects to increase the tick speed of your Diseases and channeled abilities with 100% efficiency, reducing their duration.",
+      "talentNotes": null,
+      "requires": 21,
+      "requiresName": "Icy Talons",
+      "spellIds": null,
+      "spellIconIds": [
+        1739
+      ],
+      "spellIconFile": "Interface\\Icons\\Ability_Creature_Cursed_05"
+    }
+  ],
+  "notes_raw": "## Plague Spellbook (WIP):\n\n***\n\n***Level 1 - Plague Bolt:*** Causes X to Y Nature damage and infects the target with Toxic Plague, causing an additional X Nature damage over 15 seconds.  The direct damage of your Plague Bolt increases by 3% for each of your Diseases on the target. ***(3 second cast time, 30 yard range, No CD)***\n\n***\n\n***Level 12 - Call of the Grave:*** Infects the target with Grave Rot, dealing X Shadow damage over 24 seconds and causing triple damage on the final tick. ***(Instant, 30 yard range, 24 sec duration, No CD)***\n\n***\n\n***Level 14 - Terror:*** Terrorize the enemy, causing it to run in fear for up to 10 sec. Damage caused may interrupt the effect. Only 1 target can be terrorized at a time. ***(2 sec cast time, 20 yard range, 10 sec duration, 10 sec CD)***\n\n***\n\n***Level 20 - Desecration:*** Desecrates the land beneath the Necromancer, doing X Shadow damage over 8 sec to enemies who enter the area and reducing their healing received by 15%. The desecrated power wanes, dealing reduced damage as time passes. ***(Instant, 8 yard radius, 8 sec duration, 8 sec CD)***\n\n***\n\n***Level 20 (Talent) - Disease Cloud:*** Explodes a victim of your Toxic Plague, instantly inflicting damage equal to one tick to all enemies in an 8 yard radius, and additional Nature damage equal to the total base damage of your Toxic Plague for 8 seconds in the area. ***(Instant, 30 yard range, 8 yard radius, 8 sec duration, 30 sec CD)***\n\n***\n\n***Level 20 (Talent) - Cripple:*** Reduces the target's movement speed by 10% and reduces its attack power by X. Lasts 10 sec. ***(Instant, 30 yard range, 10 sec duration, 10 sec CD)***\n\n***\n\n***Level 26 - Outbreak:*** Inflicts X to Y Shadow damage to the target over 4 seconds, renewing the duration of any damaging Diseases on the target and spreading them to up to 3 additional nearby targets. ***(Channeled for 4 sec, 20 yard range, No CD)***\n\n***\n\n***Level 30 (Talent) - Icy Touch:*** Causes X to Y Frost damage and infects the target with Frost Fever, causing an additional X Frost damage over 15 seconds and reducing ranged, melee attack, and casting speed by 5% for the duration. ***(Instant, 30 yard range, No CD)***\n\n***\n\n***Level 32 (Talent) - Corrosion:*** Reduces the target's armor by X for 20 sec. ***(Instant, 30 yard range, No CD)***\n\n***\n\n***Level 40 (Talent) - Lichborne:*** Assume a Lichform, reducing Physical damage taken by 10% and causing your casting speed increase effects to increase the tick speed of your Diseases and channeled abilities with 100% efficiency, reducing their duration. Additionally, your Mana regenerates at 25% of the normal rate while casting. ***(Instant, No Duration)***\n* ***Note:*** This is *not* a transformation into an actual Lich model. It is a custom dark frosty skin, similar in style to priest's Shadowform.\n\n"
+}
