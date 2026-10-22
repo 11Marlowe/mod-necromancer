@@ -12,14 +12,15 @@ Touch/Frost Fever, Corrosion, Lichborne, Unholy Aura) and the three talent
 trees (54 talents, icons, rank spells) are implemented, deployed and
 server-side verified with `turtle-agent`. Class color (red) and a placeholder
 creation-screen icon are now in the client patch. **T2a (the ten stat/defense
-passives) and T2b (the ten spell-modifier passives) are implemented and
-server-side verified (2026-10-21/22).** Remaining: T2c-T2e talent mechanics,
-custom creation-screen art; the Corpse Bag container is deferred.
+passives), T2b (the ten spell-modifier passives) and T2c (the nine minion/pet
+passives) are implemented and server-side verified (2026-10-21/22).**
+Remaining: T2d-T2e talent mechanics, custom creation-screen art; the Corpse Bag
+container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
 `11Marlowe/wow-tools` repo). Read its **§12** (current state), **§13** (engine
-lessons) and **§14** (assumptions A1-A95) before changing spells or mechanics.
+lessons) and **§14** (assumptions A1-A97) before changing spells or mechanics.
 
 ## Features
 
@@ -27,8 +28,9 @@ lessons) and **§14** (assumptions A1-A95) before changing spells or mechanics.
 - Three spellbook tabs: **Reanimation (700)**, **Blood (701)**, **Plague (702)**.
 - **Talent trees T1:** Reanimation / Blood / Plague tabs (TalentTab 401-403),
   54 talents (Talent 478-531) with the site icons and prerequisites. **T2a**
-  implements the ten stat/defense passives and **T2b** the ten spell-modifier
-  passives among the new rank spells (61200-61330); the remaining T2 batches
+  implements the ten stat/defense passives, **T2b** the ten spell-modifier
+  passives and **T2c** the nine minion/pet passives among the rank spells
+  (61200-61330; T2c adds hidden helpers 61331-61341); the remaining T2 batches
   implement the rest.
 - Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
   wrappers use **61100-61150**; talent rank spells use **61200-61330**.
@@ -85,7 +87,7 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught because it is not in
 the current parsed Plague tree (creator drift).
 
-### Talents (T1 scaffolding + T2a/T2b, 2026-10-21/22)
+### Talents (T1 scaffolding + T2a/T2b/T2c, 2026-10-21/22)
 
 `patch-Z.mpq` adds the three talent tabs **Reanimation**, **Blood** and
 **Plague** (`TalentTab` 401-403, classMask 0x200), 54 talents
@@ -98,10 +100,14 @@ Plague Bolt, Preservation, Improved Terror, Improved Dark Command, Reaping,
 Life and Death, Restlessness, Reclusion, Withering World, Improved Cripple)
 through `client/patches/47-talent-mechanics-t2a.yaml` /
 `48-talent-mechanics-t2b.yaml` and SQL `20261021140000` /
-`20261021160000`.  The remaining T2 batches (T2c minion/pet, T2d
-proc/conditional, T2e active polish) are next; see design doc §10 item 17 /
-A94-A96.  The client-rendered talent tooltips/icons still need an in-client
-check.
+`20261021160000`.  **T2c** implements the nine minion/pet passives (Running
+Dead, Unnatural Life, Solitude, Graverobbing, Unholy Power, Piercing Fingers,
+Undead Domination, Retained Intellect, Twisted Bond) with hidden helper spells
+61331-61341, a new `PetScript`, and module damage/proc hooks through
+`client/patches/49-talent-mechanics-t2c.yaml` and SQL `20261021180000`.  The
+remaining T2 batches (T2d proc/conditional, T2e active polish) are next; see
+design doc §10 item 17 / A94-A97.  The client-rendered talent tooltips/icons
+still need an in-client check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
@@ -206,6 +212,16 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   Death Coil damage 598 vs 544 with/without Life and Death.  Remember
   `.gm off` before debuff tests (GM mode wipes auras) and that direct Toxic
   Plague has a 1.5 s cast.
+- T2c server checks: `list auras` on the player (Unnatural Life 137, Twisted
+  Bond 42, Undead Domination 61340) and on a tethered Ghoul (61331/61332/
+  61334/61335/61336/61339; `unit statinfo` shows the Stamina/Intellect/health
+  gains).  Raise a minion and confirm Graverobbing 61333 (8 s) on the player
+  and, with Undead Domination learned, an instant `spell_start` (`cast_ms` 0)
+  replaced by the 10 min marker 61341.  Solitude is measured via the mob's
+  health delta (Death Coil 544 -> 576 with no minion; the `spell_damage`
+  event still reports the pre-hook amount).  Newly created pets need the
+  `UpdateAllStats()` refresh the PetScript performs, so test on a fresh
+  summon/tether.
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
 - **pfQuest:** class-quest filtering needs the custom class bit (512) in

@@ -115,6 +115,42 @@ namespace
         NECRO_TALENT_WITHERING_WORLD_R3  = 61309,
         NECRO_TALENT_IMPROVED_CRIPPLE_R1 = 61320,
         NECRO_TALENT_IMPROVED_CRIPPLE_R2 = 61321,
+        NECRO_TALENT_RUNNING_DEAD_R1     = 61200,   // T2c minion/pet passives
+        NECRO_TALENT_RUNNING_DEAD_R2     = 61201,
+        NECRO_TALENT_UNNATURAL_LIFE_R1   = 61202,
+        NECRO_TALENT_UNNATURAL_LIFE_R2   = 61203,
+        NECRO_TALENT_UNNATURAL_LIFE_R3   = 61204,
+        NECRO_TALENT_UNNATURAL_LIFE_R4   = 61205,
+        NECRO_TALENT_UNNATURAL_LIFE_R5   = 61206,
+        NECRO_TALENT_SOLITUDE_R1         = 61207,
+        NECRO_TALENT_SOLITUDE_R2         = 61208,
+        NECRO_TALENT_SOLITUDE_R3         = 61209,
+        NECRO_TALENT_GRAVEROBBING_R1     = 61216,
+        NECRO_TALENT_GRAVEROBBING_R2     = 61217,
+        NECRO_TALENT_UNHOLY_POWER_R1     = 61225,
+        NECRO_TALENT_UNHOLY_POWER_R2     = 61226,
+        NECRO_TALENT_UNHOLY_POWER_R3     = 61227,
+        NECRO_TALENT_PIERCING_FINGERS_R1 = 61228,
+        NECRO_TALENT_PIERCING_FINGERS_R2 = 61229,
+        NECRO_TALENT_PIERCING_FINGERS_R3 = 61230,
+        NECRO_TALENT_UNDEAD_DOMINATION   = 61231,
+        NECRO_TALENT_RETAINED_INTELLECT_R1 = 61232,
+        NECRO_TALENT_RETAINED_INTELLECT_R2 = 61233,
+        NECRO_TALENT_RETAINED_INTELLECT_R3 = 61234,
+        NECRO_TALENT_TWISTED_BOND_R1     = 61235,
+        NECRO_TALENT_TWISTED_BOND_R2     = 61236,
+        NECRO_TALENT_TWISTED_BOND_R3     = 61237,
+        NECRO_HELPER_RUNNING_DEAD        = 61331,   // T2c hidden minion auras
+        NECRO_HELPER_UNNATURAL_LIFE      = 61332,
+        NECRO_HELPER_GRAVEROBBING        = 61333,
+        NECRO_HELPER_PIERCING_MELEE      = 61334,
+        NECRO_HELPER_PIERCING_CASTER     = 61335,
+        NECRO_HELPER_RETAINED_INTELLECT  = 61336,
+        NECRO_HELPER_TWISTED_BOND_MINION = 61337,
+        NECRO_HELPER_TWISTED_BOND_PLAYER = 61338,
+        NECRO_HELPER_TWISTED_BOND_PROC   = 61339,
+        NECRO_HELPER_UNDEAD_DOMINATION   = 61340,
+        NECRO_HELPER_UNDEAD_DOMINATION_CD = 61341,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -223,6 +259,343 @@ namespace
         return 0;
     }
 
+    // ------------------------------------------------------------------
+    // T2c talent helpers (minion/pet passives)
+    // ------------------------------------------------------------------
+
+    bool IsMinionEntry(uint32 entry);           // defined in the minion section
+    uint32 GetActiveMinionCount(Unit* caster);  // defined in the minion section
+
+    int GetRunningDeadRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_RUNNING_DEAD_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_RUNNING_DEAD_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetUnnaturalLifeRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_UNNATURAL_LIFE_R5))
+            return 5;
+        if (player->HasSpell(NECRO_TALENT_UNNATURAL_LIFE_R4))
+            return 4;
+        if (player->HasSpell(NECRO_TALENT_UNNATURAL_LIFE_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_UNNATURAL_LIFE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_UNNATURAL_LIFE_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetSolitudeRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_SOLITUDE_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_SOLITUDE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_SOLITUDE_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetGraverobbingRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_GRAVEROBBING_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_GRAVEROBBING_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetUnholyPowerRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_UNHOLY_POWER_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_UNHOLY_POWER_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_UNHOLY_POWER_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetPiercingFingersRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_PIERCING_FINGERS_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_PIERCING_FINGERS_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_PIERCING_FINGERS_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetRetainedIntellectRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_RETAINED_INTELLECT_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_RETAINED_INTELLECT_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_RETAINED_INTELLECT_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetTwistedBondRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_TWISTED_BOND_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_TWISTED_BOND_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_TWISTED_BOND_R1))
+            return 1;
+        return 0;
+    }
+
+    bool IsT2cTalentSpell(uint32 spellId)
+    {
+        return (spellId >= NECRO_TALENT_RUNNING_DEAD_R1 &&
+                spellId <= NECRO_TALENT_RUNNING_DEAD_R2) ||
+               (spellId >= NECRO_TALENT_UNNATURAL_LIFE_R1 &&
+                spellId <= NECRO_TALENT_UNNATURAL_LIFE_R5) ||
+               (spellId >= NECRO_TALENT_SOLITUDE_R1 &&
+                spellId <= NECRO_TALENT_SOLITUDE_R3) ||
+               spellId == NECRO_TALENT_GRAVEROBBING_R1 ||
+               spellId == NECRO_TALENT_GRAVEROBBING_R2 ||
+               (spellId >= NECRO_TALENT_UNHOLY_POWER_R1 &&
+                spellId <= NECRO_TALENT_UNHOLY_POWER_R3) ||
+               (spellId >= NECRO_TALENT_PIERCING_FINGERS_R1 &&
+                spellId <= NECRO_TALENT_PIERCING_FINGERS_R3) ||
+               spellId == NECRO_TALENT_UNDEAD_DOMINATION ||
+               (spellId >= NECRO_TALENT_RETAINED_INTELLECT_R1 &&
+                spellId <= NECRO_TALENT_RETAINED_INTELLECT_R3) ||
+               (spellId >= NECRO_TALENT_TWISTED_BOND_R1 &&
+                spellId <= NECRO_TALENT_TWISTED_BOND_R3);
+    }
+
+    bool IsCasterMinion(uint32 entry)
+    {
+        return entry == NECRO_CREATURE_WRAITH || entry == NECRO_CREATURE_BLOODMAGE;
+    }
+
+    void ApplyGraverobbing(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+
+        int rank = GetGraverobbingRank(player);
+        if (!rank)
+            return;
+
+        int32 basePoints = rank * 4 - 1;    // +4% / +8% (aura value - 1)
+        player->CastCustomSpell(player, NECRO_HELPER_GRAVEROBBING,
+                                &basePoints, &basePoints, &basePoints, true);
+    }
+
+    void TryApplyUndeadDomination(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+        if (!player->HasSpell(NECRO_TALENT_UNDEAD_DOMINATION))
+            return;
+        if (player->HasAura(NECRO_HELPER_UNDEAD_DOMINATION) ||
+                player->HasAura(NECRO_HELPER_UNDEAD_DOMINATION_CD))
+            return;
+
+        player->CastSpell(player, NECRO_HELPER_UNDEAD_DOMINATION, true);
+    }
+
+    void ConsumeUndeadDomination(Player* player)
+    {
+        if (!player || !player->HasAura(NECRO_HELPER_UNDEAD_DOMINATION))
+            return;
+
+        player->RemoveAurasDueToSpell(NECRO_HELPER_UNDEAD_DOMINATION);
+        player->CastSpell(player, NECRO_HELPER_UNDEAD_DOMINATION_CD, true);
+    }
+
+    void ApplyTwistedBondMinionBuff(Player* player, int rank)
+    {
+        if (!player || !rank)
+            return;
+
+        static const int32 basePointsByRank[3] = { 2, 5, 9 };   // +3/6/10%
+        int32 basePoints = basePointsByRank[rank - 1];
+
+        static const uint32 minionEntries[] =
+        {
+            NECRO_CREATURE_GHOUL,
+            NECRO_CREATURE_SKELETON,
+            NECRO_CREATURE_ZOMBIE,
+            NECRO_CREATURE_SHADE,
+            NECRO_CREATURE_BANSHEE,
+            NECRO_CREATURE_WRAITH,
+            NECRO_CREATURE_BLOODMAGE,
+            NECRO_CREATURE_ABOMINATION,
+            NECRO_CREATURE_WIGHT,
+        };
+
+        for (uint32 entry : minionEntries)
+            if (Pet* minion = player->FindGuardianWithEntry(entry))
+                minion->CastCustomSpell(minion, NECRO_HELPER_TWISTED_BOND_MINION,
+                                        &basePoints, nullptr, nullptr, true);
+
+        if (Pet* pet = player->GetPet())
+            if (pet->IsAlive() && IsMinionEntry(pet->GetEntry()))
+                pet->CastCustomSpell(pet, NECRO_HELPER_TWISTED_BOND_MINION,
+                                     &basePoints, nullptr, nullptr, true);
+    }
+
+    void ApplyTwistedBondPlayerBuff(Player* player, int rank)
+    {
+        if (!player || !rank)
+            return;
+
+        static const int32 basePointsByRank[3] = { 2, 5, 9 };   // +3/6/10%
+        int32 basePoints = basePointsByRank[rank - 1];
+        player->CastCustomSpell(player, NECRO_HELPER_TWISTED_BOND_PLAYER,
+                                &basePoints, nullptr, nullptr, true);
+    }
+
+    // Applies the persistent T2c minion auras.  The values are snapshots of
+    // the owner's stats at summon/refresh time (a placeholder: the design has
+    // no dynamic-update rule).
+    void ApplyMinionTalentAuras(Player* player, Pet* minion)
+    {
+        if (!player || player->GetClass() != 10 || !minion ||
+                !IsMinionEntry(minion->GetEntry()))
+            return;
+
+        static const uint32 helperAuras[] =
+        {
+            NECRO_HELPER_RUNNING_DEAD,
+            NECRO_HELPER_UNNATURAL_LIFE,
+            NECRO_HELPER_PIERCING_MELEE,
+            NECRO_HELPER_PIERCING_CASTER,
+            NECRO_HELPER_RETAINED_INTELLECT,
+            NECRO_HELPER_TWISTED_BOND_PROC,
+        };
+        for (uint32 auraId : helperAuras)
+            minion->RemoveAurasDueToSpell(auraId);
+
+        if (int rank = GetRunningDeadRank(player))
+        {
+            int32 basePoints = rank * 5 - 1;    // +5% / +10%
+            minion->CastCustomSpell(minion, NECRO_HELPER_RUNNING_DEAD,
+                                    &basePoints, nullptr, nullptr, true);
+        }
+
+        if (int rank = GetUnnaturalLifeRank(player))
+        {
+            uint32 stamina = uint32(player->GetStat(STAT_STAMINA) *
+                                    float(rank * 10) / 100.0f);
+            if (stamina)
+            {
+                int32 basePoints = int32(stamina) - 1;
+                minion->CastCustomSpell(minion, NECRO_HELPER_UNNATURAL_LIFE,
+                                        &basePoints, nullptr, nullptr, true);
+            }
+        }
+
+        if (int rank = GetPiercingFingersRank(player))
+        {
+            bool tethered = minion->getPetType() == SUMMON_PET;
+            bool caster = IsCasterMinion(minion->GetEntry());
+
+            int meleeHit = rank;
+            int meleeCrit = rank;
+            int spellHit = rank;
+            int spellCrit = rank;
+
+            if (tethered)
+            {
+                float inheritance = 0.30f * float(rank);
+                int hit = int(player->m_modSpellHitChance * inheritance);
+                int crit = int(player->GetSpellCritPercent(SPELL_SCHOOL_SHADOW) *
+                               inheritance);
+                meleeHit += hit;
+                spellHit += hit;
+                meleeCrit += crit;
+                spellCrit += crit;
+            }
+
+            if (caster || tethered)
+            {
+                int32 hitPoints = spellHit - 1;
+                int32 critPoints = spellCrit - 1;
+                minion->CastCustomSpell(minion, NECRO_HELPER_PIERCING_CASTER,
+                                        &hitPoints, &critPoints, nullptr, true);
+            }
+            if (!caster || tethered)
+            {
+                int32 hitPoints = meleeHit - 1;
+                int32 critPoints = meleeCrit - 1;
+                minion->CastCustomSpell(minion, NECRO_HELPER_PIERCING_MELEE,
+                                        &hitPoints, &critPoints, nullptr, true);
+            }
+        }
+
+        if (int rank = GetRetainedIntellectRank(player))
+        {
+            uint32 intellect = uint32(player->GetStat(STAT_INTELLECT) *
+                                      float(rank * 10) / 100.0f);
+            int32 intellectPoints = int32(intellect) - 1;
+            int32 regenPoints = rank * 5 - 1;
+            minion->CastCustomSpell(minion, NECRO_HELPER_RETAINED_INTELLECT,
+                                    &intellectPoints, &regenPoints, nullptr, true);
+        }
+
+        if (GetTwistedBondRank(player))
+            minion->CastSpell(minion, NECRO_HELPER_TWISTED_BOND_PROC, true);
+
+        // Newly created pets have CanModifyStats() false in this core, so the
+        // stat auras above only stored their modifiers.  Recompute now.
+        minion->UpdateAllStats();
+    }
+
+    void RefreshAllMinionTalentAuras(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+
+        if (Pet* pet = player->GetPet())
+            ApplyMinionTalentAuras(player, pet);
+
+        static const uint32 minionEntries[] =
+        {
+            NECRO_CREATURE_GHOUL,
+            NECRO_CREATURE_SKELETON,
+            NECRO_CREATURE_ZOMBIE,
+            NECRO_CREATURE_SHADE,
+            NECRO_CREATURE_BANSHEE,
+            NECRO_CREATURE_WRAITH,
+            NECRO_CREATURE_BLOODMAGE,
+            NECRO_CREATURE_ABOMINATION,
+            NECRO_CREATURE_WIGHT,
+        };
+        for (uint32 entry : minionEntries)
+            if (Pet* guardian = player->FindGuardianWithEntry(entry))
+                ApplyMinionTalentAuras(player, guardian);
+    }
+
     bool IsWitheringWorldSpell(uint32 spellId)
     {
         return (spellId >= NECRO_SPELL_DESECRATION_R1 &&
@@ -251,6 +624,24 @@ namespace
         }
     }
 
+    // T2c: apply the minion/pet talent auras when a minion enters the world
+    // (new summon, Tether conversion, saved-pet login).
+    class NecromancerPetScript : public PetScript
+    {
+    public:
+        NecromancerPetScript() : PetScript("mod_necromancer_pet") {}
+
+        void OnPetAddToWorld(Pet* pet) override
+        {
+            if (!pet)
+                return;
+            Unit* owner = pet->GetOwner();
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            if (player && player->GetClass() == 10)
+                ApplyMinionTalentAuras(player, pet);
+        }
+    };
+
     class NecromancerPlayerScript : public PlayerScript
     {
     public:
@@ -265,12 +656,22 @@ namespace
         {
             CleanupLegacySpells(player);
             RefreshTwoHandedSkillBonus(player);
+
+            TryApplyUndeadDomination(player);
+            RefreshAllMinionTalentAuras(player);
         }
 
         void OnLearnSpell(Player* player, uint32 spellId) override
         {
             if (!player || player->GetClass() != 10)
                 return;
+
+            if (IsT2cTalentSpell(spellId))
+            {
+                if (spellId == NECRO_TALENT_UNDEAD_DOMINATION)
+                    TryApplyUndeadDomination(player);
+                RefreshAllMinionTalentAuras(player);
+            }
 
             if (spellId == NECRO_SPELL_DEATH_COIL &&
                     player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
@@ -306,6 +707,16 @@ namespace
         {
             if (!player || player->GetClass() != 10)
                 return;
+
+            if (IsT2cTalentSpell(spellId))
+            {
+                if (spellId == NECRO_TALENT_UNDEAD_DOMINATION)
+                {
+                    player->RemoveAurasDueToSpell(NECRO_HELPER_UNDEAD_DOMINATION);
+                    player->RemoveAurasDueToSpell(NECRO_HELPER_UNDEAD_DOMINATION_CD);
+                }
+                RefreshAllMinionTalentAuras(player);
+            }
 
             // Talent removal (or a GM unlearn) must invalidate the gear the
             // passive allowed.  Remove the skill lines and move any item that
@@ -490,10 +901,43 @@ namespace
     {
     public:
         NecromancerTalentUnitScript()
-            : UnitScript("mod_necromancer_t2a_t2b_talents",
+            : UnitScript("mod_necromancer_t2a_t2b_t2c_talents",
                          { UNITHOOK_ON_AURA_APPLY, UNITHOOK_ON_AURA_REMOVE,
-                           UNITHOOK_MODIFY_SPELL_DAMAGE_TAKEN })
+                           UNITHOOK_MODIFY_SPELL_DAMAGE_TAKEN,
+                           UNITHOOK_ON_DAMAGE })
         {
+        }
+
+        // T2c: Solitude (all damage while no minion is active) and Unholy
+        // Power (minion damage done).
+        void OnDamage(Unit* attacker, Unit* victim, uint32& damage) override
+        {
+            if (!attacker || !victim || attacker == victim || damage == 0)
+                return;
+
+            if (Player* player = attacker->ToPlayer())
+            {
+                if (player->GetClass() != 10)
+                    return;
+
+                int rank = GetSolitudeRank(player);
+                if (rank && GetActiveMinionCount(player) == 0)
+                    damage = uint32(float(damage) * (1.0f + 0.02f * float(rank)));
+                return;
+            }
+
+            Pet* minion = attacker->ToPet();
+            if (!minion || !IsMinionEntry(minion->GetEntry()))
+                return;
+
+            Unit* owner = minion->GetOwner();
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10)
+                return;
+
+            int rank = GetUnholyPowerRank(player);
+            if (rank)
+                damage = uint32(float(damage) * (1.0f + 0.05f * float(rank)));
         }
 
         void OnAuraApply(Unit* unit, Aura* aura) override
@@ -658,6 +1102,112 @@ namespace
                 return value;
 
             return int32(float(value) * (rank == 1 ? 1.15f : 1.30f));
+        }
+    };
+
+    // Twisted Bond (T2c): the player's harmful spell crits buff the minions'
+    // damage, and the minions' crits buff the player's spell damage for 8 s.
+    // The player half is carried by the rank spell's proc aura; the minion
+    // half by helper 61339, applied by the PetScript.
+    struct spell_necromancer_twisted_bond_player : public AuraScript
+    {
+        std::optional<SpellProcEventTriggerCheck> OnCheckProc(
+                Unit const* owner, Unit* /*victim*/, SpellAuraHolder* /*holder*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 procExtra, WeaponAttackType /*attType*/,
+                bool /*isVictim*/) override
+        {
+            if (!(procExtra & PROC_EX_CRITICAL_HIT))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            Player* player = owner ? const_cast<Unit*>(owner)->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10 || !GetTwistedBondRank(player))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            return SPELL_PROC_TRIGGER_OK;
+        }
+
+        std::optional<SpellAuraProcResult> OnProc(
+                Unit* owner, Unit* /*victim*/, uint32 /*amount*/,
+                int32 /*originalAmount*/, Aura* /*triggeredByAura*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 /*procEx*/, uint32 /*cooldown*/) override
+        {
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            int rank = GetTwistedBondRank(player);
+            if (!rank)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            ApplyTwistedBondMinionBuff(player, rank);
+            return SPELL_AURA_PROC_OK;
+        }
+    };
+
+    struct spell_necromancer_twisted_bond_minion : public AuraScript
+    {
+        static Player* GetOwnerPlayer(Unit const* unit)
+        {
+            if (!unit)
+                return nullptr;
+            Unit* owner = const_cast<Unit*>(unit)->GetCharmerOrOwnerPlayerOrPlayerItself();
+            return owner ? owner->ToPlayer() : nullptr;
+        }
+
+        std::optional<SpellProcEventTriggerCheck> OnCheckProc(
+                Unit const* owner, Unit* /*victim*/, SpellAuraHolder* /*holder*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 procExtra, WeaponAttackType /*attType*/,
+                bool /*isVictim*/) override
+        {
+            if (!(procExtra & PROC_EX_CRITICAL_HIT))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            Player* player = GetOwnerPlayer(owner);
+            if (!player || player->GetClass() != 10 || !GetTwistedBondRank(player))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            return SPELL_PROC_TRIGGER_OK;
+        }
+
+        std::optional<SpellAuraProcResult> OnProc(
+                Unit* owner, Unit* /*victim*/, uint32 /*amount*/,
+                int32 /*originalAmount*/, Aura* /*triggeredByAura*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 /*procEx*/, uint32 /*cooldown*/) override
+        {
+            Player* player = GetOwnerPlayer(owner);
+            if (!player || player->GetClass() != 10)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            int rank = GetTwistedBondRank(player);
+            if (!rank)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            ApplyTwistedBondPlayerBuff(player, rank);
+            return SPELL_AURA_PROC_OK;
+        }
+    };
+
+    // Undead Domination (T2c): the 10 min cooldown marker re-arms the buff
+    // when it expires, provided the talent is still learned.
+    struct spell_necromancer_undead_domination : public AuraScript
+    {
+        void OnAfterApply(Aura* aura, bool apply) override
+        {
+            if (apply || !aura || aura->GetRemoveMode() != AURA_REMOVE_BY_EXPIRE)
+                return;
+
+            Unit* target = aura->GetTarget();
+            Player* player = target ? target->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10)
+                return;
+            if (!player->HasSpell(NECRO_TALENT_UNDEAD_DOMINATION))
+                return;
+
+            player->CastSpell(player, NECRO_HELPER_UNDEAD_DOMINATION, true);
         }
     };
 
@@ -1142,6 +1692,21 @@ namespace
             summon->UpdateAllStats();
             summon->SetHealth(summon->GetMaxHealth());
         }
+
+        void OnSuccessfulFinish(Spell* spell) const override
+        {
+            if (!spell || !spell->m_casterUnit || !spell->m_spellInfo)
+                return;
+            if (spell->m_spellInfo->Id == NECRO_SPELL_WIGHT_SUMMON)
+                return;
+
+            Player* player = spell->m_casterUnit->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            ApplyGraverobbing(player);
+            ConsumeUndeadDomination(player);
+        }
     };
 
     // Tether: replaces the target raised guardian with a permanent,
@@ -1351,6 +1916,8 @@ namespace
 
             if (Item* item = player->StoreNewItem(dest, itemId, true))
                 player->SendNewItem(item, 1, true, false);
+
+            ApplyGraverobbing(player);
         }
     };
 
@@ -1413,6 +1980,19 @@ namespace
                 caster->CastSpell(caster, NECRO_SPELL_WIGHT_SUMMON, true);
 
             return false;   // effect fully handled by the script
+        }
+
+        void OnSuccessfulFinish(Spell* spell) const override
+        {
+            if (!spell || !spell->m_casterUnit)
+                return;
+
+            Player* player = spell->m_casterUnit->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            ApplyGraverobbing(player);
+            ConsumeUndeadDomination(player);
         }
     };
 
@@ -2137,6 +2717,22 @@ namespace
         return new spell_necromancer_icy_touch();
     }
 
+    // T2c talent scripts (2026-10-22)
+    AuraScript* GetTwistedBondPlayerAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_twisted_bond_player();
+    }
+
+    AuraScript* GetTwistedBondMinionAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_twisted_bond_minion();
+    }
+
+    AuraScript* GetUndeadDominationAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_undead_domination();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -2200,7 +2796,7 @@ namespace
             }
 
             sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
-                           "are trainer-taught; auto-learn retired; T2a+T2b talents active)");
+                           "are trainer-taught; auto-learn retired; T2a+T2b+T2c talents active)");
         }
     };
 }
@@ -2209,6 +2805,7 @@ void AddNecromancerScripts()
 {
     new NecromancerWorldScript();
     new NecromancerPlayerScript();
+    new NecromancerPetScript();
     new NecromancerGhoulArmorUnitScript();
     new NecromancerTalentUnitScript();
 
@@ -2248,4 +2845,12 @@ void AddNecromancerScripts()
     // remaining talent spells (2026-10-20)
     RegisterSpellScript("spell_necromancer_soul_strike", GetSoulStrikeSpellScript);
     RegisterSpellScript("spell_necromancer_icy_touch", GetIcyTouchSpellScript);
+
+    // T2c minion/pet talents (2026-10-22)
+    RegisterAuraScript("spell_necromancer_twisted_bond_player",
+                       GetTwistedBondPlayerAuraScript);
+    RegisterAuraScript("spell_necromancer_twisted_bond_minion",
+                       GetTwistedBondMinionAuraScript);
+    RegisterAuraScript("spell_necromancer_undead_domination_cd",
+                       GetUndeadDominationAuraScript);
 }
