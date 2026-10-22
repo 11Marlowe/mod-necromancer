@@ -85,8 +85,8 @@ current list.
 The class is trained, not auto-learned. Both NPCs use `trainer_class = 10` and
 teach **28 non-quest spell/rank rows** through learn spells 61100-61150 at
 vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
-**Talents**); **Corrosion (61089)** stays trainer-taught because it is not in
-the current parsed Plague tree (creator drift).
+**Talents**); **Corrosion (61089)** stays trainer-taught (decision locked
+2026-10-22; it is not in the current parsed Plague tree - creator drift).
 
 ### Talents (T1 scaffolding + T2a-T2d, 2026-10-21/22)
 
@@ -111,8 +111,12 @@ Zombification, Bloodletting, Bloodgorged, Butchery, Phantom Armor, Early
 Grave, Metastasis, Death's Embrace, Icy Talons, Wandering Plague) with hidden
 helpers 61342-61350 through `client/patches/49b-talent-mechanics-t2d.yaml`
 and SQL `20261022120000`.  The remaining T2e batch (active-talent polish) is
-next; see design doc §10 item 17 / A94-A98.  The client-rendered talent
-tooltips/icons still need an in-client check.
+next; see design doc §10 item 17 / A94-A99.  T2e decisions locked 2026-10-22:
+Corrosion stays trainer-taught; the 3 armor passives (61090-61092) are
+stripped from pre-T1 test characters with a free talent reset, using the
+existing `OnForgotSpell` skill/gear cleanup (deleting `character_spell` rows
+alone bypasses it).  The client-rendered talent tooltips/icons still need an
+in-client check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
