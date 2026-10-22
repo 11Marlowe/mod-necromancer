@@ -110,6 +110,11 @@ namespace
         NECRO_TALENT_TERMINAL_R1         = 61315,
         NECRO_TALENT_TERMINAL_R2         = 61316,
         NECRO_TALENT_TERMINAL_R3         = 61317,
+        NECRO_TALENT_WITHERING_WORLD_R1  = 61307,   // T2b spell-modifier passives
+        NECRO_TALENT_WITHERING_WORLD_R2  = 61308,
+        NECRO_TALENT_WITHERING_WORLD_R3  = 61309,
+        NECRO_TALENT_IMPROVED_CRIPPLE_R1 = 61320,
+        NECRO_TALENT_IMPROVED_CRIPPLE_R2 = 61321,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -192,6 +197,37 @@ namespace
         if (player->HasSpell(NECRO_TALENT_TWO_HANDED_R1))
             return 1;
         return 0;
+    }
+
+    int GetWitheringWorldRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_WITHERING_WORLD_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_WITHERING_WORLD_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_WITHERING_WORLD_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetImprovedCrippleRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_IMPROVED_CRIPPLE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_IMPROVED_CRIPPLE_R1))
+            return 1;
+        return 0;
+    }
+
+    bool IsWitheringWorldSpell(uint32 spellId)
+    {
+        return (spellId >= NECRO_SPELL_DESECRATION_R1 &&
+                spellId <= NECRO_SPELL_DESECRATION_R3) ||
+               spellId == NECRO_SPELL_DISEASE_CLOUD;
     }
 
     // Two-Handed Weapon Specialization's +1/2/3 weapon skill is applied here
@@ -454,8 +490,9 @@ namespace
     {
     public:
         NecromancerTalentUnitScript()
-            : UnitScript("mod_necromancer_t2a_talents",
-                         { UNITHOOK_ON_AURA_APPLY, UNITHOOK_ON_AURA_REMOVE })
+            : UnitScript("mod_necromancer_t2a_t2b_talents",
+                         { UNITHOOK_ON_AURA_APPLY, UNITHOOK_ON_AURA_REMOVE,
+                           UNITHOOK_MODIFY_SPELL_DAMAGE_TAKEN })
         {
         }
 
@@ -520,6 +557,26 @@ namespace
                     }),
                 casterPlayer->m_Events.CalculateTime(150));
         }
+
+        void ModifySpellDamageTaken(Unit* /*target*/, Unit* attacker,
+                                    int32& damage, SpellEntry const* spellInfo) override
+        {
+            if (!attacker || !spellInfo || damage <= 0)
+                return;
+
+            Player* player = attacker->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            if (!IsWitheringWorldSpell(spellInfo->Id))
+                return;
+
+            int rank = GetWitheringWorldRank(player);
+            if (!rank)
+                return;
+
+            damage = int32(float(damage) * (1.0f + 0.05f * float(rank)));
+        }
     };
 
     // Call of the Grave: a plague that festers on the victim; the final tick
@@ -555,6 +612,52 @@ namespace
                 return SPELL_FAILED_TARGET_AURASTATE;
 
             return SPELL_CAST_OK;
+        }
+
+        // Withering World's direct-damage part; the periodic ticks are handled
+        // by the shared UnitScript hook.
+        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex /*effIdx*/,
+                                     float& damage) const override
+        {
+            if (!spell || !spell->m_casterUnit || damage <= 0.0f)
+                return;
+
+            Player* player = spell->m_casterUnit->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            int rank = GetWitheringWorldRank(player);
+            if (!rank)
+                return;
+
+            damage *= 1.0f + 0.05f * float(rank);
+        }
+    };
+
+    // Improved Cripple: multiply the movement-slow aura value on the Cripple
+    // spell.  Bound to 61023 via spell_template.script_name.
+    struct spell_necromancer_cripple : public AuraScript
+    {
+        int32 OnAuraValueCalculate(Aura* /*aura*/, Unit* caster,
+                                   Unit* /*target*/, SpellEntry const* spellProto,
+                                   SpellEffectIndex effIdx, Item* /*castItem*/,
+                                   int32 value) override
+        {
+            if (!caster || !spellProto || spellProto->Id != NECRO_SPELL_CRIPPLE)
+                return value;
+
+            Player* player = caster->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return value;
+
+            int rank = GetImprovedCrippleRank(player);
+            if (!rank)
+                return value;
+
+            if (spellProto->EffectApplyAuraName[effIdx] != SPELL_AURA_MOD_DECREASE_SPEED)
+                return value;
+
+            return int32(float(value) * (rank == 1 ? 1.15f : 1.30f));
         }
     };
 
@@ -1929,6 +2032,11 @@ namespace
         return new spell_necromancer_disease_cloud();
     }
 
+    AuraScript* GetCrippleAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_cripple();
+    }
+
     SpellScript* GetRaiseMinionSpellScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_raise_minion();
@@ -2092,7 +2200,7 @@ namespace
             }
 
             sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
-                           "are trainer-taught; auto-learn retired; T2a talents active)");
+                           "are trainer-taught; auto-learn retired; T2a+T2b talents active)");
         }
     };
 }
@@ -2113,6 +2221,7 @@ void AddNecromancerScripts()
     // spell_template.script_name bindings
     RegisterAuraScript("spell_necromancer_call_of_the_grave", GetCallOfTheGraveAuraScript);
     RegisterSpellScript("spell_necromancer_disease_cloud", GetDiseaseCloudSpellScript);
+    RegisterAuraScript("spell_necromancer_cripple", GetCrippleAuraScript);
     RegisterSpellScript("spell_necromancer_raise_minion", GetRaiseMinionSpellScript);
     RegisterSpellScript("spell_necromancer_tether", GetTetherSpellScript);
     RegisterSpellScript("spell_necromancer_sacrifice_minion", GetSacrificeMinionSpellScript);

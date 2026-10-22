@@ -12,9 +12,9 @@ Touch/Frost Fever, Corrosion, Lichborne, Unholy Aura) and the three talent
 trees (54 talents, icons, rank spells) are implemented, deployed and
 server-side verified with `turtle-agent`. Class color (red) and a placeholder
 creation-screen icon are now in the client patch. **T2a (the ten stat/defense
-passives) is implemented and server-side verified (2026-10-21).** Remaining:
-T2b-T2e talent mechanics, custom creation-screen art; the Corpse Bag container
-is deferred.
+passives) and T2b (the ten spell-modifier passives) are implemented and
+server-side verified (2026-10-21/22).** Remaining: T2c-T2e talent mechanics,
+custom creation-screen art; the Corpse Bag container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
@@ -27,8 +27,9 @@ lessons) and **§14** (assumptions A1-A95) before changing spells or mechanics.
 - Three spellbook tabs: **Reanimation (700)**, **Blood (701)**, **Plague (702)**.
 - **Talent trees T1:** Reanimation / Blood / Plague tabs (TalentTab 401-403),
   54 talents (Talent 478-531) with the site icons and prerequisites. **T2a**
-  implements the ten stat/defense passives among the new rank spells
-  (61200-61330); the remaining T2 batches implement the rest.
+  implements the ten stat/defense passives and **T2b** the ten spell-modifier
+  passives among the new rank spells (61200-61330); the remaining T2 batches
+  implement the rest.
 - Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
   wrappers use **61100-61150**; talent rank spells use **61200-61330**.
 - Minion system: nine undead tiers, corpse/Corpse Bag requirements, Tether,
@@ -84,22 +85,23 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught because it is not in
 the current parsed Plague tree (creator drift).
 
-### Talents (T1 scaffolding + T2a, 2026-10-21)
+### Talents (T1 scaffolding + T2a/T2b, 2026-10-21/22)
 
 `patch-Z.mpq` adds the three talent tabs **Reanimation**, **Blood** and
 **Plague** (`TalentTab` 401-403, classMask 0x200), 54 talents
 (`Talent` 478-531) with the parsed tier/column and prerequisites, and the
 site icons (rank-spell `SpellIconID`; 4 new `SpellIcon` rows, substitutes for
 the rest).  Active talents reuse the existing class spells.  The 131 new
-passive rank spells (61200-61330) were inert in T1; **T2a** now implements the
-ten stat/defense passives (Deflection, Death March, Unholy Regeneration,
-Looming Shadow, Dual Wield/Two-Handed Specialization, Precision, Terminal,
-Death's Reach, Susceptibility) through
-`client/patches/47-talent-mechanics-t2a.yaml` and SQL
-`20261021140000`.  The remaining T2 batches (T2b spell modifiers, T2c
-minion/pet, T2d proc/conditional, T2e active polish) are next; see design doc
-§10 item 17 / A94/A95.  The client-rendered talent tooltips/icons still need
-an in-client check.
+passive rank spells (61200-61330) were inert in T1; **T2a** implements the ten
+stat/defense passives and **T2b** the ten spell-modifier passives (Improved
+Plague Bolt, Preservation, Improved Terror, Improved Dark Command, Reaping,
+Life and Death, Restlessness, Reclusion, Withering World, Improved Cripple)
+through `client/patches/47-talent-mechanics-t2a.yaml` /
+`48-talent-mechanics-t2b.yaml` and SQL `20261021140000` /
+`20261021160000`.  The remaining T2 batches (T2c minion/pet, T2d
+proc/conditional, T2e active polish) are next; see design doc §10 item 17 /
+A94-A96.  The client-rendered talent tooltips/icons still need an in-client
+check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
@@ -197,6 +199,13 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   `.aura 61071` + `.cast 528` (Terminal; refill mana with
   `modify mana 2743 2743`).  Use `target <self guid>` first for the GM
   commands that read the selected player.
+- T2b server checks: `spell_start` cast_ms for Improved Plague Bolt (2500),
+  Improved Terror (0), Raise Ghoul (3000) and Harvest's channel (2000);
+  Reap's second cast after ~6.3 s (Reaping); mana deltas for Preservation
+  (Call of the Grave 144 vs 160) and Reclusion (Ghoul Armor 108 vs 120);
+  Death Coil damage 598 vs 544 with/without Life and Death.  Remember
+  `.gm off` before debuff tests (GM mode wipes auras) and that direct Toxic
+  Plague has a 1.5 s cast.
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
 - **pfQuest:** class-quest filtering needs the custom class bit (512) in
