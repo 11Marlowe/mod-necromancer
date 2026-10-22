@@ -12,10 +12,10 @@ Touch/Frost Fever, Corrosion, Lichborne, Unholy Aura) and the three talent
 trees (54 talents, icons, rank spells) are implemented, deployed and
 server-side verified with `turtle-agent`. Class color (red) and a placeholder
 creation-screen icon are now in the client patch. **T2a (the ten stat/defense
-passives), T2b (the ten spell-modifier passives) and T2c (the nine minion/pet
-passives) are implemented and server-side verified (2026-10-21/22).**
-Remaining: T2d-T2e talent mechanics, custom creation-screen art; the Corpse Bag
-container is deferred.
+passives), T2b (the ten spell-modifier passives), T2c (the nine minion/pet
+passives) and T2d (the eleven proc/conditional passives) are implemented and
+server-side verified (2026-10-21/22).** Remaining: T2e active-talent polish,
+custom creation-screen art; the Corpse Bag container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
@@ -29,11 +29,12 @@ lessons) and **§14** (assumptions A1-A97) before changing spells or mechanics.
 - **Talent trees T1:** Reanimation / Blood / Plague tabs (TalentTab 401-403),
   54 talents (Talent 478-531) with the site icons and prerequisites. **T2a**
   implements the ten stat/defense passives, **T2b** the ten spell-modifier
-  passives and **T2c** the nine minion/pet passives among the rank spells
-  (61200-61330; T2c adds hidden helpers 61331-61341); the remaining T2 batches
-  implement the rest.
+  passives, **T2c** the nine minion/pet passives and **T2d** the eleven
+  proc/conditional passives among the rank spells (61200-61330; hidden helpers
+  61331-61350); the remaining T2e batch implements the active-talent polish.
 - Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
-  wrappers use **61100-61150**; talent rank spells use **61200-61330**.
+  wrappers use **61100-61150**; talent rank spells use **61200-61330** and
+  hidden talent helpers **61331-61350**.
 - Minion system: nine undead tiers, corpse/Corpse Bag requirements, Tether,
   per-tier abilities, Death Pact, Army of the Dead cap, Meat Catapult and the
   Wight transform.
@@ -87,7 +88,7 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught because it is not in
 the current parsed Plague tree (creator drift).
 
-### Talents (T1 scaffolding + T2a/T2b/T2c, 2026-10-21/22)
+### Talents (T1 scaffolding + T2a-T2d, 2026-10-21/22)
 
 `patch-Z.mpq` adds the three talent tabs **Reanimation**, **Blood** and
 **Plague** (`TalentTab` 401-403, classMask 0x200), 54 talents
@@ -104,10 +105,14 @@ through `client/patches/47-talent-mechanics-t2a.yaml` /
 Dead, Unnatural Life, Solitude, Graverobbing, Unholy Power, Piercing Fingers,
 Undead Domination, Retained Intellect, Twisted Bond) with hidden helper spells
 61331-61341, a new `PetScript`, and module damage/proc hooks through
-`client/patches/49-talent-mechanics-t2c.yaml` and SQL `20261021180000`.  The
-remaining T2 batches (T2d proc/conditional, T2e active polish) are next; see
-design doc §10 item 17 / A94-A97.  The client-rendered talent tooltips/icons
-still need an in-client check.
+`client/patches/49-talent-mechanics-t2c.yaml` and SQL `20261021180000`.
+**T2d** implements the eleven proc/conditional passives (Shadowskin,
+Zombification, Bloodletting, Bloodgorged, Butchery, Phantom Armor, Early
+Grave, Metastasis, Death's Embrace, Icy Talons, Wandering Plague) with hidden
+helpers 61342-61350 through `client/patches/49b-talent-mechanics-t2d.yaml`
+and SQL `20261022120000`.  The remaining T2e batch (active-talent polish) is
+next; see design doc §10 item 17 / A94-A98.  The client-rendered talent
+tooltips/icons still need an in-client check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
@@ -197,8 +202,8 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
 - A pet saved before a pet-ability change keeps its old list: apply the
   character migration, or dismiss + re-raise + Tether it.
 - Spellbook tabs and the **talent tabs/icons/tooltips/point spending** are
-  client-rendered; `turtle-agent` cannot verify them.  The T2a stat/defense
-  rank spells are live; the remaining T2 batches are still inert.
+  client-rendered; `turtle-agent` cannot verify them.  The T2a-T2d rank
+  spells are live; only the T2e polish batch remains.
 - T2a server checks: `unit statinfo` (Parry chance, melee/spell hit, damage
   mods), `getskillvalue 55/160/172` (2H skill bonus), `list auras` (rank-spell
   auras), `.aura 61023` repeatedly (Death March slow resist) and
@@ -222,6 +227,19 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   event still reports the pre-hook amount).  Newly created pets need the
   `UpdateAllStats()` refresh the PetScript performs, so test on a fresh
   summon/tether.
+- T2d server checks: `list auras` (Zombification 61344; Icy Talons 61343 while
+  Frost Fever is active; Butchery 61345 after a parry; Shadowskin/Phantom
+  61346-61349 with Bone/Ghoul/Lich Armor).  Bloodlet's energize should be
+  1.2x its damage with Bloodletting 2 (12 damage -> 14 mana); Wandering
+  Plague's 61350 should hit the victim and enemies within 8 yd; Early Grave
+  makes an early Call of the Grave tick triple (56 -> 168 at rank 5);
+  Death's Embrace raises Death Coil's low-health hit by 6% (~760 -> 806).
+  Metastasis 61342 is a **hidden client-side** debuff: `unit.auras` and the
+  agent's aura events do not show it, so verify with GM `aura 61342` +
+  `list auras` on the mob or a temporary module log.  A hidden helper cast on
+  an enemy must not have the passive bit (use `Attributes` 128, not 192).
+  `modify parry 100` (self selected) makes the Butchery parry proc easy to
+  test; reset it afterwards.
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
 - **pfQuest:** class-quest filtering needs the custom class bit (512) in

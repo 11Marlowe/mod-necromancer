@@ -151,6 +151,53 @@ namespace
         NECRO_HELPER_TWISTED_BOND_PROC   = 61339,
         NECRO_HELPER_UNDEAD_DOMINATION   = 61340,
         NECRO_HELPER_UNDEAD_DOMINATION_CD = 61341,
+        NECRO_TALENT_SHADOWSKIN_R1       = 61223,   // T2d proc/conditional passives
+        NECRO_TALENT_SHADOWSKIN_R2       = 61224,
+        NECRO_TALENT_ZOMBIFICATION_R1    = 61238,
+        NECRO_TALENT_ZOMBIFICATION_R2    = 61239,
+        NECRO_TALENT_ZOMBIFICATION_R3    = 61240,
+        NECRO_TALENT_ZOMBIFICATION_R4    = 61241,
+        NECRO_TALENT_ZOMBIFICATION_R5    = 61242,
+        NECRO_TALENT_BLOODLETTING_R1     = 61248,
+        NECRO_TALENT_BLOODLETTING_R2     = 61249,
+        NECRO_TALENT_BLOODGORGED_R1      = 61265,
+        NECRO_TALENT_BLOODGORGED_R2      = 61266,
+        NECRO_TALENT_BLOODGORGED_R3      = 61267,
+        NECRO_TALENT_BLOODGORGED_R4      = 61268,
+        NECRO_TALENT_BLOODGORGED_R5      = 61269,
+        NECRO_TALENT_BUTCHERY_R1         = 61277,
+        NECRO_TALENT_BUTCHERY_R2         = 61278,
+        NECRO_TALENT_PHANTOM_ARMOR_R1    = 61279,
+        NECRO_TALENT_PHANTOM_ARMOR_R2    = 61280,
+        NECRO_TALENT_PHANTOM_ARMOR_R3    = 61281,
+        NECRO_TALENT_EARLY_GRAVE_R1      = 61302,
+        NECRO_TALENT_EARLY_GRAVE_R2      = 61303,
+        NECRO_TALENT_EARLY_GRAVE_R3      = 61304,
+        NECRO_TALENT_EARLY_GRAVE_R4      = 61305,
+        NECRO_TALENT_EARLY_GRAVE_R5      = 61306,
+        NECRO_TALENT_METASTASIS_R1       = 61310,
+        NECRO_TALENT_METASTASIS_R2       = 61311,
+        NECRO_TALENT_METASTASIS_R3       = 61312,
+        NECRO_TALENT_METASTASIS_R4       = 61313,
+        NECRO_TALENT_METASTASIS_R5       = 61314,
+        NECRO_TALENT_DEATHS_EMBRACE_R1   = 61322,
+        NECRO_TALENT_DEATHS_EMBRACE_R2   = 61323,
+        NECRO_TALENT_ICY_TALONS_R1       = 61324,
+        NECRO_TALENT_ICY_TALONS_R2       = 61325,
+        NECRO_TALENT_ICY_TALONS_R3       = 61326,
+        NECRO_TALENT_ICY_TALONS_R4       = 61327,
+        NECRO_TALENT_ICY_TALONS_R5       = 61328,
+        NECRO_TALENT_WANDERING_PLAGUE_R1 = 61329,
+        NECRO_TALENT_WANDERING_PLAGUE_R2 = 61330,
+        NECRO_HELPER_METASTASIS          = 61342,   // T2d hidden helper spells
+        NECRO_HELPER_ICY_TALONS          = 61343,
+        NECRO_HELPER_ZOMBIFICATION       = 61344,
+        NECRO_HELPER_BUTCHERY            = 61345,
+        NECRO_HELPER_SHADOWSKIN_GHOUL    = 61346,
+        NECRO_HELPER_SHADOWSKIN_LICH     = 61347,
+        NECRO_HELPER_SHADOWSKIN_BONE     = 61348,
+        NECRO_HELPER_PHANTOM_ARMOR       = 61349,
+        NECRO_HELPER_WANDERING_PLAGUE    = 61350,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -389,6 +436,340 @@ namespace
                 spellId <= NECRO_TALENT_RETAINED_INTELLECT_R3) ||
                (spellId >= NECRO_TALENT_TWISTED_BOND_R1 &&
                 spellId <= NECRO_TALENT_TWISTED_BOND_R3);
+    }
+
+    // ------------------------------------------------------------------
+    // T2d talent helpers (proc/conditional passives)
+    // ------------------------------------------------------------------
+
+    int GetShadowskinRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_SHADOWSKIN_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_SHADOWSKIN_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetZombificationRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_ZOMBIFICATION_R5))
+            return 5;
+        if (player->HasSpell(NECRO_TALENT_ZOMBIFICATION_R4))
+            return 4;
+        if (player->HasSpell(NECRO_TALENT_ZOMBIFICATION_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_ZOMBIFICATION_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_ZOMBIFICATION_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetBloodlettingRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_BLOODLETTING_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_BLOODLETTING_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetButcheryRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_BUTCHERY_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_BUTCHERY_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetPhantomArmorRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_PHANTOM_ARMOR_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_PHANTOM_ARMOR_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_PHANTOM_ARMOR_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetEarlyGraveRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_EARLY_GRAVE_R5))
+            return 5;
+        if (player->HasSpell(NECRO_TALENT_EARLY_GRAVE_R4))
+            return 4;
+        if (player->HasSpell(NECRO_TALENT_EARLY_GRAVE_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_EARLY_GRAVE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_EARLY_GRAVE_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetMetastasisRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_METASTASIS_R5))
+            return 5;
+        if (player->HasSpell(NECRO_TALENT_METASTASIS_R4))
+            return 4;
+        if (player->HasSpell(NECRO_TALENT_METASTASIS_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_METASTASIS_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_METASTASIS_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetDeathsEmbraceRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_DEATHS_EMBRACE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_DEATHS_EMBRACE_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetIcyTalonsRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_ICY_TALONS_R5))
+            return 5;
+        if (player->HasSpell(NECRO_TALENT_ICY_TALONS_R4))
+            return 4;
+        if (player->HasSpell(NECRO_TALENT_ICY_TALONS_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_ICY_TALONS_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_ICY_TALONS_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetWanderingPlagueRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_WANDERING_PLAGUE_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_WANDERING_PLAGUE_R1))
+            return 1;
+        return 0;
+    }
+
+    bool IsT2dTalentSpell(uint32 spellId)
+    {
+        return (spellId >= NECRO_TALENT_SHADOWSKIN_R1 &&
+                spellId <= NECRO_TALENT_SHADOWSKIN_R2) ||
+               (spellId >= NECRO_TALENT_ZOMBIFICATION_R1 &&
+                spellId <= NECRO_TALENT_ZOMBIFICATION_R5) ||
+               (spellId >= NECRO_TALENT_BLOODLETTING_R1 &&
+                spellId <= NECRO_TALENT_BLOODLETTING_R2) ||
+               (spellId >= NECRO_TALENT_BLOODGORGED_R1 &&
+                spellId <= NECRO_TALENT_BLOODGORGED_R5) ||
+               (spellId >= NECRO_TALENT_BUTCHERY_R1 &&
+                spellId <= NECRO_TALENT_BUTCHERY_R2) ||
+               (spellId >= NECRO_TALENT_PHANTOM_ARMOR_R1 &&
+                spellId <= NECRO_TALENT_PHANTOM_ARMOR_R3) ||
+               (spellId >= NECRO_TALENT_EARLY_GRAVE_R1 &&
+                spellId <= NECRO_TALENT_EARLY_GRAVE_R5) ||
+               (spellId >= NECRO_TALENT_METASTASIS_R1 &&
+                spellId <= NECRO_TALENT_METASTASIS_R5) ||
+               (spellId >= NECRO_TALENT_DEATHS_EMBRACE_R1 &&
+                spellId <= NECRO_TALENT_DEATHS_EMBRACE_R2) ||
+               (spellId >= NECRO_TALENT_ICY_TALONS_R1 &&
+                spellId <= NECRO_TALENT_ICY_TALONS_R5) ||
+               (spellId >= NECRO_TALENT_WANDERING_PLAGUE_R1 &&
+                spellId <= NECRO_TALENT_WANDERING_PLAGUE_R2);
+    }
+
+    bool IsDeathsEmbracePeriodicSpell(uint32 spellId)
+    {
+        switch (spellId)
+        {
+            case NECRO_SPELL_CALL_OF_THE_GRAVE_R1:
+            case NECRO_SPELL_CALL_OF_THE_GRAVE_R2:
+            case NECRO_SPELL_CALL_OF_THE_GRAVE_R3:
+            case NECRO_SPELL_DESECRATION_R1:
+            case NECRO_SPELL_DESECRATION_R2:
+            case NECRO_SPELL_DESECRATION_R3:
+            case NECRO_SPELL_DISEASE_CLOUD:
+            case NECRO_SPELL_TOXIC_PLAGUE_R1:
+            case NECRO_SPELL_TOXIC_PLAGUE_R2:
+            case NECRO_SPELL_TOXIC_PLAGUE_R3:
+            case NECRO_SPELL_OUTBREAK:
+            case NECRO_SPELL_FROST_FEVER:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    void ApplyDeathsEmbrace(Player* player, Unit* target, float& damage)
+    {
+        if (!player || !target || damage <= 0.0f)
+            return;
+
+        int rank = GetDeathsEmbraceRank(player);
+        if (!rank || target->GetHealthPercent() > 35.0f)
+            return;
+
+        damage *= 1.0f + 0.03f * float(rank);
+    }
+
+    void ApplyDeathsEmbrace(Player* player, Unit* target, int32& damage)
+    {
+        float value = float(damage);
+        ApplyDeathsEmbrace(player, target, value);
+        damage = int32(value);
+    }
+
+    void ApplyIcyTalonsHaste(Unit* caster)
+    {
+        Player* player = caster ? caster->ToPlayer() : nullptr;
+        if (!player || player->GetClass() != 10)
+            return;
+
+        int rank = GetIcyTalonsRank(player);
+        if (!rank)
+            return;
+
+        int32 basePoints = rank - 1;
+        player->CastCustomSpell(player, NECRO_HELPER_ICY_TALONS,
+                                &basePoints, nullptr, nullptr, true);
+    }
+
+    // Armor-spell conditional helpers (Shadowskin + Phantom Armor).  The
+    // helpers use the armor buff's 30 min duration and are removed when the
+    // armor is replaced or expires.
+    void RemoveArmorTalentAuras(Player* player)
+    {
+        if (!player)
+            return;
+
+        player->RemoveAurasDueToSpell(NECRO_HELPER_SHADOWSKIN_GHOUL);
+        player->RemoveAurasDueToSpell(NECRO_HELPER_SHADOWSKIN_LICH);
+        player->RemoveAurasDueToSpell(NECRO_HELPER_SHADOWSKIN_BONE);
+        player->RemoveAurasDueToSpell(NECRO_HELPER_PHANTOM_ARMOR);
+    }
+
+    void ApplyArmorTalentAuras(Player* player, uint32 armorSpellId)
+    {
+        if (!player || !armorSpellId)
+            return;
+
+        if (int rank = GetShadowskinRank(player))
+        {
+            uint32 helper = 0;
+            int32 basePoints = 0;
+
+            switch (armorSpellId)
+            {
+                case NECRO_SPELL_BONE_ARMOR:
+                    // Bone Armor's design "charges" do not exist in this
+                    // implementation; approximated as +2/+4% armor.
+                    helper = NECRO_HELPER_SHADOWSKIN_BONE;
+                    basePoints = rank * 2 - 1;
+                    break;
+                case NECRO_SPELL_GHOUL_ARMOR:
+                    // +25/+50% of the armor's 10 shadow resistance.
+                    helper = NECRO_HELPER_SHADOWSKIN_GHOUL;
+                    basePoints = rank == 1 ? 2 : 4;
+                    break;
+                case NECRO_SPELL_LICH_ARMOR:
+                    // +50/+100% of the armor's 15% regen-while-casting.
+                    helper = NECRO_HELPER_SHADOWSKIN_LICH;
+                    basePoints = rank == 1 ? 7 : 14;
+                    break;
+                default:
+                    break;
+            }
+
+            if (helper)
+                player->CastCustomSpell(player, helper, &basePoints,
+                                        nullptr, nullptr, true);
+        }
+
+        if (int rank = GetPhantomArmorRank(player))
+        {
+            static const int32 basePointsByRank[3] = { -4, -7, -11 };
+            int32 basePoints = basePointsByRank[rank - 1];
+            player->CastCustomSpell(player, NECRO_HELPER_PHANTOM_ARMOR,
+                                    &basePoints, nullptr, nullptr, true);
+        }
+    }
+
+    void RefreshArmorTalentAuras(Player* player)
+    {
+        if (!player)
+            return;
+
+        RemoveArmorTalentAuras(player);
+
+        uint32 armor = 0;
+        if (player->GetAura(NECRO_SPELL_BONE_ARMOR, EFFECT_INDEX_0))
+            armor = NECRO_SPELL_BONE_ARMOR;
+        else if (player->GetAura(NECRO_SPELL_GHOUL_ARMOR, EFFECT_INDEX_0))
+            armor = NECRO_SPELL_GHOUL_ARMOR;
+        else if (player->GetAura(NECRO_SPELL_LICH_ARMOR, EFFECT_INDEX_0))
+            armor = NECRO_SPELL_LICH_ARMOR;
+
+        if (armor)
+            ApplyArmorTalentAuras(player, armor);
+    }
+
+    std::unordered_map<uint64, uint32> sZombificationTimers;
+
+    void UpdateZombification(Player* player)
+    {
+        if (!player)
+            return;
+
+        int rank = GetZombificationRank(player);
+        if (!rank)
+        {
+            if (player->HasAura(NECRO_HELPER_ZOMBIFICATION))
+                player->RemoveAurasDueToSpell(NECRO_HELPER_ZOMBIFICATION);
+            return;
+        }
+
+        int32 strength = int32(float(player->GetStat(STAT_INTELLECT)) *
+                               0.05f * float(rank));
+        if (strength < 0)
+            strength = 0;
+
+        Aura* aura = player->GetAura(NECRO_HELPER_ZOMBIFICATION, EFFECT_INDEX_0);
+        if (aura && aura->GetModifier()->m_amount == strength)
+            return;
+
+        player->RemoveAurasDueToSpell(NECRO_HELPER_ZOMBIFICATION);
+        if (strength > 0)
+        {
+            int32 basePoints = strength - 1;
+            player->CastCustomSpell(player, NECRO_HELPER_ZOMBIFICATION,
+                                    &basePoints, nullptr, nullptr, true);
+        }
     }
 
     bool IsCasterMinion(uint32 entry)
@@ -648,7 +1029,8 @@ namespace
         NecromancerPlayerScript()
             : PlayerScript("mod_necromancer_player",
                            { PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_LEARN_SPELL,
-                             PLAYERHOOK_ON_FORGOT_SPELL })
+                             PLAYERHOOK_ON_FORGOT_SPELL, PLAYERHOOK_ON_UPDATE,
+                             PLAYERHOOK_ON_LOGOUT })
         {
         }
 
@@ -659,6 +1041,34 @@ namespace
 
             TryApplyUndeadDomination(player);
             RefreshAllMinionTalentAuras(player);
+            RefreshArmorTalentAuras(player);
+            UpdateZombification(player);
+        }
+
+        void OnUpdate(Player* player, uint32 diff) override
+        {
+            if (!player || player->GetClass() != 10)
+                return;
+            if (!GetZombificationRank(player) &&
+                    !player->HasAura(NECRO_HELPER_ZOMBIFICATION))
+                return;
+
+            uint32& timer =
+                sZombificationTimers[player->GetObjectGuid().GetRawValue()];
+            timer += diff;
+            if (timer < 1000)
+                return;
+            timer = 0;
+
+            UpdateZombification(player);
+        }
+
+        void OnLogout(Player* player) override
+        {
+            if (!player)
+                return;
+            sZombificationTimers.erase(
+                player->GetObjectGuid().GetRawValue());
         }
 
         void OnLearnSpell(Player* player, uint32 spellId) override
@@ -671,6 +1081,12 @@ namespace
                 if (spellId == NECRO_TALENT_UNDEAD_DOMINATION)
                     TryApplyUndeadDomination(player);
                 RefreshAllMinionTalentAuras(player);
+            }
+
+            if (IsT2dTalentSpell(spellId))
+            {
+                RefreshArmorTalentAuras(player);
+                UpdateZombification(player);
             }
 
             if (spellId == NECRO_SPELL_DEATH_COIL &&
@@ -716,6 +1132,15 @@ namespace
                     player->RemoveAurasDueToSpell(NECRO_HELPER_UNDEAD_DOMINATION_CD);
                 }
                 RefreshAllMinionTalentAuras(player);
+            }
+
+            if (IsT2dTalentSpell(spellId))
+            {
+                if (!GetIcyTalonsRank(player))
+                    player->RemoveAurasDueToSpell(NECRO_HELPER_ICY_TALONS);
+
+                RefreshArmorTalentAuras(player);
+                UpdateZombification(player);
             }
 
             // Talent removal (or a GM unlearn) must invalidate the gear the
@@ -1002,7 +1427,7 @@ namespace
                 casterPlayer->m_Events.CalculateTime(150));
         }
 
-        void ModifySpellDamageTaken(Unit* /*target*/, Unit* attacker,
+        void ModifySpellDamageTaken(Unit* target, Unit* attacker,
                                     int32& damage, SpellEntry const* spellInfo) override
         {
             if (!attacker || !spellInfo || damage <= 0)
@@ -1012,14 +1437,15 @@ namespace
             if (!player || player->GetClass() != 10)
                 return;
 
-            if (!IsWitheringWorldSpell(spellInfo->Id))
-                return;
+            if (IsWitheringWorldSpell(spellInfo->Id))
+            {
+                int rank = GetWitheringWorldRank(player);
+                if (rank)
+                    damage = int32(float(damage) * (1.0f + 0.05f * float(rank)));
+            }
 
-            int rank = GetWitheringWorldRank(player);
-            if (!rank)
-                return;
-
-            damage = int32(float(damage) * (1.0f + 0.05f * float(rank)));
+            if (IsDeathsEmbracePeriodicSpell(spellInfo->Id))
+                ApplyDeathsEmbrace(player, target, damage);
         }
     };
 
@@ -1032,7 +1458,20 @@ namespace
             if (!aura || amount <= 0.0f || !IsCallOfTheGrave(aura->GetId()))
                 return;
 
-            if (aura->GetAuraTicks() && aura->GetAuraTicks() == aura->GetAuraMaxTicks())
+            uint32 ticks = aura->GetAuraTicks();
+            uint32 maxTicks = aura->GetAuraMaxTicks();
+
+            if (ticks && ticks == maxTicks)
+            {
+                amount *= 3.0f;
+                return;
+            }
+
+            // Early Grave: a chance for the final triple-damage tick to
+            // happen on an earlier tick as well.
+            Player* player = aura->GetCaster() ? aura->GetCaster()->ToPlayer() : nullptr;
+            int rank = GetEarlyGraveRank(player);
+            if (rank && ticks && roll_chance_i(rank * 4))
                 amount *= 3.0f;
         }
     };
@@ -1071,10 +1510,11 @@ namespace
                 return;
 
             int rank = GetWitheringWorldRank(player);
-            if (!rank)
-                return;
+            if (rank)
+                damage *= 1.0f + 0.05f * float(rank);
 
-            damage *= 1.0f + 0.05f * float(rank);
+            if (Unit* target = spell->GetUnitTarget())
+                ApplyDeathsEmbrace(player, target, damage);
         }
     };
 
@@ -1208,6 +1648,195 @@ namespace
                 return;
 
             player->CastSpell(player, NECRO_HELPER_UNDEAD_DOMINATION, true);
+        }
+    };
+
+    // T2d: Frost Fever ticks keep Icy Talons' casting-speed buff up while an
+    // enemy is affected by the disease.
+    struct spell_necromancer_frost_fever : public AuraScript
+    {
+        void OnAfterApply(Aura* aura, bool apply) override
+        {
+            if (!aura || !apply || aura->GetId() != NECRO_SPELL_FROST_FEVER)
+                return;
+
+            ApplyIcyTalonsHaste(aura->GetCaster());
+        }
+
+        void OnPeriodicTick(Aura* aura) override
+        {
+            if (!aura || aura->GetId() != NECRO_SPELL_FROST_FEVER)
+                return;
+
+            ApplyIcyTalonsHaste(aura->GetCaster());
+        }
+    };
+
+    // T2d: Metastasis - direct class damage has a chance to apply a stacking
+    // debuff that increases the target's periodic damage taken by 3% (5
+    // stacks).
+    struct spell_necromancer_metastasis : public AuraScript
+    {
+        static bool IsTriggerSpell(uint32 spellId)
+        {
+            switch (spellId)
+            {
+                case NECRO_SPELL_PLAGUE_BOLT_R1:
+                case NECRO_SPELL_PLAGUE_BOLT_R2:
+                case NECRO_SPELL_PLAGUE_BOLT_R3:
+                case NECRO_SPELL_REAP_R1:
+                case NECRO_SPELL_REAP_R2:
+                case NECRO_SPELL_DISEASE_CLOUD:
+                case NECRO_SPELL_DEATH_COIL:
+                case NECRO_SPELL_PLAGUE_STRIKE:
+                case NECRO_SPELL_BLOODLET:
+                case NECRO_SPELL_SOUL_STRIKE:
+                case NECRO_SPELL_ICY_TOUCH:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        std::optional<SpellProcEventTriggerCheck> OnCheckProc(
+                Unit const* owner, Unit* victim, SpellAuraHolder* /*holder*/,
+                SpellEntry const* procSpell, uint32 /*procFlag*/,
+                uint32 /*procExtra*/, WeaponAttackType /*attType*/,
+                bool /*isVictim*/) override
+        {
+            if (!owner || !victim || !procSpell)
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            Player* player = const_cast<Unit*>(owner)->ToPlayer();
+            if (!player || player->GetClass() != 10 ||
+                    !GetMetastasisRank(player))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            if (!IsTriggerSpell(procSpell->Id))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            return SPELL_PROC_TRIGGER_OK;
+        }
+
+        std::optional<SpellAuraProcResult> OnProc(
+                Unit* owner, Unit* victim, uint32 /*amount*/,
+                int32 /*originalAmount*/, Aura* /*triggeredByAura*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 /*procEx*/, uint32 /*cooldown*/) override
+        {
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            if (!player || !victim || !victim->IsAlive() ||
+                    !GetMetastasisRank(player))
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            player->CastSpell(victim, NECRO_HELPER_METASTASIS, true);
+            return SPELL_AURA_PROC_OK;
+        }
+    };
+
+    // T2d: Wandering Plague - disease ticks can splash 25/50% extra damage to
+    // the victim and nearby enemies (chance = the caster's spell hit chance).
+    struct spell_necromancer_wandering_plague : public AuraScript
+    {
+        std::optional<SpellProcEventTriggerCheck> OnCheckProc(
+                Unit const* owner, Unit* victim, SpellAuraHolder* /*holder*/,
+                SpellEntry const* procSpell, uint32 /*procFlag*/,
+                uint32 /*procExtra*/, WeaponAttackType /*attType*/,
+                bool /*isVictim*/) override
+        {
+            if (!owner || !victim || !procSpell)
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            Player* player = const_cast<Unit*>(owner)->ToPlayer();
+            if (!player || player->GetClass() != 10 ||
+                    !GetWanderingPlagueRank(player))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            if (!IsNecromancerDisease(procSpell->Id))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            int32 chance = player->MagicSpellHitChance(victim, procSpell) / 100;
+            if (chance < 0)
+                chance = 0;
+            if (chance > 100)
+                chance = 100;
+
+            return roll_chance_i(chance) ? SPELL_PROC_TRIGGER_OK
+                                         : SPELL_PROC_TRIGGER_FAILED;
+        }
+
+        std::optional<SpellAuraProcResult> OnProc(
+                Unit* owner, Unit* victim, uint32 amount,
+                int32 /*originalAmount*/, Aura* /*triggeredByAura*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 /*procEx*/, uint32 /*cooldown*/) override
+        {
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            int rank = GetWanderingPlagueRank(player);
+            if (!player || !victim || !amount || !rank)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            uint32 extra = amount * uint32(rank == 1 ? 25 : 50) / 100;
+            if (!extra)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            std::list<Unit*> nearby;
+            MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck check(victim, player, 8.0f);
+            MaNGOS::UnitListSearcher<MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck>
+                searcher(nearby, check);
+            Cell::VisitAllObjects(victim, searcher, 8.0f);
+
+            bool cast = false;
+            for (Unit* unit : nearby)
+            {
+                if (!unit || !unit->IsAlive())
+                    continue;
+
+                int32 basePoints = int32(extra) - 1;
+                player->CastCustomSpell(unit, NECRO_HELPER_WANDERING_PLAGUE,
+                                        &basePoints, nullptr, nullptr, true);
+                cast = true;
+            }
+
+            return cast ? SPELL_AURA_PROC_OK : SPELL_AURA_PROC_CANT_TRIGGER;
+        }
+    };
+
+    // T2d: Butchery - after a parry or a melee critical strike the next
+    // swings are hasted by 7/15% (approximated as a 10 s buff).
+    struct spell_necromancer_butchery : public AuraScript
+    {
+        std::optional<SpellProcEventTriggerCheck> OnCheckProc(
+                Unit const* owner, Unit* /*victim*/, SpellAuraHolder* /*holder*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 procExtra, WeaponAttackType /*attType*/,
+                bool /*isVictim*/) override
+        {
+            if (!(procExtra & (PROC_EX_CRITICAL_HIT | PROC_EX_PARRY)))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            Player* player = owner ? const_cast<Unit*>(owner)->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10 || !GetButcheryRank(player))
+                return SPELL_PROC_TRIGGER_FAILED;
+
+            return SPELL_PROC_TRIGGER_OK;
+        }
+
+        std::optional<SpellAuraProcResult> OnProc(
+                Unit* owner, Unit* /*victim*/, uint32 /*amount*/,
+                int32 /*originalAmount*/, Aura* /*triggeredByAura*/,
+                SpellEntry const* /*procSpell*/, uint32 /*procFlag*/,
+                uint32 /*procEx*/, uint32 /*cooldown*/) override
+        {
+            Player* player = owner ? owner->ToPlayer() : nullptr;
+            int rank = GetButcheryRank(player);
+            if (!player || !rank)
+                return SPELL_AURA_PROC_CANT_TRIGGER;
+
+            int32 basePoints = rank == 1 ? 6 : 14;   // +7% / +15%
+            player->CastCustomSpell(player, NECRO_HELPER_BUTCHERY,
+                                    &basePoints, nullptr, nullptr, true);
+            return SPELL_AURA_PROC_OK;
         }
     };
 
@@ -2172,6 +2801,15 @@ namespace
 
             if (diseases)
                 damage *= 1.0f + 0.03f * float(diseases);
+
+            // Death's Embrace: Plague Bolt only (Plague Strike is a Blood
+            // spell and is not in the talent's spell list).
+            if (spell->m_spellInfo->Id != NECRO_SPELL_PLAGUE_STRIKE &&
+                    spell->m_casterUnit)
+            {
+                if (Player* player = spell->m_casterUnit->ToPlayer())
+                    ApplyDeathsEmbrace(player, target, damage);
+            }
         }
 
         void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
@@ -2211,7 +2849,7 @@ namespace
     // Armor buffs (Bone Armor, Ghoul Armor, Lich Armor) are mutually
     // exclusive: the design treats them as one armor line.  The script is
     // bound to all three spells through spell_template.script_name.
-    struct spell_necromancer_armor : public SpellScript
+    struct spell_necromancer_armor : public SpellScript, public AuraScript
     {
         void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
         {
@@ -2228,6 +2866,23 @@ namespace
             for (uint32 id : armorSpells)
                 if (id != spell->m_spellInfo->Id)
                     spell->m_casterUnit->RemoveAurasDueToSpell(id);
+        }
+
+        // T2d: Shadowskin's armor bonuses and Phantom Armor's damage
+        // reduction are conditional on an Armor buff being active.
+        void OnAfterApply(Aura* aura, bool apply) override
+        {
+            if (!aura)
+                return;
+
+            Unit* target = aura->GetTarget();
+            Player* player = target ? target->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10)
+                return;
+
+            RemoveArmorTalentAuras(player);
+            if (apply)
+                ApplyArmorTalentAuras(player, aura->GetId());
         }
     };
 
@@ -2303,9 +2958,18 @@ namespace
             if (!disease)
                 return;
 
-            // "in exchange for stealing an equal amount of mana"
+            // "in exchange for stealing an equal amount of mana"; Bloodletting
+            // increases the mana award by 10/20%.
+            uint32 mana = spell->damage;
+            if (Player* player = spell->m_casterUnit->ToPlayer())
+            {
+                int rank = GetBloodlettingRank(player);
+                if (rank)
+                    mana = mana * uint32(100 + 10 * rank) / 100;
+            }
+
             spell->m_casterUnit->EnergizeBySpell(spell->m_casterUnit,
-                    spell->m_spellInfo->Id, spell->damage, POWER_MANA);
+                    spell->m_spellInfo->Id, mana, POWER_MANA);
 
             // One tick of the disease is consumed by the transfer.
             SpellAuraHolder* holder = disease->GetHolder();
@@ -2416,8 +3080,29 @@ namespace
             if (!target || !target->IsAlive() || !spell->m_casterUnit->IsHostileTo(target))
                 return;
 
-            if (spell->damage > 0)
-                target->AddThreat(spell->m_casterUnit, float(spell->damage), false,
+            // Death's Embrace: Reap is a health-leech effect (it does not go
+            // through OnEffectDamageCalculate), so the low-health bonus is
+            // added here with the matching extra lifesteal.
+            uint32 extra = 0;
+            if (Player* player = spell->m_casterUnit->ToPlayer())
+            {
+                int rank = GetDeathsEmbraceRank(player);
+                if (rank && target->GetHealthPercent() <= 35.0f)
+                    extra = spell->damage * uint32(3 * rank) / 100;
+            }
+
+            if (extra)
+            {
+                spell->m_casterUnit->DealDamage(target, extra, nullptr,
+                        DIRECT_DAMAGE, SPELL_SCHOOL_MASK_SHADOW,
+                        spell->m_spellInfo, false);
+                spell->m_casterUnit->DealHeal(spell->m_casterUnit, extra,
+                        spell->m_spellInfo);
+            }
+
+            uint32 total = spell->damage + extra;
+            if (total && target->IsAlive())
+                target->AddThreat(spell->m_casterUnit, float(total), false,
                                   SPELL_SCHOOL_MASK_SHADOW, spell->m_spellInfo);
         }
     };
@@ -2460,6 +3145,21 @@ namespace
                 return SPELL_FAILED_BAD_TARGETS;
 
             return SPELL_CAST_OK;
+        }
+
+        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex effIdx,
+                                     float& damage) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit ||
+                    damage <= 0.0f)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target || !spell->m_casterUnit->IsHostileTo(target))
+                return;
+
+            if (Player* player = spell->m_casterUnit->ToPlayer())
+                ApplyDeathsEmbrace(player, target, damage);
         }
 
         bool OnEffectExecute(Spell* spell, SpellEffectIndex effIdx) const override
@@ -2521,6 +3221,21 @@ namespace
     // reduction).  Frost Fever also counts as one of the class's diseases.
     struct spell_necromancer_icy_touch : public SpellScript
     {
+        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex effIdx,
+                                     float& damage) const override
+        {
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit ||
+                    damage <= 0.0f)
+                return;
+
+            Unit* target = spell->GetUnitTarget();
+            if (!target)
+                return;
+
+            if (Player* player = spell->m_casterUnit->ToPlayer())
+                ApplyDeathsEmbrace(player, target, damage);
+        }
+
         void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
         {
             if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
@@ -2733,6 +3448,32 @@ namespace
         return new spell_necromancer_undead_domination();
     }
 
+    // T2d talent scripts (2026-10-22)
+    AuraScript* GetFrostFeverAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_frost_fever();
+    }
+
+    AuraScript* GetMetastasisAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_metastasis();
+    }
+
+    AuraScript* GetWanderingPlagueAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_wandering_plague();
+    }
+
+    AuraScript* GetButcheryAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_butchery();
+    }
+
+    AuraScript* GetArmorAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_armor();
+    }
+
     // Spell scripts are resolved by script_name through the core's ScriptMgr;
     // the names below must match spell_template.script_name (set by the
     // generators in tools/).
@@ -2796,7 +3537,7 @@ namespace
             }
 
             sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
-                           "are trainer-taught; auto-learn retired; T2a+T2b+T2c talents active)");
+                           "are trainer-taught; auto-learn retired; T2a-T2d talents active)");
         }
     };
 }
@@ -2837,7 +3578,8 @@ void AddNecromancerScripts()
     RegisterSpellScript("spell_necromancer_death_coil", GetDeathCoilSpellScript);
 
     // remaining spellbook batch (2026-10-19)
-    RegisterSpellScript("spell_necromancer_armor", GetArmorSpellScript);
+    RegisterSpellAndAuraScript("spell_necromancer_armor",
+                               GetArmorSpellScript, GetArmorAuraScript);
     RegisterSpellScript("spell_necromancer_bloodlet", GetBloodletSpellScript);
     RegisterSpellScript("spell_necromancer_embalm", GetEmbalmSpellScript);
     RegisterAuraScript("spell_necromancer_outbreak", GetOutbreakAuraScript);
@@ -2853,4 +3595,14 @@ void AddNecromancerScripts()
                        GetTwistedBondMinionAuraScript);
     RegisterAuraScript("spell_necromancer_undead_domination_cd",
                        GetUndeadDominationAuraScript);
+
+    // T2d proc/conditional talents (2026-10-22)
+    RegisterAuraScript("spell_necromancer_frost_fever",
+                       GetFrostFeverAuraScript);
+    RegisterAuraScript("spell_necromancer_metastasis",
+                       GetMetastasisAuraScript);
+    RegisterAuraScript("spell_necromancer_wandering_plague",
+                       GetWanderingPlagueAuraScript);
+    RegisterAuraScript("spell_necromancer_butchery",
+                       GetButcheryAuraScript);
 }
