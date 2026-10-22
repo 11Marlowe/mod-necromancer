@@ -22,8 +22,11 @@
 #include "ObjectMgr.h"
 #include "DBCStores.h"
 #include "Database/DatabaseEnv.h"
+#include "ObjectAccessor.h"
+#include "Util.h"
 
 #include <algorithm>
+#include <functional>
 #include <unordered_map>
 
 namespace
@@ -96,6 +99,17 @@ namespace
         NECRO_SPELL_NECRO_KNIGHT         = 61090,   // armor/weapon progression passives
         NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT = 61091,
         NECRO_SPELL_GRIM_REAPER          = 61092,
+        NECRO_TALENT_DEFLECTION_R1       = 61252,   // T2a stat/defense passives
+        NECRO_TALENT_DEFLECTION_R2       = 61253,
+        NECRO_TALENT_DEFLECTION_R3       = 61254,
+        NECRO_TALENT_DEATH_MARCH_R1      = 61255,
+        NECRO_TALENT_DEATH_MARCH_R2      = 61256,
+        NECRO_TALENT_TWO_HANDED_R1       = 61262,
+        NECRO_TALENT_TWO_HANDED_R2       = 61263,
+        NECRO_TALENT_TWO_HANDED_R3       = 61264,
+        NECRO_TALENT_TERMINAL_R1         = 61315,
+        NECRO_TALENT_TERMINAL_R2         = 61316,
+        NECRO_TALENT_TERMINAL_R3         = 61317,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -139,6 +153,68 @@ namespace
             player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
     }
 
+    // ------------------------------------------------------------------
+    // T2a talent helpers (stat/defense passives)
+    // ------------------------------------------------------------------
+
+    int GetDeathMarchRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_DEATH_MARCH_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_DEATH_MARCH_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetTerminalRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_TERMINAL_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_TERMINAL_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_TERMINAL_R1))
+            return 1;
+        return 0;
+    }
+
+    int GetTwoHandedRank(Player* player)
+    {
+        if (!player)
+            return 0;
+        if (player->HasSpell(NECRO_TALENT_TWO_HANDED_R3))
+            return 3;
+        if (player->HasSpell(NECRO_TALENT_TWO_HANDED_R2))
+            return 2;
+        if (player->HasSpell(NECRO_TALENT_TWO_HANDED_R1))
+            return 1;
+        return 0;
+    }
+
+    // Two-Handed Weapon Specialization's +1/2/3 weapon skill is applied here
+    // (the rank spell has only three effect slots; its damage aura takes one).
+    // The bonus is stored in the skill's permanent-bonus field, which is not
+    // saved with character_skills, so it is reconciled on login as well.
+    void RefreshTwoHandedSkillBonus(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+
+        int16 target = int16(GetTwoHandedRank(player));
+        static const uint16 skills[] = { SKILL_2H_SWORDS, SKILL_2H_MACES, SKILL_2H_AXES };
+        for (uint16 skill : skills)
+        {
+            if (!player->GetSkillValue(skill))
+                continue;
+            int16 current = player->GetSkillBonusPermanent(skill);
+            if (current != target)
+                player->ModifySkillBonus(skill, target - current, true);
+        }
+    }
+
     class NecromancerPlayerScript : public PlayerScript
     {
     public:
@@ -152,6 +228,7 @@ namespace
         void OnLogin(Player* player) override
         {
             CleanupLegacySpells(player);
+            RefreshTwoHandedSkillBonus(player);
         }
 
         void OnLearnSpell(Player* player, uint32 spellId) override
@@ -178,6 +255,11 @@ namespace
                     break;
                 case NECRO_SPELL_GRIM_REAPER:
                     GrantGrimReaperSkills(player);
+                    break;
+                case NECRO_TALENT_TWO_HANDED_R1:
+                case NECRO_TALENT_TWO_HANDED_R2:
+                case NECRO_TALENT_TWO_HANDED_R3:
+                    RefreshTwoHandedSkillBonus(player);
                     break;
                 default:
                     break;
@@ -215,6 +297,22 @@ namespace
                     player->SetCanDualWield(false);
                     player->AutoUnequipItemFromSlot(EQUIPMENT_SLOT_OFFHAND);
                     player->AutoUnequipWeaponsIfNeed();
+                    break;
+                case NECRO_TALENT_TWO_HANDED_R1:
+                case NECRO_TALENT_TWO_HANDED_R2:
+                case NECRO_TALENT_TWO_HANDED_R3:
+                    RefreshTwoHandedSkillBonus(player);
+                    break;
+                case NECRO_TALENT_DEFLECTION_R1:
+                case NECRO_TALENT_DEFLECTION_R2:
+                case NECRO_TALENT_DEFLECTION_R3:
+                    // Deflection's rank spell enables parry itself (the
+                    // class has no vanilla parry passive); drop the ability
+                    // only when the last rank is gone.
+                    if (!player->HasSpell(NECRO_TALENT_DEFLECTION_R1) &&
+                            !player->HasSpell(NECRO_TALENT_DEFLECTION_R2) &&
+                            !player->HasSpell(NECRO_TALENT_DEFLECTION_R3))
+                        player->SetCanParry(false);
                     break;
                 default:
                     break;
@@ -347,6 +445,82 @@ namespace
 
         return false;
     }
+
+    // T2a: Death March's movement-slow resistance (fear is handled by the
+    // rank spell's SPELL_AURA_MOD_MECHANIC_RESISTANCE aura) and Terminal's
+    // disease dispel resistance.  Both are approximations of effects the
+    // 1.12 aura set cannot express directly; see the T2a generator header.
+    class NecromancerTalentUnitScript : public UnitScript
+    {
+    public:
+        NecromancerTalentUnitScript()
+            : UnitScript("mod_necromancer_t2a_talents",
+                         { UNITHOOK_ON_AURA_APPLY, UNITHOOK_ON_AURA_REMOVE })
+        {
+        }
+
+        void OnAuraApply(Unit* unit, Aura* aura) override
+        {
+            Player* player = unit ? unit->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10 || !aura)
+                return;
+
+            int rank = GetDeathMarchRank(player);
+            if (!rank || aura->GetModifier()->m_auraname != SPELL_AURA_MOD_DECREASE_SPEED)
+                return;
+
+            // A resisted slow is removed immediately after it lands.  The
+            // dispel-style "chance to resist" roll is the closest match for
+            // a movement slow in this core.
+            if (roll_chance_i(rank * 5))
+                unit->RemoveAura(aura);
+        }
+
+        void OnAuraRemove(Unit* unit, Aura* aura) override
+        {
+            Player* player = unit ? unit->ToPlayer() : nullptr;
+            if (!player || player->GetClass() != 10 || !aura)
+                return;
+
+            if (aura->GetRemoveMode() != AURA_REMOVE_BY_DISPEL)
+                return;
+
+            int rank = GetTerminalRank(player);
+            if (!rank || !IsNecromancerDisease(aura->GetId()))
+                return;
+
+            static const uint8 chance[3] = { 7, 14, 20 };
+            if (!roll_chance_i(chance[rank - 1]))
+                return;
+
+            // Re-apply the disease the dispel just removed.  This is the
+            // closest analogue to a resisted dispel: the dispeller's effect
+            // is consumed, but the disease stays on the target.  The cast is
+            // delayed because a re-cast during the removal can be caught by
+            // the same dispel and removed again.
+            if (!unit->IsAlive())
+                return;
+            Unit* caster = aura->GetCaster();
+            if (!caster || !caster->IsPlayer())
+                return;
+            Player* casterPlayer = caster->ToPlayer();
+            ObjectGuid targetGuid = unit->GetObjectGuid();
+            ObjectGuid casterGuid = casterPlayer->GetObjectGuid();
+            uint32 spellId = aura->GetId();
+            casterPlayer->m_Events.AddEvent(
+                new LambdaBasicEvent<std::function<void()>>(
+                    [targetGuid, casterGuid, spellId]()
+                    {
+                        Player* caster = ObjectAccessor::FindPlayer(casterGuid);
+                        if (!caster || !caster->IsInWorld())
+                            return;
+                        Unit* target = ObjectAccessor::GetUnit(*caster, targetGuid);
+                        if (target && target->IsAlive())
+                            caster->CastSpell(target, spellId, true);
+                    }),
+                casterPlayer->m_Events.CalculateTime(150));
+        }
+    };
 
     // Call of the Grave: a plague that festers on the victim; the final tick
     // deals triple damage.  Bound to the ranks via spell_template.script_name.
@@ -1918,7 +2092,7 @@ namespace
             }
 
             sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
-                           "are trainer-taught; auto-learn retired)");
+                           "are trainer-taught; auto-learn retired; T2a talents active)");
         }
     };
 }
@@ -1928,6 +2102,7 @@ void AddNecromancerScripts()
     new NecromancerWorldScript();
     new NecromancerPlayerScript();
     new NecromancerGhoulArmorUnitScript();
+    new NecromancerTalentUnitScript();
 
     // class-support: the class's summon pets of the declared creature types
     // count as permanent pets (pet action-bar spells, spirit-healer restore,

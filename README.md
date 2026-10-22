@@ -11,24 +11,24 @@ Blood-tree armor passives, the last talent-gated spells (Soul Strike, Icy
 Touch/Frost Fever, Corrosion, Lichborne, Unholy Aura) and the three talent
 trees (54 talents, icons, rank spells) are implemented, deployed and
 server-side verified with `turtle-agent`. Class color (red) and a placeholder
-creation-screen icon are now in the client patch. **T1 note:** the new passive
-talent rank spells are inert placeholders; the talent effects are the T2
-mechanics work. Remaining: T2 mechanics, custom creation-screen art; the
-Corpse Bag container is deferred.
+creation-screen icon are now in the client patch. **T2a (the ten stat/defense
+passives) is implemented and server-side verified (2026-10-21).** Remaining:
+T2b-T2e talent mechanics, custom creation-screen art; the Corpse Bag container
+is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
 `11Marlowe/wow-tools` repo). Read its **§12** (current state), **§13** (engine
-lessons) and **§14** (assumptions A1-A93) before changing spells or mechanics.
+lessons) and **§14** (assumptions A1-A95) before changing spells or mechanics.
 
 ## Features
 
 - Class 10, mana-based, playable by all 10 existing races.
 - Three spellbook tabs: **Reanimation (700)**, **Blood (701)**, **Plague (702)**.
 - **Talent trees T1:** Reanimation / Blood / Plague tabs (TalentTab 401-403),
-  54 talents (Talent 478-531) with the site icons and prerequisites. The new
-  passive rank spells (61200-61330) are placeholders with no effects yet; the
-  T2 mechanics pass implements them.
+  54 talents (Talent 478-531) with the site icons and prerequisites. **T2a**
+  implements the ten stat/defense passives among the new rank spells
+  (61200-61330); the remaining T2 batches implement the rest.
 - Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
   wrappers use **61100-61150**; talent rank spells use **61200-61330**.
 - Minion system: nine undead tiers, corpse/Corpse Bag requirements, Tether,
@@ -84,18 +84,22 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught because it is not in
 the current parsed Plague tree (creator drift).
 
-### Talents (T1 scaffolding, 2026-10-21)
+### Talents (T1 scaffolding + T2a, 2026-10-21)
 
 `patch-Z.mpq` adds the three talent tabs **Reanimation**, **Blood** and
 **Plague** (`TalentTab` 401-403, classMask 0x200), 54 talents
 (`Talent` 478-531) with the parsed tier/column and prerequisites, and the
 site icons (rank-spell `SpellIconID`; 4 new `SpellIcon` rows, substitutes for
-the rest).  The 131 new passive rank spells (61200-61330) are **inert** for
-T1; active talents reuse the existing class spells.  The T2 mechanics pass
-implements the real effects in five batches (T2a stat/defense, T2b spell
-modifiers, T2c minion/pet, T2d proc/conditional, T2e active polish; see
-design doc §10 item 17 / A94).  See §11/§12/A93 and
-`client/patches/46-talent-trees.yaml`.
+the rest).  Active talents reuse the existing class spells.  The 131 new
+passive rank spells (61200-61330) were inert in T1; **T2a** now implements the
+ten stat/defense passives (Deflection, Death March, Unholy Regeneration,
+Looming Shadow, Dual Wield/Two-Handed Specialization, Precision, Terminal,
+Death's Reach, Susceptibility) through
+`client/patches/47-talent-mechanics-t2a.yaml` and SQL
+`20261021140000`.  The remaining T2 batches (T2b spell modifiers, T2c
+minion/pet, T2d proc/conditional, T2e active polish) are next; see design doc
+§10 item 17 / A94/A95.  The client-rendered talent tooltips/icons still need
+an in-client check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
@@ -185,8 +189,14 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
 - A pet saved before a pet-ability change keeps its old list: apply the
   character migration, or dismiss + re-raise + Tether it.
 - Spellbook tabs and the **talent tabs/icons/tooltips/point spending** are
-  client-rendered; `turtle-agent` cannot verify them.  T1's new passive rank
-  spells (61200-61330) are inert placeholders until T2.
+  client-rendered; `turtle-agent` cannot verify them.  The T2a stat/defense
+  rank spells are live; the remaining T2 batches are still inert.
+- T2a server checks: `unit statinfo` (Parry chance, melee/spell hit, damage
+  mods), `getskillvalue 55/160/172` (2H skill bonus), `list auras` (rank-spell
+  auras), `.aura 61023` repeatedly (Death March slow resist) and
+  `.aura 61071` + `.cast 528` (Terminal; refill mana with
+  `modify mana 2743 2743`).  Use `target <self guid>` first for the GM
+  commands that read the selected player.
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
 - **pfQuest:** class-quest filtering needs the custom class bit (512) in
