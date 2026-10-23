@@ -78,11 +78,15 @@ Notable mechanics:
 - Icy Touch applies Frost Fever (a disease with Frost damage and melee/casting
   slows); Soul Strike heals 3% of max health per disease on the target (up to
   three); Lichborne and Unholy Aura are permanent self/party buffs.
+- Desecration is an instant Shadow patch: 8 s of damage that wanes, and
+  victims receive 15% less healing while they stand in it.
+- Disease Cloud explodes your Toxic Plague: one tick to enemies within 8 yd
+  plus the disease's total damage as an 8 s Nature area DoT.
 
 Costs, damage values and some mechanics remain placeholders where the design
-gives no numbers (e.g. Desecration is still a Rain of Fire channel, Dark
-Punishment buffs all damage, Lichborne does not yet accelerate disease ticks).
-See the design doc §14 A78/A86/A88/A90/A92/A101 for the current list.
+gives no numbers (e.g. Dark Punishment buffs all damage, Lichborne does not yet
+accelerate disease ticks). See the design doc §14
+A78/A86/A88/A90/A92/A101/A103 for the current list.
 
 ## Trainers
 

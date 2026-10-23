@@ -1,0 +1,183 @@
+# Plague fidelity pass (design A.9 / A.5 / A.6). Loads after the cosmetic pass
+# and mirrors data/sql/world/20261023003000_world.sql.
+#   61019-21 Desecration: instant Shadow ground patch (was channeled Fire)
+#   61022     Disease Cloud: instant Nature, script-driven explosion
+#   61029     Harvest: no cooldown
+#   61097     hidden -15% healing debuff (Desecration)
+#   61098     hidden 8 s Nature area DoT (Disease Cloud)
+#   61099     hidden instant Nature damage (Disease Cloud)
+Spell.dbc:
+  - type: update
+    key: 61019
+    values:
+      School: 5
+      AttributesEx: 268435528
+      RecoveryTime: 8000
+      Description_lang_0: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_1: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_2: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_3: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_4: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_5: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_6: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_7: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+  - type: update
+    key: 61020
+    values:
+      School: 5
+      AttributesEx: 268435528
+      RecoveryTime: 8000
+      Description_lang_0: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_1: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_2: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_3: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_4: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_5: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_6: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_7: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+  - type: update
+    key: 61021
+    values:
+      School: 5
+      AttributesEx: 268435528
+      RecoveryTime: 8000
+      Description_lang_0: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_1: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_2: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_3: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_4: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_5: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_6: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+      Description_lang_7: "Desecrates the ground for 8 sec: enemies in the area take Shadow damage every second and receive 15% less healing.  Damage wanes over time."
+  - type: update
+    key: 61022
+    values:
+      School: 3
+      CastingTimeIndex: 1
+      DurationIndex: 0
+      RecoveryTime: 30000
+      Effect_1: 3
+      EffectAura_1: 0
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectAmplitude_1: 0
+      ImplicitTargetA_1: 6
+      Effect_2: 0
+      EffectAura_2: 0
+      EffectBasePoints_2: 0
+      EffectRadiusIndex_2: 0
+      Description_lang_0: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_1: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_2: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_3: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_4: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_5: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_6: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+      Description_lang_7: "Explodes a victim of your Toxic Plague, dealing one tick of its damage to enemies within 8 yards and inflicting the disease's total damage as Nature damage over 8 sec."
+  - type: update
+    key: 61029
+    values:
+      RecoveryTime: 0
+      CategoryRecoveryTime: 0
+  - type: copy
+    key: 61081
+    values:
+      ID: 61097
+      Name_lang_0: "Desecration"
+      Name_lang_1: "Desecration"
+      Name_lang_2: "Desecration"
+      Name_lang_3: "Desecration"
+      Name_lang_4: "Desecration"
+      Name_lang_5: "Desecration"
+      Name_lang_6: "Desecration"
+      Name_lang_7: "Desecration"
+      School: 5
+      Attributes: 128
+      AttributesEx: 0
+      DurationIndex: 31
+      ManaCost: 0
+      RecoveryTime: 0
+      SpellIconID: 1614
+      Effect_1: 6
+      EffectAura_1: 118
+      EffectBasePoints_1: 4294967280
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      ImplicitTargetA_1: 6
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+  - type: copy
+    key: 61081
+    values:
+      ID: 61098
+      Name_lang_0: "Disease Cloud"
+      Name_lang_1: "Disease Cloud"
+      Name_lang_2: "Disease Cloud"
+      Name_lang_3: "Disease Cloud"
+      Name_lang_4: "Disease Cloud"
+      Name_lang_5: "Disease Cloud"
+      Name_lang_6: "Disease Cloud"
+      Name_lang_7: "Disease Cloud"
+      School: 3
+      Attributes: 128
+      AttributesEx: 0
+      DurationIndex: 31
+      ManaCost: 0
+      RecoveryTime: 0
+      SpellIconID: 1468
+      Effect_1: 6
+      EffectAura_1: 3
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 2000
+      ImplicitTargetA_1: 6
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+  - type: copy
+    key: 61081
+    values:
+      ID: 61099
+      Name_lang_0: "Disease Cloud"
+      Name_lang_1: "Disease Cloud"
+      Name_lang_2: "Disease Cloud"
+      Name_lang_3: "Disease Cloud"
+      Name_lang_4: "Disease Cloud"
+      Name_lang_5: "Disease Cloud"
+      Name_lang_6: "Disease Cloud"
+      Name_lang_7: "Disease Cloud"
+      School: 3
+      Attributes: 128
+      AttributesEx: 0
+      DurationIndex: 0
+      ManaCost: 0
+      RecoveryTime: 0
+      SpellIconID: 1468
+      Effect_1: 2
+      EffectAura_1: 0
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      ImplicitTargetA_1: 6
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""

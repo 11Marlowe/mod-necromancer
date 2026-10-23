@@ -199,6 +199,11 @@ namespace
         NECRO_HELPER_SHADOWSKIN_BONE     = 61348,
         NECRO_HELPER_PHANTOM_ARMOR       = 61349,
         NECRO_HELPER_WANDERING_PLAGUE    = 61350,
+        // Plague fidelity pass (A.9/A.5): Desecration's healing reduction,
+        // Disease Cloud's area damage and its 8 s area DoT.
+        NECRO_HELPER_DESECRATION_HEAL    = 61097,
+        NECRO_HELPER_DISEASE_CLOUD_DOT   = 61098,
+        NECRO_HELPER_DISEASE_CLOUD_BURST = 61099,
         NECRO_SPELL_BONE_ARMOR           = 61015,   // armor buffs are mutually exclusive
         NECRO_SPELL_CANNIBALIZE_AURA     = 20578,   // vanilla Cannibalize regen aura
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
@@ -682,6 +687,7 @@ namespace
             case NECRO_SPELL_DESECRATION_R2:
             case NECRO_SPELL_DESECRATION_R3:
             case NECRO_SPELL_DISEASE_CLOUD:
+            case NECRO_HELPER_DISEASE_CLOUD_DOT:
             case NECRO_SPELL_TOXIC_PLAGUE_R1:
             case NECRO_SPELL_TOXIC_PLAGUE_R2:
             case NECRO_SPELL_TOXIC_PLAGUE_R3:
@@ -1085,7 +1091,9 @@ namespace
     {
         return (spellId >= NECRO_SPELL_DESECRATION_R1 &&
                 spellId <= NECRO_SPELL_DESECRATION_R3) ||
-               spellId == NECRO_SPELL_DISEASE_CLOUD;
+               spellId == NECRO_SPELL_DISEASE_CLOUD ||
+               spellId == NECRO_HELPER_DISEASE_CLOUD_BURST ||
+               spellId == NECRO_HELPER_DISEASE_CLOUD_DOT;
     }
 
     // Two-Handed Weapon Specialization's +1/2/3 weapon skill is applied here
@@ -1609,24 +1617,89 @@ namespace
             return SPELL_CAST_OK;
         }
 
-        // Withering World's direct-damage part; the periodic ticks are handled
-        // by the shared UnitScript hook.
-        void OnEffectDamageCalculate(Spell* spell, SpellEffectIndex /*effIdx*/,
-                                     float& damage) const override
+        // Explodes the victim's Toxic Plague (A.5): one tick of its damage to
+        // every enemy within 8 yd, then the disease's total base damage as an
+        // 8 s area DoT.  The dummy effect 0 carries the script; the damage
+        // comes from the two hidden helper spells.
+        void OnEffectExecuted(Spell* spell, SpellEffectIndex effIdx) const override
         {
-            if (!spell || !spell->m_casterUnit || damage <= 0.0f)
+            if (effIdx != EFFECT_INDEX_0 || !spell || !spell->m_casterUnit)
                 return;
 
+            Unit* target = spell->GetUnitTarget();
             Player* player = spell->m_casterUnit->ToPlayer();
-            if (!player || player->GetClass() != 10)
+            if (!target || !player || player->GetClass() != 10)
                 return;
 
-            int rank = GetWitheringWorldRank(player);
-            if (rank)
-                damage *= 1.0f + 0.05f * float(rank);
+            static uint32 const toxicPlagues[] =
+            {
+                NECRO_SPELL_TOXIC_PLAGUE_R1,
+                NECRO_SPELL_TOXIC_PLAGUE_R2,
+                NECRO_SPELL_TOXIC_PLAGUE_R3,
+            };
 
-            if (Unit* target = spell->GetUnitTarget())
-                ApplyDeathsEmbrace(player, target, damage);
+            Aura* plague = nullptr;
+            for (uint32 id : toxicPlagues)
+            {
+                Aura* aura = target->GetAura(id, EFFECT_INDEX_0);
+                if (aura && (!plague ||
+                        aura->GetModifier()->m_amount > plague->GetModifier()->m_amount))
+                    plague = aura;
+            }
+            if (!plague)
+                return;
+
+            int32 period = plague->GetModifier()->periodictime;
+            if (period <= 0)
+                period = 3000;
+
+            int32 maxDuration = plague->GetAuraMaxDuration();
+            if (maxDuration <= 0)
+                maxDuration = 15000;
+
+            int32 tick = plague->GetModifier()->m_amount;
+            if (tick <= 0)
+                return;
+
+            int32 total = tick * (maxDuration / period);
+            int32 burstPoints = tick - 1;
+            int32 dotPoints = total / 4 - 1;    // 8 s at 2 s ticks
+
+            std::list<Unit*> nearby;
+            MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck check(target, player, 8.0f);
+            MaNGOS::UnitListSearcher<MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck> searcher(nearby, check);
+            Cell::VisitAllObjects(target, searcher, 8.0f);
+
+            for (Unit* unit : nearby)
+            {
+                if (!unit || !unit->IsAlive())
+                    continue;
+                player->CastCustomSpell(unit, NECRO_HELPER_DISEASE_CLOUD_BURST,
+                                        &burstPoints, nullptr, nullptr, true);
+                player->CastCustomSpell(unit, NECRO_HELPER_DISEASE_CLOUD_DOT,
+                                        &dotPoints, nullptr, nullptr, true);
+            }
+        }
+    };
+
+    // Desecration (A.9): an instant Shadow patch on the ground.  Its damage
+    // wanes with the remaining duration, and every tick refreshes the healing
+    // reduction on the victims standing in it.
+    struct spell_necromancer_desecration : public AuraScript
+    {
+        void OnPeriodicDamageCalculateAmount(Aura* aura, float& amount) override
+        {
+            if (!aura || amount <= 0.0f)
+                return;
+
+            int32 maxDuration = aura->GetAuraMaxDuration();
+            if (maxDuration > 0)
+                amount *= 0.4f + 0.6f * (float(aura->GetAuraDuration()) / float(maxDuration));
+
+            Unit* target = aura->GetTarget();
+            Unit* caster = aura->GetCaster();
+            if (target && caster && target->IsAlive())
+                caster->CastSpell(target, NECRO_HELPER_DESECRATION_HEAL, true);
         }
     };
 
@@ -3445,6 +3518,11 @@ namespace
         return new spell_necromancer_disease_cloud();
     }
 
+    AuraScript* GetDesecrationAuraScript(SpellEntry const* /*spellInfo*/)
+    {
+        return new spell_necromancer_desecration();
+    }
+
     AuraScript* GetCrippleAuraScript(SpellEntry const* /*spellInfo*/)
     {
         return new spell_necromancer_cripple();
@@ -3677,6 +3755,7 @@ void AddNecromancerScripts()
     // spell_template.script_name bindings
     RegisterAuraScript("spell_necromancer_call_of_the_grave", GetCallOfTheGraveAuraScript);
     RegisterSpellScript("spell_necromancer_disease_cloud", GetDiseaseCloudSpellScript);
+    RegisterAuraScript("spell_necromancer_desecration", GetDesecrationAuraScript);
     RegisterAuraScript("spell_necromancer_cripple", GetCrippleAuraScript);
     RegisterSpellScript("spell_necromancer_raise_minion", GetRaiseMinionSpellScript);
     RegisterSpellScript("spell_necromancer_tether", GetTetherSpellScript);
