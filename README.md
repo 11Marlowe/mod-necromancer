@@ -70,6 +70,9 @@ Notable mechanics:
   channels 3 s to store a corpse item.
 - Minion abilities are granted per tier through `petcreateinfo_spell` and cost
   0; toggle autocast on the pet bar.
+- Bone Armor grants **4 bone shields**: 20% less physical damage and 70%
+  pushback resistance while a shield remains; each melee or ranged hit consumes
+  one (dodges and misses do not).
 - Bone, Ghoul and Lich Armor are mutually exclusive. The armor/weapon passives
   grant the matching skills and auto-unequip gear when the passive is lost.
 - Icy Touch applies Frost Fever (a disease with Frost damage and melee/casting
@@ -77,10 +80,9 @@ Notable mechanics:
   three); Lichborne and Unholy Aura are permanent self/party buffs.
 
 Costs, damage values and some mechanics remain placeholders where the design
-gives no numbers (e.g. Desecration is still a Rain of Fire channel, Bone Armor
-is still Frost Armor, Dark Punishment buffs all damage, Lichborne does not yet
-accelerate disease ticks). See the design doc §14 A78/A86/A88/A90/A92 for the
-current list.
+gives no numbers (e.g. Desecration is still a Rain of Fire channel, Dark
+Punishment buffs all damage, Lichborne does not yet accelerate disease ticks).
+See the design doc §14 A78/A86/A88/A90/A92/A101 for the current list.
 
 ## Trainers
 

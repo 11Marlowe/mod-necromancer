@@ -1,0 +1,96 @@
+# Bone Armor (61015): the design's four bone shields (A.6), data-only.
+# Loads after 44-cosmetic-pass.yaml so this tooltip wins; mirrors the server row
+# in data/sql/world/20261022223000_world.sql.
+#   61015 effect 0: PROC_TRIGGER_SPELL  -> hidden trigger 61096, 4 charges
+#   61015 effect 1: MOD_DAMAGE_PERCENT_TAKEN -20 (physical) -> 20% less damage
+#   61015 effect 2: RESIST_PUSHBACK 70 -> 70% chance to ignore pushback
+# 61096 is the hidden effect-less proc trigger; it exists in the client DBC too
+# because a triggered cast is still announced with SPELL_GO.
+Spell.dbc:
+  - type: copy
+    key: 61341
+    values:
+      ID: 61096
+      Name_lang_0: "Bone Shield"
+      Name_lang_1: "Bone Shield"
+      Name_lang_2: "Bone Shield"
+      Name_lang_3: "Bone Shield"
+      Name_lang_4: "Bone Shield"
+      Name_lang_5: "Bone Shield"
+      Name_lang_6: "Bone Shield"
+      Name_lang_7: "Bone Shield"
+      Attributes: 128
+      AttributesEx: 0
+      DurationIndex: 0
+      ProcTypeMask: 0
+      ProcChance: 0
+      ProcCharges: 0
+      ManaCost: 0
+      RecoveryTime: 0
+      SpellIconID: 1614
+      Effect_1: 0
+      Effect_2: 0
+      Effect_3: 0
+      EffectAura_1: 0
+      EffectAura_2: 0
+      EffectAura_3: 0
+      EffectBasePoints_1: 0
+      EffectBasePoints_2: 0
+      EffectBasePoints_3: 0
+      ImplicitTargetA_1: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetA_3: 0
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+  - type: update
+    key: 61015
+    values:
+      ProcTypeMask: 680
+      ProcChance: 100
+      ProcCharges: 4
+      Effect_1: 6
+      EffectAura_1: 42
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      ImplicitTargetA_1: 1
+      EffectMiscValue_1: 0
+      EffectTriggerSpell_1: 61096
+      Effect_2: 6
+      EffectAura_2: 87
+      EffectBasePoints_2: 4294967275
+      EffectDieSides_2: 1
+      EffectBaseDice_2: 1
+      ImplicitTargetA_2: 1
+      EffectMiscValue_2: 1
+      EffectTriggerSpell_2: 0
+      Effect_3: 6
+      EffectAura_3: 149
+      EffectBasePoints_3: 69
+      EffectDieSides_3: 1
+      EffectBaseDice_3: 1
+      ImplicitTargetA_3: 1
+      EffectMiscValue_3: 0
+      EffectTriggerSpell_3: 0
+      Description_lang_0: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_1: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_2: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_3: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_4: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_5: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_6: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      Description_lang_7: "Surrounds you with 4 bone shields, reducing physical damage taken by 20% and pushback suffered by 70%.  Each melee or ranged hit consumes a shield.  Only one Armor spell can be active.  Lasts $d."
+      AuraDescription_lang_0: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_1: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_2: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_3: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_4: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_5: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_6: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
+      AuraDescription_lang_7: "4 bone shields: reduces physical damage taken by 20% and pushback by 70%.  Each melee or ranged hit consumes a shield."
