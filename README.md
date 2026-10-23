@@ -4,23 +4,23 @@ A custom **Necromancer** class (class id 10) for the
 [Tortoise WoW](https://github.com/tortoise-wow/tortoise-wow) 1.12.1 server core,
 built as a standalone module on the core's **class-support** layer.
 
-**Status:** Phase 2 is content-complete through the remaining talent spells and
-the **T1 talent-tree scaffolding** (2026-10-21). Identity, spells, minions,
-trainers, placeholder quests, the three-tab spellbook, icons/tooltips, the
-Blood-tree armor passives, the last talent-gated spells (Soul Strike, Icy
-Touch/Frost Fever, Corrosion, Lichborne, Unholy Aura) and the three talent
-trees (54 talents, icons, rank spells) are implemented, deployed and
-server-side verified with `turtle-agent`. Class color (red) and a placeholder
-creation-screen icon are now in the client patch. **T2a (the ten stat/defense
-passives), T2b (the ten spell-modifier passives), T2c (the nine minion/pet
-passives) and T2d (the eleven proc/conditional passives) are implemented and
-server-side verified (2026-10-21/22).** Remaining: T2e active-talent polish,
-custom creation-screen art; the Corpse Bag container is deferred.
+**Status:** Phase 2 and the **talent pass (T1 + T2a-T2e)** are complete
+(2026-10-22). Identity, spells, minions, trainers, placeholder quests, the
+three-tab spellbook, icons/tooltips, the Blood-tree armor passives, the last
+talent-gated spells (Soul Strike, Icy Touch/Frost Fever, Corrosion, Lichborne,
+Unholy Aura), the three talent trees (54 talents, icons, rank spells), all 40
+new passive talents and the active-talent polish are implemented, deployed and
+server-side verified with `turtle-agent`. **T2e** polished the 14 active
+talents' names, ranks, levels, tooltips and icons, and stripped the pre-T1
+trainer-taught armor passives through the `OnForgotSpell` path with one free
+talent reset. Class
+color (red) and a placeholder creation-screen icon are in the client patch.
+Remaining: custom creation-screen art; the Corpse Bag container is deferred.
 
 The canonical design, progress log, engine lessons and placeholder list live in
 the project's `Necromancer-Design.md` (mirrored in the private
 `11Marlowe/wow-tools` repo). Read its **§12** (current state), **§13** (engine
-lessons) and **§14** (assumptions A1-A97) before changing spells or mechanics.
+lessons) and **§14** (assumptions A1-A100) before changing spells or mechanics.
 
 ## Features
 
@@ -31,7 +31,9 @@ lessons) and **§14** (assumptions A1-A97) before changing spells or mechanics.
   implements the ten stat/defense passives, **T2b** the ten spell-modifier
   passives, **T2c** the nine minion/pet passives and **T2d** the eleven
   proc/conditional passives among the rank spells (61200-61330; hidden helpers
-  61331-61350); the remaining T2e batch implements the active-talent polish.
+  61331-61350). **T2e** gives the 14 active talents canonical tooltips, ranks,
+  design levels and site/substitute icons, and retires the legacy trainer-taught
+  armor passives with a free talent reset.
 - Class spells and minion abilities use ids **61010-61095**; trainer learn-spell
   wrappers use **61100-61150**; talent rank spells use **61200-61330** and
   hidden talent helpers **61331-61350**.
@@ -88,7 +90,7 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught (decision locked
 2026-10-22; it is not in the current parsed Plague tree - creator drift).
 
-### Talents (T1 scaffolding + T2a-T2d, 2026-10-21/22)
+### Talents (T1 scaffolding + T2a-T2e, 2026-10-21/22)
 
 `patch-Z.mpq` adds the three talent tabs **Reanimation**, **Blood** and
 **Plague** (`TalentTab` 401-403, classMask 0x200), 54 talents
@@ -110,13 +112,15 @@ Undead Domination, Retained Intellect, Twisted Bond) with hidden helper spells
 Zombification, Bloodletting, Bloodgorged, Butchery, Phantom Armor, Early
 Grave, Metastasis, Death's Embrace, Icy Talons, Wandering Plague) with hidden
 helpers 61342-61350 through `client/patches/49b-talent-mechanics-t2d.yaml`
-and SQL `20261022120000`.  The remaining T2e batch (active-talent polish) is
-next; see design doc §10 item 17 / A94-A99.  T2e decisions locked 2026-10-22:
-Corrosion stays trainer-taught; the 3 armor passives (61090-61092) are
-stripped from pre-T1 test characters with a free talent reset, using the
-existing `OnForgotSpell` skill/gear cleanup (deleting `character_spell` rows
-alone bypasses it).  The client-rendered talent tooltips/icons still need an
-in-client check.
+and SQL `20261022120000`.  **T2e** finishes the active talents: the 14
+shortcuts get canonical names/ranks, design levels, full tooltips and the
+site/substitute icons through `client/patches/49c-talent-polish-t2e.yaml` and
+SQL `20261022160000`; the trainer cleanup remains idempotent (28 rows, Corrosion
+61148 stays).  T2e decisions (A99): Corrosion stays trainer-taught; the 3 armor
+passives (61090-61092) are stripped from pre-T1 characters through the module's
+`RemoveSpell` login cleanup (marker variable 1001; `OnForgotSpell` removes the
+granted skills and auto-unequips gear) with one free talent reset.  The
+client-rendered talent tooltips/icons still need an in-client check.
 
 | City | NPC | Where | Entry |
 | --- | --- | --- | --- |
@@ -206,8 +210,17 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
 - A pet saved before a pet-ability change keeps its old list: apply the
   character migration, or dismiss + re-raise + Tether it.
 - Spellbook tabs and the **talent tabs/icons/tooltips/point spending** are
-  client-rendered; `turtle-agent` cannot verify them.  The T2a-T2d rank
-  spells are live; only the T2e polish batch remains.
+  client-rendered; `turtle-agent` cannot verify them.  T1-T2e are all live;
+  the remaining check is the in-client talent/respec pass.
+- T2e server checks: active spell metadata (`level` 20/30/40 and the Army
+  ranks), trainer list still 28 rows with none of the 15 talent-gated learn
+  ids, and the legacy armor-passive cleanup.  For the cleanup, mark a pre-T1
+  character in `character_variables` (type 1001 = '1'), log in, and confirm a
+  `spell_removed` event for 61090-61092, skills 43/44/54/55/160/172/229/293/
+  413/414 reading 0 (`gm getskillvalue`), invalid plate/mail/weapons moved to
+  the bags, and variable type 4 (`FreeTalentResets`) at 1.
+- T2e client check: talent tooltips/icons/ranks and the free respec prompt
+  (icons/tooltips are rendered by the real client only).
 - T2a server checks: `unit statinfo` (Parry chance, melee/spell hit, damage
   mods), `getskillvalue 55/160/172` (2H skill bonus), `list auras` (rank-spell
   auras), `.aura 61023` repeatedly (Death March slow resist) and

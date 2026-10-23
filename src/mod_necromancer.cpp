@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <string>
 #include <unordered_map>
 
 namespace
@@ -227,6 +228,12 @@ namespace
         NECRO_CREATURE_WIGHT       = 11621,   // Spectral Corpse
     };
 
+    // Module-private character_variables marker used by the T2e migration
+    // (data/sql/character/20261022160000_char.sql).  PlayerVariables is an
+    // open enum-to-string map, so the module can own a high id without a core
+    // change.
+    constexpr uint32 NECRO_VARIABLE_T2E_ARMOR_CLEANUP = 1001;
+
     // Trainers now teach the class (one in Orgrimmar, one in Stormwind; see
     // data/sql/world/20261019200000_world.sql).  The module only cleans up
     // the legacy auto-learned shared Warlock Death Coil (6789); the class's
@@ -239,6 +246,63 @@ namespace
         if (player->HasSpell(NECRO_SPELL_DEATH_COIL) &&
                 player->HasSpell(NECRO_SPELL_DEATH_COIL_WARLOCK))
             player->RemoveSpell(NECRO_SPELL_DEATH_COIL_WARLOCK, false, false);
+    }
+
+    // T2e: the three armor/weapon passives used to be trainer-taught talent
+    // shortcuts.  The character migration marks characters that still hold
+    // them; remove them with RemoveSpell so OnForgotSpell clears the granted
+    // skill lines and auto-unequips gear that no longer passes CanUseItem,
+    // then make sure one free talent reset is available for the Blood tree.
+    void CleanupLegacyArmorPassives(Player* player)
+    {
+        if (!player || player->GetClass() != 10)
+            return;
+
+        auto marker = player->GetPlayerVariable(
+            static_cast<PlayerVariables>(NECRO_VARIABLE_T2E_ARMOR_CLEANUP));
+        if (!marker || marker.value() != "1")
+            return;
+
+        uint32 const armorPassives[] = {
+            NECRO_SPELL_NECRO_KNIGHT,
+            NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT,
+            NECRO_SPELL_GRIM_REAPER,
+        };
+
+        bool removed = false;
+        for (uint32 spellId : armorPassives)
+        {
+            if (!player->HasSpell(spellId))
+                continue;
+
+            player->RemoveSpell(spellId, false, false);
+            removed = true;
+        }
+
+        if (removed)
+        {
+            int freeResets = 0;
+            if (auto free = player->GetPlayerVariable(
+                    PlayerVariables::FreeTalentResets))
+            {
+                try
+                {
+                    freeResets = std::stoi(free.value());
+                }
+                catch (...)
+                {
+                    freeResets = 0;
+                }
+            }
+
+            if (freeResets < 1)
+                player->SetPlayerVariable(
+                    PlayerVariables::FreeTalentResets, "1");
+        }
+
+        player->SetPlayerVariable(
+            static_cast<PlayerVariables>(NECRO_VARIABLE_T2E_ARMOR_CLEANUP),
+            "done");
     }
 
     // ------------------------------------------------------------------
@@ -1037,6 +1101,7 @@ namespace
         void OnLogin(Player* player) override
         {
             CleanupLegacySpells(player);
+            CleanupLegacyArmorPassives(player);
             RefreshTwoHandedSkillBonus(player);
 
             TryApplyUndeadDomination(player);
@@ -3536,8 +3601,8 @@ namespace
                                uint32(sNecroCorpseOverrides.size()));
             }
 
-            sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
-                           "are trainer-taught; auto-learn retired; T2a-T2d talents active)");
+        sLog.outString("[mod-necromancer] module loaded (Phase 2 trainers: class spells "
+                       "are trainer-taught; auto-learn retired; T2a-T2e talents active)");
         }
     };
 }
