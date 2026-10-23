@@ -109,9 +109,11 @@ vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 comes from **Tome of the Bloodmage** (63104, 10% from Amnennar the Coldbringer
 in Razorfen Downs) and Raise Wight from **Codex of the Wight** (63105, 5% from
 Darkmaster Gandling in Scholomance, usable only once Raise Abomination is
-learned).  Each book is consumed on use.  **Note:** Darkmaster Gandling (1853)
-has no spawn row in the current world DB, so the Codex is unobtainable until
-that is fixed (see the design doc A105).
+learned).  Each book is consumed on use.  Gandling has no static `creature` row: the
+Scholomance instance script **summons** him once Alexei Barov, Theolen,
+Ravenian, Polkelt, Malicia and Illucia Barov are dead, and the Codex drops from
+that summon.  Do not test him by `.npc add` - his AI dereferences the instance
+pointer unguarded (design doc A105).
 
 ### Talents (T1 scaffolding + T2a-T2e, 2026-10-21/22)
 
