@@ -829,6 +829,22 @@ namespace
             holder->SetAuraCharges(BoneArmorMaxCharges(player));
     }
 
+    // R6: recasting an armor refreshes it.  The shield count is a resource, so
+    // a second Bone Armor cast fills the shields back to the cap and restarts
+    // the duration (the fresh-apply path already refills through
+    // OnAfterApply; this covers the recast that only refreshes the holder).
+    void RefreshBoneArmorShields(Player* player)
+    {
+        if (!player)
+            return;
+
+        if (SpellAuraHolder* holder = player->GetSpellAuraHolder(NECRO_SPELL_BONE_ARMOR))
+        {
+            holder->SetAuraCharges(BoneArmorMaxCharges(player));
+            holder->RefreshHolder();
+        }
+    }
+
     // Clamps the shield count to the current cap (delta 0) or shifts it
     // (delta +/-2).  Losing a rank only lowers the cap; learning one refills
     // through RefillBoneArmorCharges.
@@ -3191,6 +3207,11 @@ namespace
             for (uint32 id : armorSpells)
                 if (id != spell->m_spellInfo->Id)
                     spell->m_casterUnit->RemoveAurasDueToSpell(id);
+
+            // R6: a recast refreshes both the shield count and the duration.
+            if (spell->m_spellInfo->Id == NECRO_SPELL_BONE_ARMOR)
+                if (Player* player = spell->m_casterUnit->ToPlayer())
+                    RefreshBoneArmorShields(player);
         }
 
         // T2d: Shadowskin's armor bonuses and Phantom Armor's damage

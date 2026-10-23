@@ -76,6 +76,8 @@ Notable mechanics:
 - Bone Armor grants **4 bone shields**: 20% less physical damage and 70%
   pushback resistance while a shield remains; each melee or ranged hit consumes
   one (dodges and misses do not). Shadowskin adds 2 more shields per rank.
+  **Recasting Bone Armor refills the shields to the cap and restarts the
+  duration** (design R6).
 - Bone, Ghoul and Lich Armor are mutually exclusive. The armor/weapon passives
   grant the matching skills and auto-unequip gear when the passive is lost.
 - Icy Touch applies Frost Fever (a disease with Frost damage and melee/casting
