@@ -139,6 +139,9 @@ ICONS = {
     61016: 313,    # Call of the Grave (kept)
     61017: 313,
     61018: 313,
+    61351: 313,    # Grave Rot (R4: the debuff aura of Call of the Grave)
+    61352: 313,
+    61353: 313,
     61019: 118,    # Desecration - Death and Decay (was Rain of Fire)
     61020: 118,
     61021: 118,
@@ -178,9 +181,11 @@ TEXTS = {
         description="Surrounds you with a shield of bone, increasing Armor by $s1.  Melee attackers may have their movement and attack speed slowed.  Only one Armor spell can be active.  Lasts $d.",
         aura="Increases Armor by $s1 and may slow attackers.",
     ),
-    61016: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
-    61017: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
-    61018: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
+    # R4 (2026-10-23): the Grave Rot debuff is its own aura spell, so the aura
+    # text belongs to 61351-61353; 61016-61018 are the cast spells (no aura).
+    61351: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
+    61352: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
+    61353: dict(aura="Grave Rot: $s1 Shadow damage every $t1 sec."),
     61019: dict(
         description="Desecrates the target area, calling down a plague rain that deals $o1 damage to enemies over $d.  The affliction is a disease.",
         aura="$s1 damage every $t1 sec.",

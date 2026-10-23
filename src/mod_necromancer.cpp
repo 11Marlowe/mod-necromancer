@@ -199,6 +199,17 @@ namespace
         NECRO_HELPER_SHADOWSKIN_BONE     = 61348,
         NECRO_HELPER_PHANTOM_ARMOR       = 61349,
         NECRO_HELPER_WANDERING_PLAGUE    = 61350,
+        // Rider-fidelity pass (2026-10-23):
+        //  * R4: "Grave Rot" is its own disease aura spell, so the debuff
+        //    reads Grave Rot; 61016-18 stay the cast spells (they trigger it).
+        //  * R2: Lich Armor's melee-attacker slow (proc carrier + the slow).
+        //  * R3: Will of the Death Knight's 4%-as-Shadow rider damage.
+        NECRO_SPELL_GRAVE_ROT_R1         = 61351,
+        NECRO_SPELL_GRAVE_ROT_R2         = 61352,
+        NECRO_SPELL_GRAVE_ROT_R3         = 61353,
+        NECRO_HELPER_LICH_ARMOR_PROC     = 61354,
+        NECRO_HELPER_LICH_ARMOR_SLOW     = 61355,
+        NECRO_HELPER_WILL_SHADOW         = 61356,
         // Plague fidelity pass (A.9/A.5): Desecration's healing reduction,
         // Disease Cloud's area damage and its 8 s area DoT.
         NECRO_HELPER_DESECRATION_HEAL    = 61097,
@@ -683,6 +694,9 @@ namespace
             case NECRO_SPELL_CALL_OF_THE_GRAVE_R1:
             case NECRO_SPELL_CALL_OF_THE_GRAVE_R2:
             case NECRO_SPELL_CALL_OF_THE_GRAVE_R3:
+            case NECRO_SPELL_GRAVE_ROT_R1:
+            case NECRO_SPELL_GRAVE_ROT_R2:
+            case NECRO_SPELL_GRAVE_ROT_R3:
             case NECRO_SPELL_DESECRATION_R1:
             case NECRO_SPELL_DESECRATION_R2:
             case NECRO_SPELL_DESECRATION_R3:
@@ -745,12 +759,19 @@ namespace
         player->RemoveAurasDueToSpell(NECRO_HELPER_SHADOWSKIN_LICH);
         player->RemoveAurasDueToSpell(NECRO_HELPER_SHADOWSKIN_BONE);
         player->RemoveAurasDueToSpell(NECRO_HELPER_PHANTOM_ARMOR);
+        player->RemoveAurasDueToSpell(NECRO_HELPER_LICH_ARMOR_PROC);
     }
 
     void ApplyArmorTalentAuras(Player* player, uint32 armorSpellId)
     {
         if (!player || !armorSpellId)
             return;
+
+        // Lich Armor's "melee attackers may be slowed 30% for 5 sec" (A.6)
+        // rides on a hidden proc aura: the spell's three effect slots are
+        // already used by the resistance, the regen and the spell crit.
+        if (armorSpellId == NECRO_SPELL_LICH_ARMOR)
+            player->CastSpell(player, NECRO_HELPER_LICH_ARMOR_PROC, true);
 
         if (int rank = GetShadowskinRank(player))
         {
@@ -1391,15 +1412,134 @@ namespace
         }
     };
 
+    // Unholy Shield (R1, 2026-10-23): the design's "prevents the application of
+    // harmful magical effects" has no aura type in 1.12 - there is only school
+    // immunity, which is what the spell used to do and what the design does
+    // *not* want.  The -50% spell damage taken is the spell's own aura 87; a
+    // harmful aura applied by another unit while the shield is up is stripped
+    // again here.  Self-applied effects (buffs, Dark Punishment's self-drain)
+    // are left alone.
+    class NecromancerUnholyShieldUnitScript : public UnitScript
+    {
+    public:
+        NecromancerUnholyShieldUnitScript()
+            : UnitScript("mod_necromancer_unholy_shield", { UNITHOOK_ON_AURA_APPLY })
+        {
+        }
+
+        void OnAuraApply(Unit* unit, Aura* aura) override
+        {
+            if (!unit || !aura || aura->GetId() == NECRO_SPELL_UNHOLY_SHIELD)
+                return;
+
+            Player* player = unit->ToPlayer();
+            if (!player || player->GetClass() != 10)
+                return;
+
+            if (!player->GetAura(NECRO_SPELL_UNHOLY_SHIELD, EFFECT_INDEX_0))
+                return;
+
+            Unit* caster = aura->GetCaster();
+            if (!caster || caster == player)
+                return;
+
+            if (aura->IsPositive())
+                return;
+
+            unit->RemoveAura(aura);
+        }
+    };
+
+    // Will of the Death Knight (R3, 2026-10-23): "you deal an additional 4% of
+    // your physical damage as Shadow damage".  Physical damage reaches the
+    // module either as melee/weapon damage (ModifyMeleeDamage, physical by
+    // construction) or as a physical-school spell such as Plague Strike
+    // (ModifySpellDamageTaken with a normal school mask).  The rider is cast
+    // from a 1 ms event rather than from inside the hooks, because recasting
+    // the same hit while its damage is still being calculated re-enters
+    // DealDamage; the queued hit is filtered by its Shadow school in
+    // ModifySpellDamageTaken, so it cannot trigger itself.
+    class NecromancerWillUnitScript : public UnitScript
+    {
+    public:
+        NecromancerWillUnitScript()
+            : UnitScript("mod_necromancer_will_of_the_death_knight",
+                         { UNITHOOK_MODIFY_MELEE_DAMAGE,
+                           UNITHOOK_MODIFY_SPELL_DAMAGE_TAKEN })
+        {
+        }
+
+        static void QueueShadowRider(Player* player, Unit* victim, uint32 damage)
+        {
+            uint32 extra = damage * 4 / 100;
+            if (!extra || !victim || !victim->IsAlive())
+                return;
+
+            ObjectGuid playerGuid = player->GetObjectGuid();
+            ObjectGuid victimGuid = victim->GetObjectGuid();
+            player->m_Events.AddEvent(
+                new LambdaBasicEvent<std::function<void()>>(
+                    [playerGuid, victimGuid, extra]()
+                    {
+                        Player* owner = ObjectAccessor::FindPlayer(playerGuid);
+                        if (!owner || !owner->IsInWorld())
+                            return;
+                        Unit* target = ObjectAccessor::GetUnit(*owner, victimGuid);
+                        if (!target || !target->IsAlive())
+                            return;
+                        if (!owner->HasSpell(NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT))
+                            return;
+                        int32 basePoints = int32(extra) - 1;
+                        owner->CastCustomSpell(target, NECRO_HELPER_WILL_SHADOW,
+                                               &basePoints, nullptr, nullptr, true);
+                    }),
+                player->m_Events.CalculateTime(1));
+        }
+
+        void ModifyMeleeDamage(Unit* target, Unit* attacker, uint32& damage) override
+        {
+            if (!target || !attacker || target == attacker || !damage)
+                return;
+            Player* player = attacker->ToPlayer();
+            if (!player || player->GetClass() != 10 ||
+                    !player->HasSpell(NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT))
+                return;
+            QueueShadowRider(player, target, damage);
+        }
+
+        void ModifySpellDamageTaken(Unit* target, Unit* attacker,
+                                    int32& damage, SpellEntry const* spellInfo) override
+        {
+            if (!target || !attacker || !spellInfo || damage <= 0)
+                return;
+            // weapon-based abilities are already covered by ModifyMeleeDamage
+            if (spellInfo->GetSpellSchoolMask() != SPELL_SCHOOL_MASK_NORMAL)
+                return;
+            Player* player = attacker->ToPlayer();
+            if (!player || player->GetClass() != 10 ||
+                    !player->HasSpell(NECRO_SPELL_WILL_OF_THE_DEATH_KNIGHT))
+                return;
+            QueueShadowRider(player, target, uint32(damage));
+        }
+    };
+
     // ------------------------------------------------------------------
     // Plague diseases (batch 2)
     // ------------------------------------------------------------------
 
+    // Call of the Grave's aura.  Since the rider-fidelity pass the *debuff* is
+    // its own spell ("Grave Rot", 61351-61353) so the target's debuff reads
+    // correctly; 61016-18 are the cast spells that trigger it.  Both sets are
+    // accepted here because a saved aura from before the pass (61016-18) can
+    // still exist in a running world.
     bool IsCallOfTheGrave(uint32 spellId)
     {
         return spellId == NECRO_SPELL_CALL_OF_THE_GRAVE_R1 ||
                spellId == NECRO_SPELL_CALL_OF_THE_GRAVE_R2 ||
-               spellId == NECRO_SPELL_CALL_OF_THE_GRAVE_R3;
+               spellId == NECRO_SPELL_CALL_OF_THE_GRAVE_R3 ||
+               spellId == NECRO_SPELL_GRAVE_ROT_R1 ||
+               spellId == NECRO_SPELL_GRAVE_ROT_R2 ||
+               spellId == NECRO_SPELL_GRAVE_ROT_R3;
     }
 
     bool IsToxicPlague(uint32 spellId)
@@ -3745,6 +3885,10 @@ void AddNecromancerScripts()
     new NecromancerPetScript();
     new NecromancerGhoulArmorUnitScript();
     new NecromancerTalentUnitScript();
+    // rider-fidelity pass (2026-10-23): Unholy Shield's harmful-magic block
+    // and Will of the Death Knight's physical-as-Shadow rider.
+    new NecromancerUnholyShieldUnitScript();
+    new NecromancerWillUnitScript();
 
     // class-support: the class's summon pets of the declared creature types
     // count as permanent pets (pet action-bar spells, spirit-healer restore,

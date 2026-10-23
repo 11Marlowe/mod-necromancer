@@ -13,7 +13,10 @@ new passive talents and the active-talent polish are implemented, deployed and
 server-side verified with `turtle-agent`. **T2e** polished the 14 active
 talents' names, ranks, levels, tooltips and icons, and stripped the pre-T1
 trainer-taught armor passives through the `OnForgotSpell` path with one free
-talent reset. Class
+talent reset. **Rider fidelity (2026-10-23):** Unholy Shield is -50% magic
+damage taken plus a harmful-magic block (not immunity), Lich Armor slows melee
+attackers, Will of the Death Knight adds 4% of physical damage as Shadow, and
+Grave Rot is its own debuff. Class
 color (red) and a placeholder creation-screen icon are in the client patch.
 Remaining: custom creation-screen art; the Corpse Bag container is deferred.
 
@@ -82,11 +85,18 @@ Notable mechanics:
   victims receive 15% less healing while they stand in it.
 - Disease Cloud explodes your Toxic Plague: one tick to enemies within 8 yd
   plus the disease's total damage as an 8 s Nature area DoT.
+- Call of the Grave's debuff is its own spell, **Grave Rot** (61351-61353,
+  24 s, triple final tick); 61016-61018 are the cast spells that trigger it.
+- Unholy Shield reduces **magic damage taken by 50%** for 8 s and prevents
+  harmful magical effects from being applied to you (no longer immunity).
+- Lich Armor also gives melee attackers a chance to be **slowed 30% for 5 s**.
+- Will of the Death Knight deals an extra **4% of your physical damage as
+  Shadow**; the rider truncates, so a hit under 25 damage adds nothing.
 
 Costs, damage values and some mechanics remain placeholders where the design
 gives no numbers (e.g. Dark Punishment buffs all damage, Lichborne does not yet
 accelerate disease ticks). See the design doc §14
-A78/A86/A88/A90/A92/A101/A103 for the current list.
+A78/A86/A88/A90/A92/A101/A103/A104 for the current list.
 
 ## Trainers
 
@@ -263,6 +273,19 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   an enemy must not have the passive bit (use `Attributes` 128, not 192).
   `modify parry 100` (self selected) makes the Butchery parry proc easy to
   test; reset it afterwards.
+- **Rider-fidelity checks (R1-R4, 2026-10-23):** **Unholy Shield** - spawn a
+  caster that debuffs (Bristlewhisker Digger 62138 casts Sunder Armor 8380),
+  let it start a cast and cast 61084 during the 2 s cast: the debuff must not
+  land while the shield is up and must stack after it expires.  **Lich Armor** -
+  cast 61085, let a melee attacker hit you a few times, expect `spell_go 61355`
+  + `aura_applied` on the attacker (25% chance).  **Will of the Death Knight** -
+  learn 61091, equip a weapon (`.learn 61092` for the proficiency, `.setskill`,
+  then `equip`) and melee: every swing must also log a `spell_damage 61356`.
+  The rider **truncates**, so a hit under 25 damage adds nothing - a low-level
+  character punching an armoured dummy (6-7 damage) is a false negative.
+  **Grave Rot** - cast 61016: expect `spell_go 61351`, `aura_applied 61351` and
+  3 s periodic ticks; the client `Spell.dbc` name for 61351-61353 is "Grave Rot"
+  while 61016 stays "Call of the Grave".
 - If module SQL changed, re-bake the agent's spell names and rebuild it before
   testing.
 - **pfQuest:** class-quest filtering needs the custom class bit (512) in

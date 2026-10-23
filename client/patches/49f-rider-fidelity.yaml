@@ -1,0 +1,539 @@
+# ---- rider-fidelity batch (2026-10-23): R1-R4 ----
+# New helper/aura spells below; the update blocks patch the
+# existing 61016-61018 / 61084 / 61085 / 61091 rows.
+Spell.dbc:
+  # 61016: Call of the Grave
+  - type: update
+    key: 61016
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 0
+      DispelType: 0
+      Effect_1: 64
+      EffectAura_1: 0
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 6
+      EffectTriggerSpell_1: 61351
+  # 61017: Call of the Grave
+  - type: update
+    key: 61017
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 0
+      DispelType: 0
+      Effect_1: 64
+      EffectAura_1: 0
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 6
+      EffectTriggerSpell_1: 61352
+  # 61018: Call of the Grave
+  - type: update
+    key: 61018
+    values:
+      Description_lang_0: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_1: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_2: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_3: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_4: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_5: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_6: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      Description_lang_7: "Infects the target with Grave Rot, causing Shadow damage every 3 sec for 24 sec.  The final tick deals triple damage."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      DurationIndex: 0
+      DispelType: 0
+      Effect_1: 64
+      EffectAura_1: 0
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 6
+      EffectTriggerSpell_1: 61353
+  # 61084: Unholy Shield
+  - type: update
+    key: 61084
+    values:
+      Description_lang_0: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_1: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_2: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_3: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_4: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_5: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_6: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      Description_lang_7: "Surrounds you with an unholy shield, reducing magic damage taken by 50% for $d and preventing harmful magical effects from being applied to you."
+      AuraDescription_lang_0: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_1: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_2: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_3: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_4: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_5: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_6: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      AuraDescription_lang_7: "Magic damage taken reduced by 50%.  Harmful magical effects are prevented."
+      Effect_1: 6
+      EffectAura_1: 87
+      EffectBasePoints_1: 4294967245
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 126
+      ImplicitTargetA_1: 1
+      EffectTriggerSpell_1: 0
+  # 61085: Lich Armor
+  - type: update
+    key: 61085
+    values:
+      Description_lang_0: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_1: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_2: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_3: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_4: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_5: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_6: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      Description_lang_7: "Increases Frost resistance by $s1, spell critical chance by $s3% and allows $s2% of your mana regeneration to continue while casting.  Melee attackers may be slowed by 30% for 5 sec.  Only one Armor spell can be active."
+      AuraDescription_lang_0: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_1: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_2: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_3: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_4: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_5: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_6: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+      AuraDescription_lang_7: "Frost resistance increased by $s1.  Spell critical chance increased by $s3%.  $s2% of mana regeneration continues while casting."
+  # 61091: Will of the Death Knight
+  - type: update
+    key: 61091
+    values:
+      Description_lang_0: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_1: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_2: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_3: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_4: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_5: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_6: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      Description_lang_7: "Allows the use of Plate armor and causes you to deal an additional 4% of your physical damage as Shadow damage."
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+  # 61351 <- 6222: Grave Rot
+  - type: copy
+    key: 6222
+    values:
+      ID: 61351
+      Name_lang_0: "Grave Rot"
+      Name_lang_1: "Grave Rot"
+      Name_lang_2: "Grave Rot"
+      Name_lang_3: "Grave Rot"
+      Name_lang_4: "Grave Rot"
+      Name_lang_5: "Grave Rot"
+      Name_lang_6: "Grave Rot"
+      Name_lang_7: "Grave Rot"
+      NameSubtext_lang_0: "Rank 1"
+      NameSubtext_lang_1: "Rank 1"
+      NameSubtext_lang_2: "Rank 1"
+      NameSubtext_lang_3: "Rank 1"
+      NameSubtext_lang_4: "Rank 1"
+      NameSubtext_lang_5: "Rank 1"
+      NameSubtext_lang_6: "Rank 1"
+      NameSubtext_lang_7: "Rank 1"
+      Description_lang_0: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_1: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_2: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_3: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_4: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_5: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_6: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_7: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      SpellIconID: 313
+      DurationIndex: 106
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 3
+  # 61352 <- 6223: Grave Rot
+  - type: copy
+    key: 6223
+    values:
+      ID: 61352
+      Name_lang_0: "Grave Rot"
+      Name_lang_1: "Grave Rot"
+      Name_lang_2: "Grave Rot"
+      Name_lang_3: "Grave Rot"
+      Name_lang_4: "Grave Rot"
+      Name_lang_5: "Grave Rot"
+      Name_lang_6: "Grave Rot"
+      Name_lang_7: "Grave Rot"
+      NameSubtext_lang_0: "Rank 2"
+      NameSubtext_lang_1: "Rank 2"
+      NameSubtext_lang_2: "Rank 2"
+      NameSubtext_lang_3: "Rank 2"
+      NameSubtext_lang_4: "Rank 2"
+      NameSubtext_lang_5: "Rank 2"
+      NameSubtext_lang_6: "Rank 2"
+      NameSubtext_lang_7: "Rank 2"
+      Description_lang_0: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_1: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_2: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_3: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_4: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_5: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_6: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_7: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      SpellIconID: 313
+      DurationIndex: 106
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 3
+  # 61353 <- 7648: Grave Rot
+  - type: copy
+    key: 7648
+    values:
+      ID: 61353
+      Name_lang_0: "Grave Rot"
+      Name_lang_1: "Grave Rot"
+      Name_lang_2: "Grave Rot"
+      Name_lang_3: "Grave Rot"
+      Name_lang_4: "Grave Rot"
+      Name_lang_5: "Grave Rot"
+      Name_lang_6: "Grave Rot"
+      Name_lang_7: "Grave Rot"
+      NameSubtext_lang_0: "Rank 3"
+      NameSubtext_lang_1: "Rank 3"
+      NameSubtext_lang_2: "Rank 3"
+      NameSubtext_lang_3: "Rank 3"
+      NameSubtext_lang_4: "Rank 3"
+      NameSubtext_lang_5: "Rank 3"
+      NameSubtext_lang_6: "Rank 3"
+      NameSubtext_lang_7: "Rank 3"
+      Description_lang_0: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_1: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_2: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_3: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_4: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_5: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_6: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      Description_lang_7: "Causes $s1 Shadow damage every $t1 sec for $d.  The final tick deals triple damage."
+      AuraDescription_lang_0: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_1: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_2: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_3: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_4: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_5: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_6: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      AuraDescription_lang_7: "Grave Rot: $s1 Shadow damage every $t1 sec.  The final tick deals triple damage."
+      SpellIconID: 313
+      DurationIndex: 106
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 3
+  # 61354 <- 61015: Lich Armor
+  - type: copy
+    key: 61015
+    values:
+      ID: 61354
+      Name_lang_0: "Lich Armor"
+      Name_lang_1: "Lich Armor"
+      Name_lang_2: "Lich Armor"
+      Name_lang_3: "Lich Armor"
+      Name_lang_4: "Lich Armor"
+      Name_lang_5: "Lich Armor"
+      Name_lang_6: "Lich Armor"
+      Name_lang_7: "Lich Armor"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 182
+      DurationIndex: 30
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 0
+      Attributes: 192
+      AttributesEx: 0
+      AttributesEx2: 0
+      ProcTypeMask: 40
+      ProcChance: 25
+      ProcCharges: 0
+      RecoveryTime: 0
+      Category: 0
+      CategoryRecoveryTime: 0
+      Effect_1: 6
+      EffectAura_1: 42
+      EffectBasePoints_1: 0
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 1
+      EffectTriggerSpell_1: 61355
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectDicePerLevel_2: 0
+      EffectRealPointsPerLevel_2: 0
+      EffectBasePoints_2: 0
+      EffectMechanic_2: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetB_2: 0
+      EffectRadiusIndex_2: 0
+      EffectAura_2: 0
+      EffectAmplitude_2: 0
+      EffectMultipleValue_2: 0
+      EffectChainTarget_2: 0
+      EffectItemType_2: 0
+      EffectMiscValue_2: 0
+      EffectTriggerSpell_2: 0
+      EffectPointsPerCombo_2: 0
+      Effect_3: 0
+      EffectDieSides_3: 0
+      EffectBaseDice_3: 0
+      EffectDicePerLevel_3: 0
+      EffectRealPointsPerLevel_3: 0
+      EffectBasePoints_3: 0
+      EffectMechanic_3: 0
+      ImplicitTargetA_3: 0
+      ImplicitTargetB_3: 0
+      EffectRadiusIndex_3: 0
+      EffectAura_3: 0
+      EffectAmplitude_3: 0
+      EffectMultipleValue_3: 0
+      EffectChainTarget_3: 0
+      EffectItemType_3: 0
+      EffectMiscValue_3: 0
+      EffectTriggerSpell_3: 0
+      EffectPointsPerCombo_3: 0
+  # 61355 <- 61023: Lich Armor
+  - type: copy
+    key: 61023
+    values:
+      ID: 61355
+      Name_lang_0: "Lich Armor"
+      Name_lang_1: "Lich Armor"
+      Name_lang_2: "Lich Armor"
+      Name_lang_3: "Lich Armor"
+      Name_lang_4: "Lich Armor"
+      Name_lang_5: "Lich Armor"
+      Name_lang_6: "Lich Armor"
+      Name_lang_7: "Lich Armor"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: "Movement speed reduced by $s1% for $d."
+      Description_lang_1: "Movement speed reduced by $s1% for $d."
+      Description_lang_2: "Movement speed reduced by $s1% for $d."
+      Description_lang_3: "Movement speed reduced by $s1% for $d."
+      Description_lang_4: "Movement speed reduced by $s1% for $d."
+      Description_lang_5: "Movement speed reduced by $s1% for $d."
+      Description_lang_6: "Movement speed reduced by $s1% for $d."
+      Description_lang_7: "Movement speed reduced by $s1% for $d."
+      AuraDescription_lang_0: "Movement speed reduced by $s1%."
+      AuraDescription_lang_1: "Movement speed reduced by $s1%."
+      AuraDescription_lang_2: "Movement speed reduced by $s1%."
+      AuraDescription_lang_3: "Movement speed reduced by $s1%."
+      AuraDescription_lang_4: "Movement speed reduced by $s1%."
+      AuraDescription_lang_5: "Movement speed reduced by $s1%."
+      AuraDescription_lang_6: "Movement speed reduced by $s1%."
+      AuraDescription_lang_7: "Movement speed reduced by $s1%."
+      SpellIconID: 96
+      School: 4
+      DurationIndex: 7
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 1
+      Attributes: 0
+      AttributesEx: 0
+      AttributesEx2: 0
+      RecoveryTime: 0
+      Category: 0
+      CategoryRecoveryTime: 0
+      Effect_1: 6
+      EffectAura_1: 33
+      EffectBasePoints_1: 4294967265
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 6
+      EffectTriggerSpell_1: 0
+      Effect_2: 0
+      EffectDieSides_2: 0
+      EffectBaseDice_2: 0
+      EffectDicePerLevel_2: 0
+      EffectRealPointsPerLevel_2: 0
+      EffectBasePoints_2: 0
+      EffectMechanic_2: 0
+      ImplicitTargetA_2: 0
+      ImplicitTargetB_2: 0
+      EffectRadiusIndex_2: 0
+      EffectAura_2: 0
+      EffectAmplitude_2: 0
+      EffectMultipleValue_2: 0
+      EffectChainTarget_2: 0
+      EffectItemType_2: 0
+      EffectMiscValue_2: 0
+      EffectTriggerSpell_2: 0
+      EffectPointsPerCombo_2: 0
+      Effect_3: 0
+      EffectDieSides_3: 0
+      EffectBaseDice_3: 0
+      EffectDicePerLevel_3: 0
+      EffectRealPointsPerLevel_3: 0
+      EffectBasePoints_3: 0
+      EffectMechanic_3: 0
+      ImplicitTargetA_3: 0
+      ImplicitTargetB_3: 0
+      EffectRadiusIndex_3: 0
+      EffectAura_3: 0
+      EffectAmplitude_3: 0
+      EffectMultipleValue_3: 0
+      EffectChainTarget_3: 0
+      EffectItemType_3: 0
+      EffectMiscValue_3: 0
+      EffectTriggerSpell_3: 0
+      EffectPointsPerCombo_3: 0
+  # 61356 <- 61350: Will of the Death Knight
+  - type: copy
+    key: 61350
+    values:
+      ID: 61356
+      Name_lang_0: "Will of the Death Knight"
+      Name_lang_1: "Will of the Death Knight"
+      Name_lang_2: "Will of the Death Knight"
+      Name_lang_3: "Will of the Death Knight"
+      Name_lang_4: "Will of the Death Knight"
+      Name_lang_5: "Will of the Death Knight"
+      Name_lang_6: "Will of the Death Knight"
+      Name_lang_7: "Will of the Death Knight"
+      NameSubtext_lang_0: ""
+      NameSubtext_lang_1: ""
+      NameSubtext_lang_2: ""
+      NameSubtext_lang_3: ""
+      NameSubtext_lang_4: ""
+      NameSubtext_lang_5: ""
+      NameSubtext_lang_6: ""
+      NameSubtext_lang_7: ""
+      Description_lang_0: ""
+      Description_lang_1: ""
+      Description_lang_2: ""
+      Description_lang_3: ""
+      Description_lang_4: ""
+      Description_lang_5: ""
+      Description_lang_6: ""
+      Description_lang_7: ""
+      AuraDescription_lang_0: ""
+      AuraDescription_lang_1: ""
+      AuraDescription_lang_2: ""
+      AuraDescription_lang_3: ""
+      AuraDescription_lang_4: ""
+      AuraDescription_lang_5: ""
+      AuraDescription_lang_6: ""
+      AuraDescription_lang_7: ""
+      SpellIconID: 2200
+      School: 32
+      DurationIndex: 0
+      CastingTimeIndex: 1
+      ManaCost: 0
+      DispelType: 0
+      Attributes: 128
+      AttributesEx: 0
+      AttributesEx2: 0
+      RecoveryTime: 0
+      Category: 0
+      CategoryRecoveryTime: 0
+      Effect_1: 2
+      EffectDieSides_1: 1
+      EffectBaseDice_1: 1
+      EffectBasePoints_1: 0
+      EffectAmplitude_1: 0
+      EffectMiscValue_1: 0
+      ImplicitTargetA_1: 6
+      EffectTriggerSpell_1: 0
