@@ -101,10 +101,17 @@ A78/A86/A88/A90/A92/A101/A103/A104 for the current list.
 ## Trainers
 
 The class is trained, not auto-learned. Both NPCs use `trainer_class = 10` and
-teach **28 non-quest spell/rank rows** through learn spells 61100-61150 at
+teach **26 non-quest spell/rank rows** through learn spells 61100-61150 at
 vanilla class-trainer prices.  Fifteen spells are now talent-granted (see
 **Talents**); **Corrosion (61089)** stays trainer-taught (decision locked
 2026-10-22; it is not in the current parsed Plague tree - creator drift).
+**Two more are item-gated since 2026-10-23** (design G2/G3): Raise Bloodmage
+comes from **Tome of the Bloodmage** (63104, 10% from Amnennar the Coldbringer
+in Razorfen Downs) and Raise Wight from **Codex of the Wight** (63105, 5% from
+Darkmaster Gandling in Scholomance, usable only once Raise Abomination is
+learned).  Each book is consumed on use.  **Note:** Darkmaster Gandling (1853)
+has no spawn row in the current world DB, so the Codex is unobtainable until
+that is fixed (see the design doc A105).
 
 ### Talents (T1 scaffolding + T2a-T2e, 2026-10-21/22)
 
@@ -131,7 +138,7 @@ helpers 61342-61350 through `client/patches/49b-talent-mechanics-t2d.yaml`
 and SQL `20261022120000`.  **T2e** finishes the active talents: the 14
 shortcuts get canonical names/ranks, design levels, full tooltips and the
 site/substitute icons through `client/patches/49c-talent-polish-t2e.yaml` and
-SQL `20261022160000`; the trainer cleanup remains idempotent (28 rows, Corrosion
+SQL `20261022160000`; the trainer cleanup remains idempotent (26 rows since the 2026-10-23 item gates, Corrosion
 61148 stays).  T2e decisions (A99): Corrosion stays trainer-taught; the 3 armor
 passives (61090-61092) are stripped from pre-T1 characters through the module's
 `RemoveSpell` login cleanup (marker variable 1001; `OnForgotSpell` removes the
@@ -221,7 +228,7 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   creatures evade and wipes debuffs.
 - Level with `.levelup <n>` (GM-only; there is no `.character level`).
 - Trainer lists send **learn-spell ids** (61100+); the real spell appears in
-  `spells` after training.  The T1 trainer list has **28 rows**; the 15
+  `spells` after training.  The trainer list has **26 rows** (28 before the G2/G3 item gates); the 15
   talent-gated learn ids are gone and 61148 (Corrosion) remains.
 - A pet saved before a pet-ability change keeps its old list: apply the
   character migration, or dismiss + re-raise + Tether it.
@@ -229,7 +236,7 @@ pass only for rendered items (icons, tooltips, models, tabs, Glue UI).
   client-rendered; `turtle-agent` cannot verify them.  T1-T2e are all live;
   the remaining check is the in-client talent/respec pass.
 - T2e server checks: active spell metadata (`level` 20/30/40 and the Army
-  ranks), trainer list still 28 rows with none of the 15 talent-gated learn
+  ranks), trainer list still 26 rows with none of the 15 talent-gated learn
   ids, and the legacy armor-passive cleanup.  For the cleanup, mark a pre-T1
   character in `character_variables` (type 1001 = '1'), log in, and confirm a
   `spell_removed` event for 61090-61092, skills 43/44/54/55/160/172/229/293/

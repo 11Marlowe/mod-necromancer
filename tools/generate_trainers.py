@@ -138,6 +138,13 @@ TALENT_GATED = {
     61092,  # Grim Reaper
 }
 
+# Item-gated (backlog G2/G3, 2026-10-23): the spell is learned from a boss-drop
+# book instead of a trainer (items 63104/63105), so no npc_trainer row.
+ITEM_GATED = {
+    61038,  # Raise Bloodmage - Tome of the Bloodmage
+    61040,  # Raise Wight - Codex of the Wight
+}
+
 LEARN_SPELL_BASE = 61100
 LEARN_SPELL_DONOR = 1374  # vanilla learn-spell scaffold (Effect[0] = LEARN_SPELL)
 LEARN_SPELL_MAX = LEARN_SPELL_BASE + len(TRAINABLE) - 1
@@ -370,7 +377,7 @@ def main():
     lines.append("-- Quest-gated spells are omitted (A85 placeholder quests).")
     for t in TRAINERS:
         for spell_id, level, rank in TRAINABLE:
-            if spell_id in QUEST_GATED or spell_id in TALENT_GATED:
+            if spell_id in QUEST_GATED or spell_id in TALENT_GATED or spell_id in ITEM_GATED:
                 continue
             vals = [str(t["entry"]), str(learn_ids[spell_id]),
                     str(COST_BY_LEVEL[level]), "0", "0", str(level)]
