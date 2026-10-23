@@ -204,6 +204,9 @@ namespace
         NECRO_SPELL_DEATH_COIL_WARLOCK   = 6789,    // shared Warlock spell; no longer learned
     };
 
+    // Base shield count of Bone Armor; Shadowskin adds 2 more per rank (A101).
+    uint32 const NECRO_BONE_ARMOR_BASE_CHARGES = 4;
+
     // Corpse Bag items (server-side item_template; see the slice-3c SQL)
     enum NecromancerItemIds
     {
@@ -751,10 +754,8 @@ namespace
             switch (armorSpellId)
             {
                 case NECRO_SPELL_BONE_ARMOR:
-                    // Bone Armor's design "charges" do not exist in this
-                    // implementation; approximated as +2/+4% armor.
-                    helper = NECRO_HELPER_SHADOWSKIN_BONE;
-                    basePoints = rank * 2 - 1;
+                    // Bone Armor's bonus is extra shields
+                    // (RefillBoneArmorCharges), not an armor helper.
                     break;
                 case NECRO_SPELL_GHOUL_ARMOR:
                     // +25/+50% of the armor's 10 shadow resistance.
@@ -782,6 +783,45 @@ namespace
             player->CastCustomSpell(player, NECRO_HELPER_PHANTOM_ARMOR,
                                     &basePoints, nullptr, nullptr, true);
         }
+    }
+
+    // Bone Armor's shield cap: the design's four shields plus Shadowskin's
+    // +2/+4 charges.  The base count mirrors the spell's procCharges (A101).
+    uint32 BoneArmorMaxCharges(Player* player)
+    {
+        return NECRO_BONE_ARMOR_BASE_CHARGES +
+               2u * uint32(GetShadowskinRank(player));
+    }
+
+    void RefillBoneArmorCharges(Player* player)
+    {
+        if (!player)
+            return;
+
+        if (SpellAuraHolder* holder = player->GetSpellAuraHolder(NECRO_SPELL_BONE_ARMOR))
+            holder->SetAuraCharges(BoneArmorMaxCharges(player));
+    }
+
+    // Clamps the shield count to the current cap (delta 0) or shifts it
+    // (delta +/-2).  Losing a rank only lowers the cap; learning one refills
+    // through RefillBoneArmorCharges.
+    void AdjustBoneArmorCharges(Player* player, int delta)
+    {
+        if (!player)
+            return;
+
+        SpellAuraHolder* holder = player->GetSpellAuraHolder(NECRO_SPELL_BONE_ARMOR);
+        if (!holder)
+            return;
+
+        int charges = int(holder->GetAuraCharges()) + delta;
+        int maxCharges = int(BoneArmorMaxCharges(player));
+        if (charges < 0)
+            charges = 0;
+        if (charges > maxCharges)
+            charges = maxCharges;
+
+        holder->SetAuraCharges(uint32(charges));
     }
 
     void RefreshArmorTalentAuras(Player* player)
@@ -1150,6 +1190,9 @@ namespace
 
             if (IsT2dTalentSpell(spellId))
             {
+                if (spellId == NECRO_TALENT_SHADOWSKIN_R1 ||
+                        spellId == NECRO_TALENT_SHADOWSKIN_R2)
+                    RefillBoneArmorCharges(player);
                 RefreshArmorTalentAuras(player);
                 UpdateZombification(player);
             }
@@ -1203,6 +1246,10 @@ namespace
             {
                 if (!GetIcyTalonsRank(player))
                     player->RemoveAurasDueToSpell(NECRO_HELPER_ICY_TALONS);
+
+                if (spellId == NECRO_TALENT_SHADOWSKIN_R1 ||
+                        spellId == NECRO_TALENT_SHADOWSKIN_R2)
+                    AdjustBoneArmorCharges(player, 0);
 
                 RefreshArmorTalentAuras(player);
                 UpdateZombification(player);
@@ -2947,7 +2994,13 @@ namespace
 
             RemoveArmorTalentAuras(player);
             if (apply)
+            {
                 ApplyArmorTalentAuras(player, aura->GetId());
+                // A fresh Bone Armor gets its full shield count, including
+                // Shadowskin's extra charges.
+                if (aura->GetId() == NECRO_SPELL_BONE_ARMOR)
+                    RefillBoneArmorCharges(player);
+            }
         }
     };
 
